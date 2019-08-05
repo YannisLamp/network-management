@@ -77,41 +77,22 @@ def runMinimalTopo():
     gnet = net
 
 
-
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
-
-
 @app.route('/')
 def index():
     return "Hello, World!"
 
+
 @app.route('/init_mn', methods=['GET'])
 def init_mn():
     runMinimalTopo()
-    return "Network Created !!"
+    return jsonify({'msg': 'Network Created'})
 
 
 @app.route('/stop_mn', methods=['GET'])
 def stop_mn():
     gnet.stop()
-    return 'Network Stopped !'
+    return jsonify({'msg': 'Network Stopped'})
 
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks': tasks})
 
 if __name__ == '__main__':
     app.run(debug=True)
