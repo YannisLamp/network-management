@@ -100,40 +100,12 @@ def index():
 
 @app.route('/init_mn', methods=['GET'])
 def init_mn():
-    # cmd = ["ls",""]
-    # p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
-    #                         stderr=subprocess.PIPE,
-    #                         stdin=subprocess.PIPE)
-
-    # p = subprocess.Popen('sudo python colab.py', shell=True, stdout = subprocess.PIPE,
-    #                         stderr=subprocess.PIPE,
-    #                         stdin=subprocess.PIPE)
-
-    # out, err = p.communicate()
-    # print out, err
-    # return out
-    #os.system('sudo python colab.py')
-    #return "Network Created !!"
     runMinimalTopo()
     return "Network Created !!"
 
 
 @app.route('/stop_mn', methods=['GET'])
 def stop_mn():
-    # cmd = ["ls",""]
-    # p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
-    #                         stderr=subprocess.PIPE,
-    #                         stdin=subprocess.PIPE)
-
-    # p = subprocess.Popen('sudo python colab.py', shell=True, stdout = subprocess.PIPE,
-    #                         stderr=subprocess.PIPE,
-    #                         stdin=subprocess.PIPE)
-
-    # out, err = p.communicate()
-    # print out, err
-    # return out
-    #os.system('sudo python colab.py')
-    #return "Network Created !!"
     gnet.stop()
     return 'Network Stopped !'
 
