@@ -36,13 +36,18 @@ def index():
 
 @app.route('/init_mn', methods=['GET'])
 def init_mn():
-    cmd = ["ls",""]
-    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+    # cmd = ["ls",""]
+    # p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+    #                         stderr=subprocess.PIPE,
+    #                         stdin=subprocess.PIPE)
+
+    p = subprocess.Popen('sudo python colab.py', shell=True, stdout = subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             stdin=subprocess.PIPE)
+
     out, err = p.communicate()
     print out, err
-    return out, err
+    return out
     # return "Network Created !!"
 
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
