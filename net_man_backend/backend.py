@@ -7,7 +7,7 @@
 # from mininet.node import RemoteController, OVSSwitch, OVSKernelSwitch
 
 # from functools import partial
-
+import os
 import subprocess
 from flask import Flask, jsonify
 
@@ -41,14 +41,15 @@ def init_mn():
     #                         stderr=subprocess.PIPE,
     #                         stdin=subprocess.PIPE)
 
-    p = subprocess.Popen('sudo python colab.py', shell=True, stdout = subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            stdin=subprocess.PIPE)
+    # p = subprocess.Popen('sudo python colab.py', shell=True, stdout = subprocess.PIPE,
+    #                         stderr=subprocess.PIPE,
+    #                         stdin=subprocess.PIPE)
 
-    out, err = p.communicate()
-    print out, err
-    return out
-    # return "Network Created !!"
+    # out, err = p.communicate()
+    # print out, err
+    # return out
+    os.system('sudo python colab.py')
+    return "Network Created !!"
 
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
