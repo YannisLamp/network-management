@@ -115,7 +115,7 @@ def init_mn():
     #os.system('sudo python colab.py')
     #return "Network Created !!"
     runMinimalTopo()
-    return 'alalaal'
+    return "Network Created !!"
 
 
 @app.route('/stop_mn', methods=['GET'])
@@ -135,7 +135,7 @@ def stop_mn():
     #os.system('sudo python colab.py')
     #return "Network Created !!"
     gnet.stop()
-    return 'alalaal'
+    return 'Network Stopped !'
 
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
