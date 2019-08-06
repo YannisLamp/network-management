@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Container, Row, Col } from 'reactstrap';
-import { Navbar, NavbarBrand } from 'reactstrap';
 import CreateNetwork from './containers/CreateNetwork/createNetwork';
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 
-import { Router, Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import Footer from './components/Footer/footer'
+import NetNavbar from './components/NetNavbar/netNavbar';
+
+import { networkApi } from './services/networkApi';
+
 // import produce from 'immer';
 
 class App extends Component {
@@ -17,12 +20,15 @@ class App extends Component {
 
 
     state = {
-        networkCreated: true
+        networkCreated: true,
     }
+
 
     networkStateHandler = () => {
         this.setState( (prevState, props) => { return { networkCreated: !prevState.networkCreated }} );
     }
+
+
     
 
     withoutNetRoutes = () => {
@@ -45,18 +51,22 @@ class App extends Component {
 			<Switch>
 
 				<Route
-					path={ ["/menu"] }
+					path={ ["/"] }
 					exact
-					render={() => ( <ApplicationMenu isAuth={this.state.isAuth}/>)}                        /> )}
-				/>
-
-				{/*<Route
-					path={ ["/hotel/:hotelname"] }
-					exact
-					render={() => ( null )}
+					render={() => ( <ApplicationMenu />)}                        /> )}
 				/>
 
 				<Route
+					path={ ["/delete_network"] }
+					exact
+					render={() => {
+                        networkApi.deleteNetwork();
+                        this.networkStateHandler() 
+                        return null;
+                    }}
+				/>
+
+				{/*<Route
 					path={ ["/book"] }
 					exact
 					render={() => ( <Checkout/> )}
@@ -84,9 +94,7 @@ class App extends Component {
           return (
             <div className="App">
                 <div className="AppContents">
-                    <Navbar color="dark" dark>
-                        <NavbarBrand href="/">reactstrap</NavbarBrand>        
-                    </Navbar>
+                    <NetNavbar/>
                     <Container fluid>
 
                         {this.state.networkCreated ? 

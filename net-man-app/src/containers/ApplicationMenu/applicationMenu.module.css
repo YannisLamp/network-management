@@ -1,0 +1,14 @@
+.MenuContainer {
+    padding: '5px';
+}
+
+
+.MenuLink {
+    text-decoration: none;
+    color: black;
+}
+
+.MenuLink:hover {
+    text-decoration: none;
+    color: black;
+}
