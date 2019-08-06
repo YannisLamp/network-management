@@ -1,0 +1,11 @@
+.Title {
+    /* font-size: 30px; */
+    font-size: calc(17px + 2vmin);
+    text-decoration: none;
+    color: white;
+}
+
+.Title:hover {
+    text-decoration: none;
+    color: white;
+}

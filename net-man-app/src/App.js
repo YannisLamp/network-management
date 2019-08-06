@@ -2,34 +2,51 @@ import React, { Component } from 'react';
 import './App.css';
 import { Container, Row, Col } from 'reactstrap';
 import CreateNetwork from './containers/CreateNetwork/createNetwork';
+import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
+
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import Footer from './components/Footer/footer'
 import NetNavbar from './components/NetNavbar/netNavbar';
 
 import { networkApi } from './services/networkApi';
 
-// import produce from 'immer';
+import produce from 'immer';
 
 class App extends Component {
 
-
-
-
-
     state = {
-        networkCreated: true,
+        networkCreated: null
     }
 
+    componentDidMount() {
+        this.checkNetworkStatus();
+    }
+
+    // componentDidUpdate() {
+    //      this.checkNetworkStatus();
+    // }
+
+    checkNetworkStatus = () => {
+        networkApi.networkExists()
+        .then(data => {
+            this.setState(
+                produce(draft => {
+                    draft.networkCreated = data.status === "up";
+                })
+            );
+        });
+    }
 
     networkStateHandler = () => {
-        this.setState( (prevState, props) => { return { networkCreated: !prevState.networkCreated }} );
+		this.setState(
+			produce(draft => {
+				draft.networkCreated = !draft.networkCreated;
+			})
+		);
     }
-
-
-    
 
     withoutNetRoutes = () => {
         return(
@@ -39,6 +56,13 @@ class App extends Component {
 					exact
 					render={() => ( <CreateNetwork networkStateHandler={this.networkStateHandler}/> )}
 				/>
+
+
+				<Route
+					path={ ["/delete_network"] }
+					exact
+					render={() => ( <DeleteNetwork networkStateHandler={this.networkStateHandler}/> )}
+                />
 
 				<Redirect to="/create_network" />
 			</Switch>
@@ -53,36 +77,14 @@ class App extends Component {
 				<Route
 					path={ ["/"] }
 					exact
-					render={() => ( <ApplicationMenu />)}                        /> )}
+					render={() => ( <ApplicationMenu />)} /> )}
 				/>
 
 				<Route
 					path={ ["/delete_network"] }
 					exact
-					render={() => {
-                        networkApi.deleteNetwork();
-                        this.networkStateHandler() 
-                        return null;
-                    }}
-				/>
-
-				{/*<Route
-					path={ ["/book"] }
-					exact
-					render={() => ( <Checkout/> )}
-				/>
-
-				<Route
-					path={ ["/visitor", "/visitor/history", "/visitor/profile", "/visitor/changepass"] }
-					exact
-					render={() => ( <Visitor/> )}
-				/>
-
-				<Route
-					path="/" 
-					exact
-					render={() => ( <IndexPage/> )}
-                />*/}
+					render={() => ( <DeleteNetwork networkStateHandler={this.networkStateHandler}/> )}
+                />
 
 				<Redirect to="/" />
 			</Switch>
@@ -91,11 +93,14 @@ class App extends Component {
 
 
     render() {
-          return (
+
+        console.log("Network Created: ", this.state.networkCreated);
+
+        return (
             <div className="App">
                 <div className="AppContents">
-                    <NetNavbar/>
-                    <Container fluid>
+                    <NetNavbar networkCreated={this.state.networkCreated} />
+                    <Container fluid className="content">
 
                         {this.state.networkCreated ? 
                             this.withNetRoutes()
@@ -104,10 +109,7 @@ class App extends Component {
                         }
 
                     </Container>
-                    {/* <h2>Welcome to ssss</h2>
-                    <p className="App-intro">
-                        To get started, edit <code>src/App.js</code> and save to reload.
-                    </p> */}
+            
                 </div>
                 <Footer/>
             </div>
@@ -117,4 +119,4 @@ class App extends Component {
 
 }
 
-export default App;
+export default withRouter(App);

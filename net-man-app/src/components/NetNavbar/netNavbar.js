@@ -1,21 +1,27 @@
 import React from 'react';
-import { Navbar, NavItem, NavbarBrand } from 'reactstrap';
-import { Button } from 'reactstrap'
+import { Navbar, Nav} from 'reactstrap';
+import { NavLink as RouterNavLink }  from 'react-router-dom';
+import NavigationItem from './NavigationItem/navigationItem';
 
-import { NavLink } from 'react-router-dom'
-
-// Component styles
-
-export default function NetNavbar(props) {
+import styles from './netNavbar.module.css';
+    
+const netNavbar = (props) =>  {
 
     return (
-        <Navbar color="dark" dark>
-            <NavbarBrand href="/">NetMan</NavbarBrand>  
+        <Navbar color="dark" dark className="fixed-top" >
+            <RouterNavLink to="/" exact className={styles.Title + " font-weight-bold"}>
+                NetMan  
+            </RouterNavLink>  
 
-              <NavItem>
-                <NavLink to="/">Delete Network</NavLink>
-              </NavItem>
+            {   props.networkCreated ?
+                <Nav className="ml-auto" navbar>
+                    <NavigationItem link="/delete_network"> Delete Network </NavigationItem>								
+                </Nav>
+                : null
+            }
         </Navbar>
     );
 }
+
+export default netNavbar;
 

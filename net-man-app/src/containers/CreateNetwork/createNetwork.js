@@ -1,7 +1,10 @@
 
 import React, { Component } from 'react';
-import { Container, Button, Row, Col, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Container, Button, Row, Col, Form, FormGroup, Input, Label, Spinner, Card, CardHeader, CardText, CardBody, CardFooter,
+    CardTitle, CardSubtitle } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 import produce from 'immer';
+import styles from './createNetwork.module.css';
 import { networkApi } from '../../services/networkApi';
 
 class CreateNetwork extends Component {
@@ -24,7 +27,7 @@ class CreateNetwork extends Component {
                 value: "OVSSwitch"
             },
 
-            nodes: {
+            nodesPerSwitch: {
                 value: 5
             },
 
@@ -41,7 +44,9 @@ class CreateNetwork extends Component {
             // }
 
 
-        }
+        },
+
+        isLoading: false,
 
     }
 
@@ -66,6 +71,14 @@ class CreateNetwork extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
+        // Set State to loading
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        );
+        
+
         let formData = {};
      
         for ( let key in this.state.formElems ) 
@@ -74,60 +87,38 @@ class CreateNetwork extends Component {
         }
 
         console.log("---Form Data---");
-        console.log(formData);    
+        console.log(formData);
         console.log("---------------");
 
-        networkApi.createNetwork(...formData)
-        .then(data => {
-                alert(data.msg)
-        });
 
-        // axios.post(
-        //     "http://localhost:8765/app/api/users",
-        //     qs.stringify(formData),
-        //     {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //         params: {
-        //             autologin: "true"
-        //             // signup: "yes"
-        //         }
-        //     }
-        // )
-        // .then((result) => {
-        //     // alert("Form Submitted");
-        //     console.log(result);
-           
-        //     if (!result.data.success)
-        //     {
-        //         console.log("signup NOT successful");
-        //         if (result.data.message === "Sign up error: email is already taken")
-        //         {
-        //             this.setFormField(FormObj, "email", "Το συγκεκριμένο email χρησιμοποιείται ήδη από άλλον λογαριασμό", 'is-invalid', null);
-        //         }
-        //         else if (result.data.message === "Sign up error: mismatching password")
-        //         {
-        //             this.setFormField(FormObj, "password1", "Οι κωδικοί δεν ταιριάζουν", "is-invalid", null);
-        //         }
-        //     }
-        //     else
-        //     {
-        //         console.log("signup Successful");
-        //         this.props.logIn(result.data.data);
-        //         this.props.history.goBack();
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.log(err);
-        // })
+        networkApi.createNetwork(formData)
+            .then(data => {
+                alert(data.msg)
+                // this.setState(
+                //     produce(draft => {
+                //         draft.isLoading = false;
+                //     })
+                // );
+                this.props.networkStateHandler();
+                this.props.history.replace('/');      
+            });
 
     }
 
     render() {
         return (
-                <Row>
+                <Row className="d-flex align-items-center">
                 <Col sm={3}></Col>
                 <Col sm={6}>
-                    <Form onSubmit={this.submitHandler}>
+                    <Form onSubmit={this.submitHandler} className={styles.formBorder + " p-4"}>
+                        <Row form className="pb-3 border-bottom mb-3">
+                            <Col sm="12" className="d-flex justify-content-start font-weight-bold">
+                                <div className={styles.formTitle + " text-primary"}>
+                                    Create and Initialize a Mininet Network
+                                </div>
+                            </Col>
+                        </Row>
+
                         <Row form>
                             <Col sm={5}>
                                 <FormGroup>
@@ -174,8 +165,8 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="nodes"  className="font-weight-bold small float-left">Number of Nodes</Label>
-                                    <Input type="number" id="nodes" value={this.state.formElems.nodes.value} onChange={ (e) => this.inputChangedHandler(e, "nodes") }/>
+                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">Number of Nodes per Switch</Label>
+                                    <Input type="number" id="nodesPerSwitch" value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
                                 </FormGroup>
                             </Col>
                         
@@ -190,19 +181,32 @@ class CreateNetwork extends Component {
                         </Row>
 
                         <Row form>
-                            <Col sm={12} className="justify-content-start">
+                            <Col sm={12}>
                                 <FormGroup check inline>
-                                    <Label check>
+                                    <Label check className="font-weight-bold">
                                         <Input type="checkbox" checked={this.state.formElems.mac.value} onChange={ (e) => this.inputChangedHandler(e, "mac") } /> automatically set mac addresses
                                     </Label>
                                 </FormGroup>
                             </Col>
                         </Row>
 
-                        <Row form>
+                        <Row form className="pt-4 border-top mt-3">
 
-                            <Button>Submit</Button>
+                            { this.state.isLoading ?  
+                                <Col sm={12} style={{ width: '2rem', height: '2rem' }} className="d-flex justify-content-end">
+                                    <Spinner color="primary" />
+                                </Col>
+                                :
+                                <Col sm={12} className="d-flex justify-content-end">
+                                    <Button size="sm" color="secondary" className="font-weight-bold mr-4">
+                                        Create Default Network
+                                    </Button>
 
+                                    <Button size="sm" color="primary" className="font-weight-bold">
+                                        Create Network
+                                    </Button>
+                                </Col>
+                            }
                         </Row>
 
                     </Form>
@@ -217,4 +221,4 @@ class CreateNetwork extends Component {
 
 
 
-export default CreateNetwork;
+export default withRouter(CreateNetwork);
