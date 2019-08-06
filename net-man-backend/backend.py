@@ -3,14 +3,14 @@
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 from mininet.net import Mininet
-from mininet.topo import Topo
+from mininet.topo import Topo, 
 from mininet.node import RemoteController, OVSSwitch, OVSKernelSwitch
 from functools import partial
 
 # from functools import partial
 import os
 import subprocess
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -79,6 +79,44 @@ def runMinimalTopo():
     gnet = net
 
 
+def createNet(controllerIp, controllerPort, topologyType, 
+        switchType, nodes, switches, mac, defaultTopo):
+    "Bootstrap a Mininet network using the Minimal Topology"
+ 
+    # Create an instance of our topology
+    topo = MinimalTopo()
+    
+    switch = None
+    if switches == 'OVSSwitch':
+        switch = partial( OVSSwitch, protocols='OpenFlow13' )
+    elif switches == 'OVSKernelSwitch':
+        switch = partial( OVSSwitch, protocols='OpenFlow13' )
+
+        
+    # Create a network based on the topology using OVS and controlled by
+    # a remote controller.
+    net = Mininet(
+        topo=topo,
+        controller=lambda name: RemoteController( name, ip=controllerIp ),
+        switch=switch,
+        autoSetMacs=mac,
+    )
+ 
+    # Actually start the network
+    net.start()
+ 
+    # Drop the user in to a CLI so user can run commands.
+    #CLI( net )
+ 
+    # After the user exits the CLI, shutdown the network.
+    #net.stop()
+ 
+
+    # We need this to be global
+    global gnet
+    gnet = net
+
+
 @app.route('/')
 def index():
     return "Hello, World!"
@@ -86,7 +124,21 @@ def index():
 
 @app.route('/network', methods=['POST'])
 def init_mn():
-    runMinimalTopo()
+    # Get request data
+    ip = request.json.get('ip')
+    port = request.json.get('port')
+    topologyType = request.json.get('topologyType')
+    switchType = request.json.get('switchType')
+    nodes = request.json.get('nodes')
+    switches = request.json.get('switches')
+    mac = request.json.get('mac')
+    defaultTopo = request.json.get('defaultTopo')
+    
+    # Create network
+    #runMinimalTopo()
+    createNet(ip, port, topologyType, switchType, nodes, 
+            switches, mac, defaultTopo)
+
     return jsonify({'msg': 'Network Created'})
 
 
