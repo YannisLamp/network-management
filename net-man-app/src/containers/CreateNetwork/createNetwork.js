@@ -93,7 +93,7 @@ class CreateNetwork extends Component {
 
         networkApi.createNetwork(formData)
             .then(data => {
-                alert(data.msg)
+                //alert(data.msg)
                 // this.setState(
                 //     produce(draft => {
                 //         draft.isLoading = false;
@@ -183,7 +183,7 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={12}>
                                 <FormGroup check inline>
-                                    <Label check className="font-weight-bold">
+                                    <Label check className="font-weight-bold small??">
                                         <Input type="checkbox" checked={this.state.formElems.mac.value} onChange={ (e) => this.inputChangedHandler(e, "mac") } /> automatically set mac addresses
                                     </Label>
                                 </FormGroup>

@@ -1,6 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import produce from 'immer';
+import { Container, Row, Col, Spinner } from 'reactstrap';
 import { networkApi } from '../../services/networkApi';
 
 class DeleteNetwork extends Component {
@@ -11,7 +12,18 @@ class DeleteNetwork extends Component {
     }
 
     render () {
-        return 'Deleting shit'
+        return (
+            <>
+            { this.state.isLoading ? 
+                <Row className="d-flex justify-content-center align-items-center h-100">
+                    <Col sm="12" style={{ width: '50rem', height: '50rem' }} >
+                        <Spinner color="primary" />
+                    </Col>
+                </Row>
+                : null
+            }
+            </>
+        );
     }
 
     componentDidMount() {
