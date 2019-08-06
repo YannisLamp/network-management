@@ -11,8 +11,10 @@ from functools import partial
 import os
 import subprocess
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
 
 gnet = None
 
@@ -82,13 +84,13 @@ def index():
     return "Hello, World!"
 
 
-@app.route('/init_mn', methods=['GET'])
+@app.route('/network', methods=['POST'])
 def init_mn():
     runMinimalTopo()
     return jsonify({'msg': 'Network Created'})
 
 
-@app.route('/stop_mn', methods=['GET'])
+@app.route('/network', methods=['DELETE'])
 def stop_mn():
     gnet.stop()
     return jsonify({'msg': 'Network Stopped'})
