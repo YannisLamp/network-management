@@ -6,6 +6,7 @@ from mininet.net import Mininet
 from mininet.topo import Topo, LinearTopo, SingleSwitchTopo
 from mininet.topolib import TreeTopo
 from mininet.node import RemoteController, OVSSwitch, OVSKernelSwitch
+from mininet.clean import Cleanup
 from functools import partial
 
 # from functools import partial
@@ -79,33 +80,42 @@ def runMinimalTopo():
     global gnet
     gnet = net
 
+    print 'created mini'
 
-def createNet(controllerIp, controllerPort, topologyType, 
-        switchType, nodesPerSwitch, switches, mac, defaultTopo):
+
+def createNet(controllerIp, controllerPort, topoType, 
+        switchType, nodesPerSwitch, switches, mac):
     "Bootstrap a Mininet network using the Minimal Topology"
- 
+
     # Create an instance of our topology
-    topo = MinimalTopo()
+    #topo = MinimalTopo()
 
-    if topologyType == 'linear':
-        topo = LinearTopo(switches, nodesPerSwitch)
-    elif topologyType == 'tree':
-        topo = TreeTopo(switches, nodesPerSwitch)
-    elif topologyType == 'single':
-        topo = SingleSwitchTopo(nodesPerSwitch)
+    topo = None
+    if topoType == 'linear':
+        topo = LinearTopo(k=switches, n=nodesPerSwitch)
+    elif topoType == 'tree':
+        topo = TreeTopo(depth=switches, fanout=nodesPerSwitch)
+    elif topoType == 'single':
+        topo = SingleSwitchTopo(k=nodesPerSwitch)
 
-
-    if switches == 'OVSSwitch':
+    switch = None
+    if switchType == 'OVSSwitch':
         switch = partial( OVSSwitch, protocols='OpenFlow13' )
-    elif switches == 'OVSKernelSwitch':
-        switch = partial( OVSSwitch, protocols='OpenFlow13' )
+    elif switchType == 'OVSKernelSwitch':
+        switch = partial( OVSKernelSwitch, protocols='OpenFlow13' )
 
-        
+    controller = None
+    if controllerPort == 'default':
+        controller = lambda name: RemoteController( name, ip=controllerIp )
+    else:
+        intPort = int(controllerPort)
+        controller = lambda name: RemoteController( name, ip=controllerIp, port=intPort )
+
     # Create a network based on the topology using OVS and controlled by
     # a remote controller.
     net = Mininet(
         topo=topo,
-        controller=lambda name: RemoteController( name, ip=controllerIp, port=controllerPort ),
+        controller=controller,
         switch=switch,
         autoSetMacs=mac,
     )
@@ -115,12 +125,8 @@ def createNet(controllerIp, controllerPort, topologyType,
  
     # Drop the user in to a CLI so user can run commands.
     #CLI( net )
- 
-    # After the user exits the CLI, shutdown the network.
-    #net.stop()
- 
-
-    # We need this to be global
+    
+    # Export local net
     global gnet
     gnet = net
 
@@ -134,10 +140,17 @@ def index():
 def create_network():
     # Get request data
     ip = request.json.get('ip')
+    if ip == 'localhost':
+        ip = '127.0.0.1'
+
     port = request.json.get('port')
     mac = request.json.get('mac')
+    if mac == 'true':
+        mac = True
+    elif mac == 'false':
+        mac == False
 
-    topologyType = request.json.get('topologyType')
+    topoType = request.json.get('topoType')
     switchType = request.json.get('switchType')
     switches = int( request.json.get('switches') )
     nodesPerSwitch = int( request.json.get('nodesPerSwitch') )
@@ -146,20 +159,30 @@ def create_network():
     
     # Create network
     #runMinimalTopo()
-    createNet(ip, port, topologyType, switchType, nodes, 
-            switches, mac, defaultTopo)
+
+    createNet(ip, port, topoType, switchType, nodesPerSwitch, 
+            switches, mac)
 
     return jsonify({'msg': 'Network Created'})
 
 
 @app.route('/network', methods=['DELETE'])
-def delte_network():
-    gnet.stop()
-    return jsonify({'msg': 'Network Stopped'})
+def delete_network():
+    print 'deleted network'
+    global gnet
+    if gnet is not None:
+        gnet.stop()
+        #Cleanup.cleanup()
+        gnet = None
+        return jsonify({'msg': 'Network Stopped'})
+    else:
+        return jsonify({'msg': 'Network Already Stopped'})
 
 
 @app.route('/network', methods=['GET'])
 def network_exists():
+    print 'exists?'
+    print gnet
     if gnet == None:
         return jsonify({'status': 'down'})
     else:
@@ -167,6 +190,10 @@ def network_exists():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+#net.pingAll()
 
 
 
