@@ -24,7 +24,7 @@ class CreateNetwork extends Component {
                 value: "OVSSwitch"
             },
 
-            nodes: {
+            nodesPerSwitch: {
                 value: 5
             },
 
@@ -79,7 +79,7 @@ class CreateNetwork extends Component {
 
         networkApi.createNetwork(...formData)
         .then(data => {
-                alert(data.msg)
+            alert(data.msg)
         });
 
         // axios.post(
@@ -174,8 +174,8 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="nodes"  className="font-weight-bold small float-left">Number of Nodes</Label>
-                                    <Input type="number" id="nodes" value={this.state.formElems.nodes.value} onChange={ (e) => this.inputChangedHandler(e, "nodes") }/>
+                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">Number of Nodes per Switch</Label>
+                                    <Input type="number" id="nodesPerSwitch" value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
                                 </FormGroup>
                             </Col>
                         
