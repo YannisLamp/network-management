@@ -85,9 +85,9 @@ def createNet(controllerIp, controllerPort, topologyType,
     topo = MinimalTopo()
     
     switch = None
-    if switches == 'OVS':
+    if switches == 'OVSSwitch':
         switch = partial( OVSSwitch, protocols='OpenFlow13' )
-    elif switches == 'OVSK':
+    elif switches == 'OVSKernelSwitch':
         switch = partial( OVSSwitch, protocols='OpenFlow13' )
 
         
