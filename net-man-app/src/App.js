@@ -6,7 +6,7 @@ import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import Footer from './components/Footer/footer'
 import NetNavbar from './components/NetNavbar/netNavbar';
@@ -25,9 +25,9 @@ class App extends Component {
         this.checkNetworkStatus();
     }
 
-    componentDidUpdate() {
-        this.checkNetworkStatus();
-    }
+    // componentDidUpdate() {
+    //      this.checkNetworkStatus();
+    // }
 
     checkNetworkStatus = () => {
         networkApi.networkExists()
@@ -41,7 +41,11 @@ class App extends Component {
     }
 
     networkStateHandler = () => {
-        this.setState( (prevState, props) => { return { networkCreated: !prevState.networkCreated }} );
+		this.setState(
+			produce(draft => {
+				draft.networkCreated = !draft.networkCreated;
+			})
+		);
     }
 
     withoutNetRoutes = () => {
@@ -52,6 +56,13 @@ class App extends Component {
 					exact
 					render={() => ( <CreateNetwork networkStateHandler={this.networkStateHandler}/> )}
 				/>
+
+
+				<Route
+					path={ ["/delete_network"] }
+					exact
+					render={() => ( <DeleteNetwork networkStateHandler={this.networkStateHandler}/> )}
+                />
 
 				<Redirect to="/create_network" />
 			</Switch>
@@ -98,10 +109,7 @@ class App extends Component {
                         }
 
                     </Container>
-                    {/* <h2>Welcome to ssss</h2>
-                    <p className="App-intro">
-                        To get started, edit <code>src/App.js</code> and save to reload.
-                    </p> */}
+            
                 </div>
                 <Footer/>
             </div>
@@ -111,4 +119,4 @@ class App extends Component {
 
 }
 
-export default App;
+export default withRouter(App);

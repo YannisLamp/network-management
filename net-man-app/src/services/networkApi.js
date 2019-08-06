@@ -7,20 +7,7 @@ export const networkApi = {
     networkExists
 };
 
-function createNetwork(ip, port, topologyType, switchType,
-        nodesPerSwitch, switches, mac, defaultTopo) {
-    
-    // JSON for API
-    const jsonRequest = {
-        ip,
-        port,
-        topologyType,
-        switchType,
-        nodesPerSwitch,
-        switches,
-        mac,
-        defaultTopo
-    }
+function createNetwork(jsonRequest) {
 
     return axios.post('/network', jsonRequest)
         .then(
@@ -39,6 +26,7 @@ function deleteNetwork() {
         .then(
             response => {
                 console.log(response.headers);
+                return response.data;
             },
             error => {
                 console.log('Error in network deletion');
