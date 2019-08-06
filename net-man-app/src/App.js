@@ -17,7 +17,7 @@ class App extends Component {
 
 
     state = {
-        networkCreated: false
+        networkCreated: true
     }
 
     networkStateHandler = () => {
@@ -96,10 +96,10 @@ class App extends Component {
                         }
 
                     </Container>
-                    <h2>Welcome to ssss</h2>
+                    {/* <h2>Welcome to ssss</h2>
                     <p className="App-intro">
                         To get started, edit <code>src/App.js</code> and save to reload.
-                    </p>
+                    </p> */}
                 </div>
                 <Footer/>
             </div>

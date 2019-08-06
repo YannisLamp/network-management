@@ -7,13 +7,14 @@ export default function Footer(props) {
 
     return (
         <div className='FooterRoot'>
+            <hr className="my-2" />
             <div
                 className='FooterText'
                 variant="body1"
             >
                 &copy; 
             </div>
-            <div className="subtitle2">
+            <div className="FooterSubtitle">
                 Footer
             </div>
         </div>

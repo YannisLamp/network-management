@@ -1,11 +1,14 @@
 .FooterRoot {
     padding: p-2;
     text-align: 'center';
-    height: 8vh;
 }
 
-
 .FooterText {
+    margin-top: p-2;
+    margin-bottom: p-1;
+}
+
+.FooterSubtitle {
     margin-top: p-2;
     margin-bottom: p-1;
 }
