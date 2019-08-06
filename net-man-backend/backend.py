@@ -3,7 +3,8 @@
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 from mininet.net import Mininet
-from mininet.topo import Topo, 
+from mininet.topo import Topo, LinearTopo, SingleSwitchTopo
+from mininet.topolib import TreeTopo
 from mininet.node import RemoteController, OVSSwitch, OVSKernelSwitch
 from functools import partial
 
@@ -11,7 +12,7 @@ from functools import partial
 import os
 import subprocess
 from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -80,13 +81,20 @@ def runMinimalTopo():
 
 
 def createNet(controllerIp, controllerPort, topologyType, 
-        switchType, nodes, switches, mac, defaultTopo):
+        switchType, nodesPerSwitch, switches, mac, defaultTopo):
     "Bootstrap a Mininet network using the Minimal Topology"
  
     # Create an instance of our topology
     topo = MinimalTopo()
-    
-    switch = None
+
+    if topologyType == 'linear':
+        topo = LinearTopo(switches, nodesPerSwitch)
+    elif topologyType == 'tree':
+        topo = TreeTopo(switches, nodesPerSwitch)
+    elif topologyType == 'single':
+        topo = SingleSwitchTopo(nodesPerSwitch)
+
+
     if switches == 'OVSSwitch':
         switch = partial( OVSSwitch, protocols='OpenFlow13' )
     elif switches == 'OVSKernelSwitch':
@@ -97,7 +105,7 @@ def createNet(controllerIp, controllerPort, topologyType,
     # a remote controller.
     net = Mininet(
         topo=topo,
-        controller=lambda name: RemoteController( name, ip=controllerIp ),
+        controller=lambda name: RemoteController( name, ip=controllerIp, port=controllerPort ),
         switch=switch,
         autoSetMacs=mac,
     )
@@ -123,15 +131,17 @@ def index():
 
 
 @app.route('/network', methods=['POST'])
-def init_mn():
+def create_network():
     # Get request data
     ip = request.json.get('ip')
     port = request.json.get('port')
+    mac = request.json.get('mac')
+
     topologyType = request.json.get('topologyType')
     switchType = request.json.get('switchType')
-    nodes = request.json.get('nodes')
-    switches = request.json.get('switches')
-    mac = request.json.get('mac')
+    switches = int( request.json.get('switches') )
+    nodesPerSwitch = int( request.json.get('nodesPerSwitch') )
+    
     defaultTopo = request.json.get('defaultTopo')
     
     # Create network
@@ -143,10 +153,17 @@ def init_mn():
 
 
 @app.route('/network', methods=['DELETE'])
-def stop_mn():
+def delte_network():
     gnet.stop()
     return jsonify({'msg': 'Network Stopped'})
 
+
+@app.route('/network', methods=['GET'])
+def network_exists():
+    if gnet == None:
+        return jsonify({'status': 'down'})
+    else:
+        return jsonify({'status': 'up'})
 
 if __name__ == '__main__':
     app.run(debug=True)
