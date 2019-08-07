@@ -11,11 +11,27 @@ import { networkApi } from '../../services/networkApi';
 const formInputNames = {
     tree: {
         switchNum: "Depth",
-        nodesPerSwitch: "Fanout"
+        nodesPerSwitch: "Fanout",
+        defaults : {
+            ip: "localhost",
+            port: "default",
+            switchType: "OVSSwitch",
+            mac: true,
+            switchNum: 4,
+            nodesPerSwitch: 2, 
+        }
     },
     linear: {
         switchNum: "Number of Switches",
-        nodesPerSwitch: "Nodes per Switch"
+        nodesPerSwitch: "Nodes per Switch",
+        defaults : {
+            ip: "localhost",
+            port: "default",
+            switchType: "OVSSwitch",
+            mac: true,
+            nodesPerSwitch: 5,
+            switchNum: 4,
+        }
     }
 }
 
@@ -24,11 +40,11 @@ class CreateNetwork extends Component {
     state = {
         formElems:{
             ip: {
-                value: "localhost"
+                value: ""
             },
 
             port: {
-                value: "default"
+                value: ""
             },
 
             topoType: {
@@ -40,26 +56,38 @@ class CreateNetwork extends Component {
             },
 
             nodesPerSwitch: {
-                value: 5
+                value: ""
             },
 
             switchNum: {
-                value: 8
+                value: ""
             },
 
             mac: {
                 value: true
-            },
-
-            // defaultTope: {
-            //     value: false
-            // }
-
+            }
 
         },
 
         isLoading: false,
 
+    }
+
+    setDefaultInputsValues = (event) => {
+        event.preventDefault();
+        const topoType = this.state.formElems.topoType.value;
+        this.setState(
+            produce(draft => {
+                draft.formElems.ip.value = formInputNames[topoType].defaults.ip;
+                draft.formElems.port.value = formInputNames[topoType].defaults.port;
+
+                draft.formElems.switchType.value = formInputNames[topoType].defaults.switchType;
+                draft.formElems.mac.value = formInputNames[topoType].defaults.mac;
+
+                draft.formElems.switchNum.value = formInputNames[topoType].defaults.switchNum;
+                draft.formElems.nodesPerSwitch.value = formInputNames[topoType].defaults.nodesPerSwitch;
+            })
+        );
     }
 
     inputChangedHandler = (event, formElemId) => {
@@ -130,7 +158,7 @@ class CreateNetwork extends Component {
                             <Col sm={5}>
                                 <FormGroup>
                                     <Label for="ip"  className="font-weight-bold small float-left">Controller IP</Label>
-                                    <Input type="text" id="ip" value={this.state.formElems.ip.value} onChange={ (e) => this.inputChangedHandler(e, "ip") }/>
+                                    <Input required type="text" id="ip" value={this.state.formElems.ip.value} onChange={ (e) => this.inputChangedHandler(e, "ip") }/>
                                 </FormGroup>
                             </Col>
 
@@ -139,7 +167,7 @@ class CreateNetwork extends Component {
                             <Col sm={5}>
                                 <FormGroup>
                                     <Label for="port"  className="font-weight-bold small float-left">Port Number</Label>
-                                    <Input type="text" id="port" value={this.state.formElems.port.value} onChange={ (e) => this.inputChangedHandler(e, "port")}/>
+                                    <Input required type="text" id="port" value={this.state.formElems.port.value} onChange={ (e) => this.inputChangedHandler(e, "port")}/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -173,7 +201,7 @@ class CreateNetwork extends Component {
                             <Col sm={5}>
                                 <FormGroup>
                                     <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].nodesPerSwitch}</Label>
-                                    <Input type="number" id="nodesPerSwitch" value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
+                                    <Input required type="number" id="nodesPerSwitch"  value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
                                 </FormGroup>
                             </Col>
                         
@@ -182,7 +210,7 @@ class CreateNetwork extends Component {
                             <Col sm={5}>
                                 <FormGroup>
                                     <Label for="switchNum"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].switchNum}</Label>
-                                    <Input type="number" id="switchNum" value={this.state.formElems.switchNum.value} onChange={ (e) => this.inputChangedHandler(e, "switchNum") }/>
+                                    <Input  required type="number" id="switchNum" value={this.state.formElems.switchNum.value} onChange={ (e) => this.inputChangedHandler(e, "switchNum") }/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -205,8 +233,8 @@ class CreateNetwork extends Component {
                                 </Col>
                                 :
                                 <Col sm={12} className="d-flex justify-content-end">
-                                    <Button size="sm" color="secondary" className="font-weight-bold mr-4">
-                                        Create Default Network
+                                    <Button size="sm" color="secondary" className="font-weight-bold mr-4" onClick={this.setDefaultInputsValues}>
+                                        Default Values
                                     </Button>
 
                                     <Button size="sm" color="primary" className="font-weight-bold">
