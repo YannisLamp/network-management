@@ -7,6 +7,18 @@ import produce from 'immer';
 import styles from './createNetwork.module.css';
 import { networkApi } from '../../services/networkApi';
 
+
+const formInputNames = {
+    tree: {
+        switchNum: "Depth",
+        nodesPerSwitch: "Fanout"
+    },
+    linear: {
+        switchNum: "Number of Switches",
+        nodesPerSwitch: "Nodes per Switch"
+    }
+}
+
 class CreateNetwork extends Component {
 
     state = {
@@ -31,7 +43,7 @@ class CreateNetwork extends Component {
                 value: 5
             },
 
-            switches: {
+            switchNum: {
                 value: 8
             },
 
@@ -93,12 +105,7 @@ class CreateNetwork extends Component {
 
         networkApi.createNetwork(formData)
             .then(data => {
-                //alert(data.msg)
-                // this.setState(
-                //     produce(draft => {
-                //         draft.isLoading = false;
-                //     })
-                // );
+        
                 this.props.networkStateHandler();
                 this.props.history.replace('/');      
             });
@@ -144,7 +151,7 @@ class CreateNetwork extends Component {
                                     <Input type="select" value={this.state.formElems.topoType.value}  id="topoType" onChange={ (e) => this.inputChangedHandler(e, "topoType") }>
                                         <option value="linear">linear</option>
                                         <option value="tree">tree</option>
-                                        <option value="single">single</option>
+                                        {/* <option value="single">single</option> */}
                                     </Input>
                                 </FormGroup>
                             </Col>
@@ -165,7 +172,7 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">Number of Nodes per Switch</Label>
+                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].nodesPerSwitch}</Label>
                                     <Input type="number" id="nodesPerSwitch" value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
                                 </FormGroup>
                             </Col>
@@ -174,8 +181,8 @@ class CreateNetwork extends Component {
 
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="switches"  className="font-weight-bold small float-left">Number of Switches</Label>
-                                    <Input type="number" id="switches" value={this.state.formElems.switches.value} onChange={ (e) => this.inputChangedHandler(e, "switches") }/>
+                                    <Label for="switchNum"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].switchNum}</Label>
+                                    <Input type="number" id="switchNum" value={this.state.formElems.switchNum.value} onChange={ (e) => this.inputChangedHandler(e, "switchNum") }/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -183,8 +190,8 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={12}>
                                 <FormGroup check inline>
-                                    <Label check className="font-weight-bold small??">
-                                        <Input type="checkbox" checked={this.state.formElems.mac.value} onChange={ (e) => this.inputChangedHandler(e, "mac") } /> automatically set mac addresses
+                                    <Label check className="font-weight-bold small">
+                                        <Input type="checkbox" checked={this.state.formElems.mac.value} onChange={ (e) => this.inputChangedHandler(e, "mac") } /> Automatically set mac addresses
                                     </Label>
                                 </FormGroup>
                             </Col>
