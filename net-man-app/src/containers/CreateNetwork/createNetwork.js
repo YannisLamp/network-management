@@ -172,7 +172,7 @@ class CreateNetwork extends Component {
                         <Row form>
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType].nodesPerSwitch}</Label>
+                                    <Label for="nodesPerSwitch"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].nodesPerSwitch}</Label>
                                     <Input type="number" id="nodesPerSwitch" value={this.state.formElems.nodesPerSwitch.value} onChange={ (e) => this.inputChangedHandler(e, "nodesPerSwitch") }/>
                                 </FormGroup>
                             </Col>
@@ -181,7 +181,7 @@ class CreateNetwork extends Component {
 
                             <Col sm={5}>
                                 <FormGroup>
-                                    <Label for="switchNum"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType].nodesPerSwitch}</Label>
+                                    <Label for="switchNum"  className="font-weight-bold small float-left">{formInputNames[this.state.formElems.topoType.value].switchNum}</Label>
                                     <Input type="number" id="switchNum" value={this.state.formElems.switchNum.value} onChange={ (e) => this.inputChangedHandler(e, "switchNum") }/>
                                 </FormGroup>
                             </Col>
