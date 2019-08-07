@@ -122,7 +122,7 @@ def createNet(controllerIp, controllerPort, topoType,
  
     # Actually start the network
     net.start()
- 
+    net.pingAll()
     # Drop the user in to a CLI so user can run commands.
     #CLI( net )
     
@@ -190,10 +190,6 @@ def network_exists():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-#net.pingAll()
 
 
 
