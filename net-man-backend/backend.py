@@ -84,7 +84,7 @@ def runMinimalTopo():
 
 
 def createNet(controllerIp, controllerPort, topoType, 
-        switchType, nodesPerSwitch, switches, mac):
+        switchType, nodesPerSwitch, switchNum, mac):
     "Bootstrap a Mininet network using the Minimal Topology"
 
     # Create an instance of our topology
@@ -92,11 +92,9 @@ def createNet(controllerIp, controllerPort, topoType,
 
     topo = None
     if topoType == 'linear':
-        topo = LinearTopo(k=switches, n=nodesPerSwitch)
+        topo = LinearTopo(k=switchNum, n=nodesPerSwitch)
     elif topoType == 'tree':
-        topo = TreeTopo(depth=switches, fanout=nodesPerSwitch)
-    elif topoType == 'single':
-        topo = SingleSwitchTopo(k=nodesPerSwitch)
+        topo = TreeTopo(depth=switchNum, fanout=nodesPerSwitch)
 
     switch = None
     if switchType == 'OVSSwitch':
@@ -123,6 +121,7 @@ def createNet(controllerIp, controllerPort, topoType,
     # Actually start the network
     net.start()
     net.pingAll()
+ 
     # Drop the user in to a CLI so user can run commands.
     #CLI( net )
     
@@ -152,7 +151,7 @@ def create_network():
 
     topoType = request.json.get('topoType')
     switchType = request.json.get('switchType')
-    switches = int( request.json.get('switches') )
+    switchNum = int( request.json.get('switchNum') )
     nodesPerSwitch = int( request.json.get('nodesPerSwitch') )
     
     defaultTopo = request.json.get('defaultTopo')
@@ -161,7 +160,7 @@ def create_network():
     #runMinimalTopo()
 
     createNet(ip, port, topoType, switchType, nodesPerSwitch, 
-            switches, mac)
+            switchNum, mac)
 
     return jsonify({'msg': 'Network Created'})
 
