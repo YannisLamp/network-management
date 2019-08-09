@@ -1,4 +1,4 @@
-import axios from './axiosConfig';
+import { pythonServerInstance as axios } from './axiosConfig';
 import handleError from './handleError';
 
 export const networkApi = {

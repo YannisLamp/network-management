@@ -6,6 +6,8 @@ import { Jumbotron } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 import styles from './applicationMenu.module.css';
+import { openDaylightApi } from '../../services/openDaylightApi';
+
 
 class CreateNetwork extends Component {
     
@@ -15,13 +17,23 @@ class CreateNetwork extends Component {
 
     }
 
+    testODLAPI = () => {
+
+        openDaylightApi.getNodes()
+            .then(data => {
+                alert("OPD Data received !");
+                console.log(data);     
+            });
+
+    }
+
     render() {
         return (
             <Container fluid className={styles.MenuContainer}>
                 <Row>
                     <Col sm={6}>
-                        <Link to="/" className={styles.MenuLink}>
-                            <Jumbotron>
+                        {/* <Link to="/" className={styles.MenuLink}> */}
+                            <Jumbotron onClick={this.testODLAPI}>
                                 <h1 className="display-5">Application 1</h1>
                                 <p 
                                     className="lead"
@@ -35,7 +47,7 @@ class CreateNetwork extends Component {
                                     out within the larger container.
                                 </p>
                             </Jumbotron>
-                        </Link>
+                        {/* </Link> */}
                     </Col>
 
                     {/* <Col sm={1}/> */}
