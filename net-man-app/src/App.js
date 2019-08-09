@@ -5,6 +5,7 @@ import CreateNetwork from './containers/CreateNetwork/createNetwork';
 import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
+import StatisticsApp from './containers/StatisticsApp/statisticsApp';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -18,7 +19,7 @@ import produce from 'immer';
 class App extends Component {
 
     state = {
-        networkCreated: null
+        networkCreated: localStorage.getItem('networkCreated') ? localStorage.getItem('networkCreated') : false,
     }
 
     componentDidMount() {
@@ -34,9 +35,11 @@ class App extends Component {
         .then(data => {
             if (data)
             {
+                const createdValue = data.status === "up";
+                localStorage.setItem('networkCreated', createdValue)
                 this.setState(
                     produce(draft => {
-                        draft.networkCreated = data.status === "up";
+                        draft.networkCreated = createdValue;
                     })
                 );
             }
@@ -80,7 +83,13 @@ class App extends Component {
 				<Route
 					path={ ["/"] }
 					exact
-					render={() => ( <ApplicationMenu />)} /> )}
+					render={() => ( <ApplicationMenu />)}
+				/>
+
+                <Route
+					path={ ["/statistics"] }
+					exact
+					render={() => ( <StatisticsApp />)}
 				/>
 
 				<Route
@@ -114,7 +123,7 @@ class App extends Component {
                     </Container>
             
                 </div>
-                <Footer/>
+                {/* <Footer/> */}
             </div>
         );
     }

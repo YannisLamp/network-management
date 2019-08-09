@@ -60,10 +60,10 @@ def createNet(controllerIp, controllerPort, topoType,
  
     # Actually start the network
     net.start()
-    net.pingAll()
+    # net.pingAll()
  
     # Drop the user in to a CLI so user can run commands.
-    #CLI( net )
+    CLI( net )
     
     # Export local net
     global gnet

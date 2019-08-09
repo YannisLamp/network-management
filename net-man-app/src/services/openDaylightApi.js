@@ -50,8 +50,6 @@ function getTopology() {
     return axios.get('/restconf/operational/network-topology:network-topology')
         .then(
             response => {
-                console.log('openDaylight response:');
-                console.log(response);
                 return response.data;
             },
             error => {

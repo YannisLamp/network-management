@@ -12,8 +12,9 @@
 
 .content {
     padding-top: 15vh;
-    padding-left: 8vw  !important;
-    padding-right: 8vw !important;
+    padding-left: 4vw  !important;
+    padding-right: 4vw !important;
+    /* padding-bottom: 4vw !important; */
 
 }
 
