@@ -15,6 +15,8 @@ import subprocess
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+from gevent.pywsgi import WSGIServer
+
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -122,7 +124,9 @@ def network_exists():
         return jsonify({'status': 'up'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
 
 
 

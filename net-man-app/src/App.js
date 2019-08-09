@@ -32,11 +32,14 @@ class App extends Component {
     checkNetworkStatus = () => {
         networkApi.networkExists()
         .then(data => {
-            this.setState(
-                produce(draft => {
-                    draft.networkCreated = data.status === "up";
-                })
-            );
+            if (data)
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.networkCreated = data.status === "up";
+                    })
+                );
+            }
         });
     }
 
