@@ -229,7 +229,8 @@ class CreateNetwork extends Component {
 
                             { this.state.isLoading ?  
                                 <Col sm={12} style={{ width: '2rem', height: '2rem' }} className="d-flex justify-content-end">
-                                    <Spinner color="primary" />
+                                    <Spinner color="primary" />  
+                                    <span className="font-italic text-muted mt-1 ml-2"> Please wait ...</span>
                                 </Col>
                                 :
                                 <Col sm={12} className="d-flex justify-content-end">

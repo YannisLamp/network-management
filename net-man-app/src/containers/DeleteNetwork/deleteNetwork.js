@@ -15,11 +15,18 @@ class DeleteNetwork extends Component {
         return (
             <>
             { this.state.isLoading ? 
-                <Row className="d-flex justify-content-center align-items-center h-100">
-                    <Col sm="12" style={{ width: '50rem', height: '50rem' }} >
-                        <Spinner color="primary" />
-                    </Col>
-                </Row>
+                <div className="d-flex d-flex-row align-items-center justify-content-center h-100">
+                    <div className="d-flex-column justify-content-center mt-5">
+                        <div className="">
+                            <Spinner style={{ width: '10rem', height: '10rem' }} color="primary" />
+                        </div>
+                        <div className="font-italic text-muted mt-3 justify-content-center">
+                            <div>
+                            Please wait ...
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 : null
             }
             </>
