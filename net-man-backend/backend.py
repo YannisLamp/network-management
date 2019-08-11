@@ -87,7 +87,7 @@ def create_network():
     if mac == 'true':
         mac = True
     elif mac == 'false':
-        mac == False
+        mac = False
 
     topoType = request.json.get('topoType')
     switchType = request.json.get('switchType')
