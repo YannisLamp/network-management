@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Table } from 'reactstrap';
+import { Container, Row, Col, Table, Spinner } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 //import styles from './statisticsApp.module.css';
@@ -9,57 +9,84 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 import pcSVG from '../../assets/svg/pcIcon.svg';
 import switchSVG from '../../assets/svg/hub.svg';
+import { getWidth, getHeight } from '../../utilities/utilities';
 
 
 class StatisticsApp extends Component {
 
     state = {
-        isLoading: true,
-        statistics: null,
         selectedNodeId: null,
         selectedLinkId: null,
-        linksInfo: null,
-        nodesInfo: null
+        graphNodes: null,
+        graphLinks: null,
+        nodesInfo: null,
+        linksInfo: null
     }
 
     componentDidMount() {
+        alert("did mount");
+        if (this.state.graphNodes)
+        { // graph data have already been retrieved
+            alert("already retrieved")
+            return;
+        }
+
+        alert("go to retrieve data")
+
+
         openDaylightApi.getTopology()
             .then(data => {
                 console.log('openDaylight data:');
                 console.log(data['network-topology'].topology);
-                this.setState(
-                    produce(draft => {
-                        draft.statistics = data['network-topology'].topology;
-                        // draft.isLoading = false;
-                    })
-                );
-
-                this.setGraphData();
+                // this.setState(
+                //     produce(draft => {
+                //         draft.statistics = data['network-topology'].topology;
+                //         // draft.isLoading = false;
+                //     })
+                // );
+alert("ddddddd")
+                this.setGraphData(data['network-topology'].topology);
             });
     }
 
-    setGraphData = () => {
+    setGraphData = (statistics) => {
         let retNodes = [];
         let retLinks = [];
+        let retNodesInfo = [];
 
         console.log("------>MAKING DATA<-----------");
 
         // Can handle many topologies
-        for (let topology of this.state.statistics) {
+        for (let topology of statistics) {
             // Nodes
+            alert("tttt")
             for (let node of topology.node) {
+                alert("dn paizei me poiothta")
                 // Check if node is a swicth or a host
                 // Termination points have themselves as a termination point
                 console.log(node);
                 console.log("------------");
+
+                let nodeInfo = {};
+                nodeInfo[node['node-id']] = {};
+                nodeInfo[node['node-id']]["id"] = node['node-id'];
+
                 let color = 'green';
                 let svgIcon = pcSVG;
-                let switchNames = new Set(); ;
-                if (node['termination-point'][0]['tp-id'] !== node['node-id']) {
+                let switchNames = new Set(); 
+                if (node['termination-point'][0]['tp-id'] !== node['node-id']) 
+                {
                     color = 'red';
                     svgIcon = switchSVG;
+                    nodeInfo[node['node-id']]["type"] = "switch";
                     // Save switch names
                     //switchNames.add(node['node-id']);
+                }
+                else
+                {
+                    nodeInfo[node['node-id']]["type"] = "host";
+                    nodeInfo[node['node-id']][0]["ip"] = node["host-tracker-service:addresses"].ip;
+                    nodeInfo[node['node-id']][0]["mac"] = node["host-tracker-service:addresses"].mac;
                 }
 
                 const currNode = {
@@ -68,9 +95,21 @@ class StatisticsApp extends Component {
                     svg: svgIcon,
                 }
                 retNodes.push(currNode);
+                retNodesInfo.push(nodeInfo);
+
+                // this.setState(
+                //     produce(draft => {
+                //         draft.nodesInfo.push(nodeInfo);
+                //     })
+                // );
             }
+            alert("oolo malakies")
             // Then links
             for (let link of topology.link) {
+                alert("edw")
+                console.log(link);
+                console.log("=============");
+
                 const currLink = {
                     source: link.source['source-node'],
                     target: link.destination['dest-node'], 
@@ -79,12 +118,14 @@ class StatisticsApp extends Component {
             }
         } 
 
+        alert("rrrrr")
 
         this.setState(
             produce(draft => {
-                draft.nodesInfo = retNodes;
-                draft.linksInfo = retLinks;
-                draft.isLoading = false;
+                draft.graphNodes = retNodes;
+                draft.graphLinks = retLinks;
+                draft.nodesInfo = retNodesInfo;
+                alert("skssj");
             })
         );
     }
@@ -115,81 +156,102 @@ class StatisticsApp extends Component {
 
     render () {
 
-        // alert("rendering app")
+        console.log("inside statistics app rendering");
+        console.log("node info: ", this.state.nodesInfo);
 
+        // alert("rendering app")
+        const graphWidth = getWidth() * 0.6;
+        const graphHeight = getHeight() * 0.7;
+
+        if (!this.state.graphNodes)
+        {
+            alert("not going to render graph")
+        }
+        else
+        {
+            alert("going to render graph")
+
+        }
+
+
+        // console.log("graph Width: ", graphWidth);
+        // console.log("graph Height", graphHeight);
 
         return (
-            <Container fluid>
-                {this.state.isLoading ?
-                    "is loading"
+            <div>
+                {!this.state.graphNodes ?
+                    <p>is loading</p>
                 :
 
                 <>
-                <Row className="border h-75">
-                    <Col sm="9" className="border">
+                <div className="d-flex d-flex-row border">
+                    <div className="border">
                         <TopologyGraph
                             nodeClickedHandler={this.nodeClickedHandler}
                             linkClickedHandler={this.linkClickedHandler}
                             graphClickedHandler={this.graphClickedHandler}
-                            nodes={this.state.nodesInfo}
-                            links={this.state.linksInfo}
+                            nodes={this.state.graphNodes}
+                            links={this.state.graphLinks}
+                            graphWidth={graphWidth}
+                            graphHeight={graphHeight}
                        />
-                    </Col>
+                    </div>
 
-                    <Col sm="3" className="border">
-                        <Table responsive>
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                                <td>Table cell</td>
-                            </tr>
-                            </tbody>
-                        </Table>
+                    <div className="border w-100">
+                        <Container fluid>
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    Type
+                                </Col>
+
+                                <Col sm="6">
+                                    Node
+                                </Col>
+                            </Row>
+
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    Id
+                                </Col>
+
+                                <Col sm="6">
+                                    00.00.00.08
+                                </Col>
+                            </Row>
+
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    Name
+                                </Col>
+
+                                <Col sm="6">
+                                    None
+                                </Col>
+                            </Row>
+
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    Connectors #
+                                </Col>
+
+                                <Col sm="6">
+                                    4
+                                </Col>
+                            </Row>
+
+
                         
-                    </Col>
-                </Row>
+                        </Container>
+                    </div>
+                </div>
 
-                <Row className="border">
-wswswswswsw
-                </Row>
+                <div className="d-flex d-flex-row border">
+                    wswswswswsw
+                </div>
                 </>
                 }
 
-            </Container>
+            </div>
         )
 
     }
