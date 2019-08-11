@@ -33,7 +33,7 @@ class CreateNetwork extends Component {
                 <Row>
                     <Col sm={6}>
                         <Link to="/statistics" className={styles.MenuLink}>
-                            <Jumbotron onClick={this.testODLAPI}>
+                            <Jumbotron>
                                 <h1 className="display-5">Application 1</h1>
                                 <p 
                                     className="lead"
@@ -54,6 +54,7 @@ class CreateNetwork extends Component {
 
                     <Col sm={6}>
                     <Link to="/topology" className={styles.MenuLink}>
+                        {/* <Jumbotron onClick={this.testODLAPI}> */}   
                         <Jumbotron>
                             <h1 className="display-5">Application 2</h1>
                             <p 

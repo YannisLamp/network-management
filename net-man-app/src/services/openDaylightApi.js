@@ -18,7 +18,7 @@ function getNodes() {
     return axios.get('/restconf/operational/opendaylight-inventory:nodes')
         .then(
             response => {
-                console.log('openDaylight response:');
+                console.log('openDaylight NODES response:');
                 console.log(response);
                 return response.data;
             },
