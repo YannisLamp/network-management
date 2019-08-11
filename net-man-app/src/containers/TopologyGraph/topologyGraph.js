@@ -7,26 +7,7 @@ import styles from './topologyGraph.module.css';
 import { Graph } from 'react-d3-graph';
 
 
-const myConfig = {
-    nodeHighlightBehavior: true,
-    node: {
-        color: 'lightgreen',
-        size: 350,
-        highlightStrokeColor: 'blue'
-    },
-    link: {
-        highlightColor: 'lightblue'
-    },
-    //width: 1550, //props
-    width: 1000,
-    height: 800,
-    d3: {
-        gravity: -150,
-        //linkLength: 100,
-        //linkLength: (d) => 100,
-        //alphaTarget: 1,
-    }
-};
+
 
 
 class TopologyGraph extends Component {
@@ -66,6 +47,30 @@ class TopologyGraph extends Component {
             nodes: this.props.nodes,
             links: this.props.links
         }
+
+        console.log("graph Width: ", this.props.graphWidth);
+        console.log("graph Height", this.props.graphHeight);
+
+        const myConfig = {
+            nodeHighlightBehavior: true,
+            node: {
+                color: 'lightgreen',
+                size: 350,
+                highlightStrokeColor: 'blue'
+            },
+            link: {
+                highlightColor: 'lightblue'
+            },
+            //width: 1550, //props
+            width: this.props.graphWidth,
+            height: this.props.graphHeight,
+            d3: {
+                gravity: -150,
+                //linkLength: 100,
+                //linkLength: (d) => 100,
+                //alphaTarget: 1,
+            }
+        };
         
         return (   
             <Graph
