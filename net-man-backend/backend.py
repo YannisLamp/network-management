@@ -23,7 +23,7 @@ cors = CORS(app)
 gnet = None
 
 
-def createNet(controllerIp, controllerPort, topoType, 
+def createNet(controllerIp, controllerPort, topoType,
         switchType, nodesPerSwitch, switchNum, mac):
     "Bootstrap a Mininet network using the Minimal Topology"
 
@@ -57,14 +57,14 @@ def createNet(controllerIp, controllerPort, topoType,
         switch=switch,
         autoSetMacs=mac,
     )
- 
+
     # Actually start the network
     net.start()
     net.pingAll()
- 
+
     # Drop the user in to a CLI so user can run commands.
-    # CLI( net )
-    
+    #CLI( net )
+
     # Export local net
     global gnet
     gnet = net
@@ -95,7 +95,7 @@ def create_network():
     nodesPerSwitch = int( request.json.get('nodesPerSwitch') )
 
     # Create Network
-    createNet(ip, port, topoType, switchType, nodesPerSwitch, 
+    createNet(ip, port, topoType, switchType, nodesPerSwitch,
             switchNum, mac)
 
     return jsonify({'msg': 'Network Created'})
@@ -123,13 +123,29 @@ def network_exists():
     else:
         return jsonify({'status': 'up'})
 
+
+
+
+
+@app.route('/shortestpath', methods=['GET'])
+def find_shortest_path():
+    if gnet == None:
+        return jsonify({'status': 'down'})
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     # app.run(debug=True)
     http_server = WSGIServer(('', 5000), app)
     http_server.serve_forever()
-
-
-
-
-
-
