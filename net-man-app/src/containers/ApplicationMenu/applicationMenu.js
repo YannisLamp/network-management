@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 
 import styles from './applicationMenu.module.css';
 import { openDaylightApi } from '../../services/openDaylightApi';
+import { networkApi } from '../../services/networkApi';
+import { getODLnodes, getODLlinks } from '../../utilities/ODL_utilities';
 
 
 class CreateNetwork extends Component {
@@ -25,6 +27,48 @@ class CreateNetwork extends Component {
                 console.log(data);     
             });
 
+    }
+
+    getODLinfo  = () => {
+        openDaylightApi.getTopology()
+        .then(data => {
+            console.log('openDaylight data:');
+            console.log(data['network-topology'].topology);
+            
+            const topologies = data['network-topology'].topology;
+
+            const nodes = getODLnodes(topologies);
+            const links = getODLlinks(topologies);
+
+            const node_source = nodes[0]; 
+            const node_dest = nodes[1];
+
+            console.log("nodes: ", nodes);
+            console.log("--------------");
+            console.log("links: ", links);
+            console.log("--------------");
+            console.log("node source: ", node_source);
+            console.log("node dest: ", node_dest);
+            console.log("--------------");
+
+            const requestData = {
+                nodes: nodes,
+                links: links,
+                node_source: node_source,
+                node_dest: node_dest
+            }
+
+            console.log(requestData);
+            // return;
+
+            networkApi.getShortestPath(requestData)
+            .then(data => {
+                alert("Shortest path calculated");
+                console.log("shortest path: ", data.shortest_path)    
+            });
+
+            
+        });
     }
 
     render() {
@@ -53,9 +97,9 @@ class CreateNetwork extends Component {
                     {/* <Col sm={1}/> */}
 
                     <Col sm={6}>
-                    <Link to="/topology" className={styles.MenuLink}>
-                        {/* <Jumbotron onClick={this.testODLAPI}> */}   
-                        <Jumbotron>
+                    {/* <Link to="/topology" className={styles.MenuLink}> */}
+                        <Jumbotron onClick={this.getODLinfo}>   
+                        {/* <Jumbotron> */}
                             <h1 className="display-5">Application 2</h1>
                             <p 
                                 className="lead"
@@ -69,7 +113,7 @@ class CreateNetwork extends Component {
                                 out within the larger container.
                             </p>
                         </Jumbotron>
-                    </Link>
+                    {/* </Link> */}
                     </Col>
                 </Row>
                 {/* <Row>

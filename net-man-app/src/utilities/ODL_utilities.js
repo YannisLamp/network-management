@@ -14,7 +14,7 @@ export const getODLnodes = (topologies) => {
 export const getODLlinks = (topologies) => {
     const topo = topologies[0];
     let retLinks = [];
-    for (let link of topo.links)
+    for (let link of topo.link)
     {
         retLinks.push([link.source['source-node'], link.destination['dest-node']]);
     }

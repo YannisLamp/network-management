@@ -4,7 +4,8 @@ import handleError from './handleError';
 export const networkApi = {
     createNetwork,
     deleteNetwork,
-    networkExists
+    networkExists,
+    getShortestPath
 };
 
 function createNetwork(jsonRequest) {
@@ -47,4 +48,17 @@ function networkExists() {
                 handleError(error)
             }
     );
+}
+
+function getShortestPath(jsonRequest) {
+    return axios.post('/shortest_path', jsonRequest)
+        .then(
+            response => {
+                return response.data;
+            },
+            error => {
+                console.log('Error in network creation');
+                handleError(error)
+            }
+        );
 }
