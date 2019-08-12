@@ -24,27 +24,20 @@ class StatisticsApp extends Component {
     }
 
     componentDidMount() {
-        //alert("did mount");
+        // alert("did mount");
         if (this.state.graphNodes)
         { // graph data have already been retrieved
-            alert("already retrieved")
+            // alert("already retrieved")
             return;
         }
 
-        //alert("go to retrieve data")
-
+        // alert("go to retrieve data")
 
         openDaylightApi.getTopology()
             .then(data => {
                 console.log('openDaylight data:');
                 console.log(data['network-topology'].topology);
-                // this.setState(
-                //     produce(draft => {
-                //         draft.statistics = data['network-topology'].topology;
-                //         // draft.isLoading = false;
-                //     })
-                // );
-//alert("ddddddd")
+                
                 this.setGraphData(data['network-topology'].topology);
             });
     }
@@ -52,24 +45,22 @@ class StatisticsApp extends Component {
     setGraphData = (statistics) => {
         let retNodes = [];
         let retLinks = [];
-        let retNodesInfo = [];
+        let retNodesInfo = {};
 
         console.log("------>MAKING DATA<-----------");
 
         // Can handle many topologies
         for (let topology of statistics) {
             // Nodes
-            //alert("tttt")
             for (let node of topology.node) {
-                //alert("dn paizei me poiothta");
                 // Check if node is a swicth or a host
                 // Termination points have themselves as a termination point
                 console.log(node);
                 console.log("------------");
 
-                let nodeInfo = {};
-                nodeInfo[node['node-id']] = {};
-                nodeInfo[node['node-id']]["id"] = node['node-id'];
+                // let nodeInfo = {};
+                retNodesInfo[node['node-id']] = {};
+                retNodesInfo[node['node-id']]["id"] = node['node-id'];
 
                 let color = 'green';
                 let svgIcon = pcSVG;
@@ -78,20 +69,20 @@ class StatisticsApp extends Component {
                 {
                     color = 'red';
                     svgIcon = switchSVG;
-                    nodeInfo[node['node-id']]["type"] = "switch";
+                    retNodesInfo[node['node-id']]["type"] = "switch";
                     // Save switch names
                     //switchNames.add(node['node-id']);
                 }
                 else
                 {
                     // To node["host-tracker-service:addresses"] einai array, pros to apron to evala na fernei to [0]
-                    nodeInfo[node['node-id']]["type"] = "host";
+                    retNodesInfo[node['node-id']]["type"] = "host";
                     // nodeInfo[node['node-id']][0]["ip"] = node["host-tracker-service:addresses"].ip;
                     // nodeInfo[node['node-id']][0]["mac"] = node["host-tracker-service:addresses"].mac;
                     // Pio panw to [0] gt? Kanonika afou exei polla adresses prepei ontws na to kanoume etsi, 
                     // mesa se for kai arxikopoiimeno omws
-                    nodeInfo[node['node-id']]["ip"] = node["host-tracker-service:addresses"][0].ip;
-                    nodeInfo[node['node-id']]["mac"] = node["host-tracker-service:addresses"][0].mac;
+                    retNodesInfo[node['node-id']]["ip"] = node["host-tracker-service:addresses"][0].ip;
+                    retNodesInfo[node['node-id']]["mac"] = node["host-tracker-service:addresses"][0].mac;
                 }
 
                 const currNode = {
@@ -100,18 +91,10 @@ class StatisticsApp extends Component {
                     svg: svgIcon,
                 }
                 retNodes.push(currNode);
-                retNodesInfo.push(nodeInfo);
-
-                // this.setState(
-                //     produce(draft => {
-                //         draft.nodesInfo.push(nodeInfo);
-                //     })
-                // );
             }
-            alert("oolo malakies")
+
             // Then links
             for (let link of topology.link) {
-                //alert("edw")
                 console.log(link);
                 console.log("=============");
 
@@ -123,21 +106,28 @@ class StatisticsApp extends Component {
             }
         } 
 
-        //alert("rrrrr");
-
         this.setState(
             produce(draft => {
                 draft.graphNodes = retNodes;
                 draft.graphLinks = retLinks;
                 draft.nodesInfo = retNodesInfo;
-                //alert("skssj");
             })
         );
     }
 
 
     nodeClickedHandler = (nodeId) => {
-        alert(`node clicked ${nodeId}`);
+        // alert(`node clicked ${nodeId}`);
+        // console.log("=========================")
+
+        // console.log(`node ${nodeId} info: `, this.state.nodesInfo[nodeId])
+       
+        // console.log("=========================")
+
+        // console.log(this.state.nodesInfo);
+
+        // console.log("=========================")
+        
         this.setState(
             produce(draft => {
                 draft.selectedNodeId = nodeId;
@@ -202,15 +192,25 @@ class StatisticsApp extends Component {
                        />
                     </div>
 
-                    <div className="border w-100">
+                    {this.state.selectedNodeId ?
+                    <div className="border w-100 p-2">
                         <Container fluid>
+
+                            <Row className="border">
+                                <Col sm="12" className="font-weight-bold border d-flex justify-content-center">
+                                    <div>
+                                        Information
+                                    </div>
+                                </Col>
+                            </Row>
+
                             <Row className="border">
                                 <Col sm="6" className="font-weight-bold border">
                                     Type
                                 </Col>
 
                                 <Col sm="6">
-                                    Node
+                                    {this.state.nodesInfo[this.state.selectedNodeId].type}
                                 </Col>
                             </Row>
 
@@ -220,7 +220,27 @@ class StatisticsApp extends Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    00.00.00.08
+                                    {this.state.nodesInfo[this.state.selectedNodeId].id}
+                                </Col>
+                            </Row>
+
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    IP
+                                </Col>
+
+                                <Col sm="6">
+                                    {this.state.nodesInfo[this.state.selectedNodeId].ip}
+                                </Col>
+                            </Row>
+
+                            <Row className="border">
+                                <Col sm="6" className="font-weight-bold border">
+                                    mac
+                                </Col>
+
+                                <Col sm="6">
+                                    {this.state.nodesInfo[this.state.selectedNodeId].mac}
                                 </Col>
                             </Row>
 
@@ -244,10 +264,18 @@ class StatisticsApp extends Component {
                                 </Col>
                             </Row>
 
+                            <Row className="border mt-3">
+                                <Col sm="12" className="font-weight-bold border">
+                                    Attachment Points
+                                </Col>
+                            </Row>
+
 
                         
                         </Container>
                     </div>
+                    : null
+                    }
                 </div>
 
                 <div className="d-flex d-flex-row border">

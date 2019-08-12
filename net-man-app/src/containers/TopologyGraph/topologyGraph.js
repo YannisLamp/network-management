@@ -48,8 +48,8 @@ class TopologyGraph extends Component {
             links: this.props.links
         }
 
-        console.log("graph Width: ", this.props.graphWidth);
-        console.log("graph Height", this.props.graphHeight);
+        // console.log("graph Width: ", this.props.graphWidth);
+        // console.log("graph Height", this.props.graphHeight);
 
         const myConfig = {
             nodeHighlightBehavior: true,
