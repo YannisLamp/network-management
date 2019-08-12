@@ -127,12 +127,36 @@ def network_exists():
 
 
 
-@app.route('/shortestpath', methods=['GET'])
+@app.route('/shortest_path', methods=['GET'])
 def find_shortest_path():
     if gnet == None:
         return jsonify({'status': 'down'})
 
-    
+    # content = request.json
+    # print content['mytext']
+
+    links_list = request.json.get('links')
+
+    for link in links_list:
+        e = (link[0],link[1])
+        graph.add_edge(*e)
+
+    print graph.edges()
+
+    nodes_list = request.json.get('nodes')
+
+    for node in nodes:
+        graph.add_node(node)
+
+    node_src = request.json.get('node_source')
+    node_dest = request.json.get('node_dest')
+    shortest_path = nx.shortest_path(graph, node_src, node_dest)
+
+    print shortest_path
+
+    return jsonify({'shortest_path': shortest_path})
+
+
 
 
 
