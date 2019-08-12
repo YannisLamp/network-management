@@ -24,7 +24,7 @@ class StatisticsApp extends Component {
     }
 
     componentDidMount() {
-        alert("did mount");
+        //alert("did mount");
         if (this.state.graphNodes)
         { // graph data have already been retrieved
             alert("already retrieved")
@@ -44,7 +44,7 @@ class StatisticsApp extends Component {
                 //         // draft.isLoading = false;
                 //     })
                 // );
-alert("ddddddd")
+//alert("ddddddd")
                 this.setGraphData(data['network-topology'].topology);
             });
     }
@@ -59,9 +59,9 @@ alert("ddddddd")
         // Can handle many topologies
         for (let topology of statistics) {
             // Nodes
-            alert("tttt")
+            //alert("tttt")
             for (let node of topology.node) {
-                alert("dn paizei me poiothta")
+                //alert("dn paizei me poiothta");
                 // Check if node is a swicth or a host
                 // Termination points have themselves as a termination point
                 console.log(node);
@@ -73,7 +73,7 @@ alert("ddddddd")
 
                 let color = 'green';
                 let svgIcon = pcSVG;
-                let switchNames = new Set(); 
+                //let switchNames = new Set(); 
                 if (node['termination-point'][0]['tp-id'] !== node['node-id']) 
                 {
                     color = 'red';
@@ -84,9 +84,14 @@ alert("ddddddd")
                 }
                 else
                 {
+                    // To node["host-tracker-service:addresses"] einai array, pros to apron to evala na fernei to [0]
                     nodeInfo[node['node-id']]["type"] = "host";
-                    nodeInfo[node['node-id']][0]["ip"] = node["host-tracker-service:addresses"].ip;
-                    nodeInfo[node['node-id']][0]["mac"] = node["host-tracker-service:addresses"].mac;
+                    // nodeInfo[node['node-id']][0]["ip"] = node["host-tracker-service:addresses"].ip;
+                    // nodeInfo[node['node-id']][0]["mac"] = node["host-tracker-service:addresses"].mac;
+                    // Pio panw to [0] gt? Kanonika afou exei polla adresses prepei ontws na to kanoume etsi, 
+                    // mesa se for kai arxikopoiimeno omws
+                    nodeInfo[node['node-id']]["ip"] = node["host-tracker-service:addresses"][0].ip;
+                    nodeInfo[node['node-id']]["mac"] = node["host-tracker-service:addresses"][0].mac;
                 }
 
                 const currNode = {
@@ -106,7 +111,7 @@ alert("ddddddd")
             alert("oolo malakies")
             // Then links
             for (let link of topology.link) {
-                alert("edw")
+                //alert("edw")
                 console.log(link);
                 console.log("=============");
 
@@ -118,14 +123,14 @@ alert("ddddddd")
             }
         } 
 
-        alert("rrrrr")
+        //alert("rrrrr");
 
         this.setState(
             produce(draft => {
                 draft.graphNodes = retNodes;
                 draft.graphLinks = retLinks;
                 draft.nodesInfo = retNodesInfo;
-                alert("skssj");
+                //alert("skssj");
             })
         );
     }
@@ -163,15 +168,15 @@ alert("ddddddd")
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
 
-        if (!this.state.graphNodes)
-        {
-            alert("not going to render graph")
-        }
-        else
-        {
-            alert("going to render graph")
+        // if (!this.state.graphNodes)
+        // {
+        //     alert("not going to render graph")
+        // }
+        // else
+        // {
+        //     alert("going to render graph")
 
-        }
+        // }
 
 
         // console.log("graph Width: ", graphWidth);
