@@ -19,7 +19,7 @@ import produce from 'immer';
 class App extends Component {
 
     state = {
-        networkCreated: localStorage.getItem('networkCreated') === "true" ? localStorage.getItem('networkCreated') : false,
+        networkCreated: localStorage.getItem('networkCreated') ? localStorage.getItem('networkCreated') === "true" : false,
     }
 
     componentDidMount() {
