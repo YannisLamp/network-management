@@ -31,7 +31,7 @@ class StatisticsApp extends Component {
             return;
         }
 
-        alert("go to retrieve data")
+        //alert("go to retrieve data")
 
 
         openDaylightApi.getTopology()
