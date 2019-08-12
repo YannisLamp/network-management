@@ -10,8 +10,8 @@ from mininet.clean import Cleanup
 from functools import partial
 
 # from functools import partial
-import os
-import subprocess
+import networkx as nx
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -127,32 +127,37 @@ def network_exists():
 
 
 
-@app.route('/shortest_path', methods=['GET'])
+@app.route('/shortest_path', methods=['POST'])
 def find_shortest_path():
     if gnet == None:
         return jsonify({'status': 'down'})
 
     # content = request.json
     # print content['mytext']
+    graph = nx.Graph()
 
     links_list = request.json.get('links')
+
+    # print links_list
 
     for link in links_list:
         e = (link[0],link[1])
         graph.add_edge(*e)
 
-    print graph.edges()
+    # print graph.edges()
 
     nodes_list = request.json.get('nodes')
 
-    for node in nodes:
+    for node in nodes_list:
         graph.add_node(node)
 
     node_src = request.json.get('node_source')
     node_dest = request.json.get('node_dest')
     shortest_path = nx.shortest_path(graph, node_src, node_dest)
 
-    print shortest_path
+    # shortest_path.reverse()
+
+    # print shortest_path
 
     return jsonify({'shortest_path': shortest_path})
 
@@ -172,4 +177,5 @@ def find_shortest_path():
 if __name__ == '__main__':
     # app.run(debug=True)
     http_server = WSGIServer(('', 5000), app)
+    print "INFO: Server Started!"
     http_server.serve_forever()
