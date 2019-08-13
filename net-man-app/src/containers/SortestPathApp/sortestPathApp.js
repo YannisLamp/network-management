@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Table, Spinner } from 'reactstrap';
+import { Container, Row, Col, Table, Spinner, Button } from 'reactstrap';
 import { withRouter, Redirect } from 'react-router-dom';
 
 //import styles from './statisticsApp.module.css';
@@ -19,8 +19,16 @@ class SortestPathApp extends Component {
         errorMessage: ""
     }
 
+    linkClickedHandler = (linkId) => {
+        return;
+    }
+
+    graphClickedHandler = () => {
+        return;
+    }
+
     nodeClickedHandler = (nodeId) => {
-        if (this.nodesSet)
+        if (this.nodesSet())
         {
             //set error message
             this.setState(
@@ -70,7 +78,7 @@ class SortestPathApp extends Component {
     }
 
     resetSelectedNodesHandler = () => {
-        
+
     }
 
     removeNodeHandler = (nodeId) => {
@@ -83,122 +91,105 @@ class SortestPathApp extends Component {
 
         // alert("rendering app")
         // console.log(this.props.location.data.graphNodes);
-        const graphWidth = getWidth() * 0.6;
-        const graphHeight = getHeight() * 0.7;
+        const graphWidth = getWidth() * 1;
+        const graphHeight = getHeight() * 0.6;
+
+        console.log(this.state)
 
         return (
-            <div>
+            <>
                 {!this.props.location.data ?
                     <Redirect to="/"/>
                 :
 
                 <>
-                <div className="d-flex d-flex-row border">
-                    <div className="border">
-                        <TopologyGraph
-                            nodeClickedHandler={this.nodeClickedHandler}
-                            linkClickedHandler={this.linkClickedHandler}
-                            graphClickedHandler={this.graphClickedHandler}
-                            nodes={this.props.location.data.graphNodes}
-                            links={this.props.location.data.graphLinks}
-                            graphWidth={graphWidth}
-                            graphHeight={graphHeight}
-                       />
+                    <div className="d-flex d-flex-row border">
+                        <div className="border">
+                            <TopologyGraph
+                                nodeClickedHandler={this.nodeClickedHandler}
+                                linkClickedHandler={this.linkClickedHandler}
+                                graphClickedHandler={this.graphClickedHandler}
+                                nodes={this.props.location.data.graphNodes}
+                                links={this.props.location.data.graphLinks}
+                                graphWidth={graphWidth}
+                                graphHeight={graphHeight}
+                        />
+                        </div>
                     </div>
 
-                    {this.state.selectedNodeId || this.state.selectedLinkId ?
-                    <div className="border w-100 p-2">
+                    <div className="d-flex d-flex-row border p-2">
                         <Container fluid>
 
                             <Row className="border">
                                 <Col sm="12" className="font-weight-bold border d-flex justify-content-center">
                                     <div>
-                                        Information
+                                        Selected Nodes
                                     </div>
                                 </Col>
                             </Row>
 
                             <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    Type
+                                <Col sm="4" className="font-weight-bold border">
+                                    Source Node
                                 </Col>
 
-                                <Col sm="6">
-                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].type}
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    Id
-                                </Col>
-
-                                <Col sm="6">
-                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].id}
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    IP
+                                <Col sm="6" className="border">
+                                    {this.state.selectedNodeIdsource ? this.state.selectedNodeIdsource
+                                    : 
+                                        <div className="font-italic text-muted">
+                                            None selected
+                                        </div>
+                                    }
                                 </Col>
 
-                                <Col sm="6">
-                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].ip}
+                                <Col sm="2" className="d-flex justify-content-end">
+                                    <Button size="md">
+                                    aa
+                                    </Button>
                                 </Col>
                             </Row>
 
                             <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    mac
+                                <Col sm="4" className="font-weight-bold border">
+                                    Destination Node
                                 </Col>
 
-                                <Col sm="6">
-                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].mac}
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    Name
-                                </Col>
-
-                                <Col sm="6">
-                                    None
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="6" className="font-weight-bold border">
-                                    Connectors #
+                                <Col sm="6" className="border">
+                                    {this.state.selectedNodeIddest ? this.state.selectedNodeIddest
+                                    : 
+                                        <div className="font-italic text-muted">
+                                            None selected
+                                        </div>
+                                    }                                
                                 </Col>
 
-                                <Col sm="6">
-                                    4
+                                <Col sm="2" className="d-flex justify-content-end">
+                                    <Button size="md">
+                                        Remove <i className="fas fa-trash-alt"></i>
+                                    </Button>
                                 </Col>
                             </Row>
 
-                            <Row className="border mt-3">
-                                <Col sm="12" className="font-weight-bold border">
-                                    Attachment Points
-                                </Col>
-                            </Row>
+                            {
+                                ! this.nodesSet() ? null
+                                :
+                                <Row className="border mt-3">
+                                    <Col sm="12" className="border d-flex justify-content-end">
+                                        <Button size="lg" className="font-weight-bold mr-2">
+                                            Reset Nodes
+                                        </Button>
 
-
-                        
+                                        <Button size="lg" color="primary" className="font-weight-bold">
+                                            Find Path
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            }
                         </Container>
-                    </div>
-                    : null
-                    }
-                </div>
-
-                <div className="d-flex d-flex-row border">
-                    wswswswswsw
-                </div>
+                    </div>         
                 </>
                 }
-
-            </div>
+            </>
         )
 
     }
