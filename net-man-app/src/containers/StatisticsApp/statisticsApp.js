@@ -20,7 +20,8 @@ class StatisticsApp extends Component {
         graphNodes: null,
         graphLinks: null,
         nodesInfo: null,
-        linksInfo: null
+        linksInfo: null,
+        nodeConnectorData: null,
     }
 
     componentDidMount() {
@@ -31,15 +32,47 @@ class StatisticsApp extends Component {
             return;
         }
 
-        // alert("go to retrieve data")
-
         openDaylightApi.getTopology()
             .then(data => {
-                console.log('openDaylight data:');
+                console.log('openDaylight topology data:');
                 console.log(data['network-topology'].topology);
                 
                 this.setGraphData(data['network-topology'].topology);
             });
+        
+
+        openDaylightApi.getNodes()
+            .then(data => {
+                console.log('openDaylight node data:');
+                console.log(data.nodes.node);
+
+                // data.nodes.node is the array of nodes
+                this.setNodeConnectorData(data.nodes.node);
+            });
+    }
+
+    // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
+    // Genika statistcs pros to paron, mexri na ta emfanizoume
+    setNodeConnectorData = (nodes) => {
+        // Object vs Array? (same thing??)
+        //let retNodeConnectorData = [];
+        let retNodeConnectorData = {};
+
+        // Nodes only contains switches
+        for (let node of nodes) { 
+            for (let connector of node['node-connector']) {
+                retNodeConnectorData[connector.id] = connector;
+            }
+        }
+
+        console.log('node connectors');
+        console.log(retNodeConnectorData);
+
+        this.setState(
+            produce(draft => {
+                draft.nodeConnectorData = retNodeConnectorData;
+            })
+        );
     }
 
     setGraphData = (statistics) => {
@@ -47,7 +80,7 @@ class StatisticsApp extends Component {
         let retLinks = [];
         let retNodesInfo = {};
 
-        console.log("------>MAKING DATA<-----------");
+        //console.log("------>MAKING DATA<-----------");
 
         // Can handle many topologies
         for (let topology of statistics) {
@@ -55,8 +88,8 @@ class StatisticsApp extends Component {
             for (let node of topology.node) {
                 // Check if node is a swicth or a host
                 // Termination points have themselves as a termination point
-                console.log(node);
-                console.log("------------");
+                //console.log(node);
+                //console.log("------------");
 
                 // let nodeInfo = {};
                 retNodesInfo[node['node-id']] = {};
@@ -95,8 +128,8 @@ class StatisticsApp extends Component {
 
             // Then links
             for (let link of topology.link) {
-                console.log(link);
-                console.log("=============");
+                //console.log(link);
+                //console.log("=============");
 
                 const currLink = {
                     source: link.source['source-node'],
@@ -151,22 +184,11 @@ class StatisticsApp extends Component {
 
     render () {
 
-        console.log("inside statistics app rendering");
-        console.log("node info: ", this.state.nodesInfo);
+        //console.log("inside statistics app rendering");
+        //console.log("node info: ", this.state.nodesInfo);
 
-        // alert("rendering app")
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
-
-        // if (!this.state.graphNodes)
-        // {
-        //     alert("not going to render graph")
-        // }
-        // else
-        // {
-        //     alert("going to render graph")
-
-        // }
 
 
         // console.log("graph Width: ", graphWidth);

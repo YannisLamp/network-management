@@ -57,7 +57,7 @@ function getShortestPath(jsonRequest) {
                 return response.data;
             },
             error => {
-                console.log('Error in network creation');
+                console.log('Error in shortest path');
                 handleError(error)
             }
         );
