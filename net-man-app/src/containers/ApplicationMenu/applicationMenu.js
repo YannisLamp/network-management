@@ -27,32 +27,39 @@ class CreateNetwork extends Component {
 
 
     componentDidMount() {
-        alert("did mount");
+        // alert("did mount");
         if (this.state.graphNodes)
         { // graph data have already been retrieved
             alert("already retrieved")
             return;
         }
 
-        alert("go to retrieve data")
+        // alert("go to retrieve data")
 
         openDaylightApi.getTopology()
             .then(data => {
                 console.log('openDaylight topology data:');
                 console.log(data['network-topology'].topology);
+                console.log("----------------");
                 
                 this.setGraphData(data['network-topology'].topology);
+
+                console.log("=========================");
             });
 
 
         openDaylightApi.getNodes()
-        .then(data => {
-            console.log('openDaylight node data:');
-            console.log(data.nodes.node);
+            .then(data => {
+                console.log('openDaylight node data:');
+                console.log(data.nodes.node);
+                console.log("----------------");
 
-            // data.nodes.node is the array of nodes
-            this.setNodeConnectorData(data.nodes.node);
-        });
+
+                // data.nodes.node is the array of nodes
+                this.setNodeConnectorData(data.nodes.node);
+
+                console.log("=========================");
+            });
     }
 
     // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
@@ -85,7 +92,7 @@ class CreateNetwork extends Component {
         let retLinks = [];
         let retNodesInfo = {};
 
-        console.log("------>MAKING DATA<-----------");
+        // console.log("------>MAKING DATA<-----------");
 
         // Can handle many topologies
         for (let topology of statistics) {
@@ -93,8 +100,8 @@ class CreateNetwork extends Component {
             for (let node of topology.node) {
                 // Check if node is a swicth or a host
                 // Termination points have themselves as a termination point
-                console.log(node);
-                console.log("------------");
+                // console.log(node);
+                // console.log("------------");
 
                 // let nodeInfo = {};
                 retNodesInfo[node['node-id']] = {};
@@ -133,8 +140,8 @@ class CreateNetwork extends Component {
 
             // Then links
             for (let link of topology.link) {
-                console.log(link);
-                console.log("=============");
+                // console.log(link);
+                // console.log("=============");
 
                 const currLink = {
                     source: link.source['source-node'],
@@ -143,6 +150,9 @@ class CreateNetwork extends Component {
                 retLinks.push(currLink);
             }
         } 
+
+        console.log("nodes info: ");
+        console.log(retNodesInfo);
 
         this.setState(
             produce(draft => {

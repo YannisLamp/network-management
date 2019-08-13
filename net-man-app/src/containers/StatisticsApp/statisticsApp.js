@@ -55,7 +55,7 @@ class StatisticsApp extends Component {
 
         console.log("inside statistics app rendering");
 
-        alert("rendering app")
+        // alert("rendering app")
         // console.log(this.props.location.data.graphNodes);
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
