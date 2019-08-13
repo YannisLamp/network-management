@@ -8,6 +8,7 @@ from mininet.topolib import TreeTopo
 from mininet.node import RemoteController, OVSSwitch, OVSKernelSwitch
 from mininet.clean import Cleanup
 from functools import partial
+from mininet.util import dumpNodeConnections
 
 # from functools import partial
 import networkx as nx
@@ -56,10 +57,12 @@ def createNet(controllerIp, controllerPort, topoType,
         controller=controller,
         switch=switch,
         autoSetMacs=mac,
+        waitConnected=True,
     )
 
     # Actually start the network
     net.start()
+    dumpNodeConnections(net.hosts)
     net.pingAll()
 
     # Drop the user in to a CLI so user can run commands.
@@ -112,7 +115,6 @@ def delete_network():
         return jsonify({'msg': 'Network Stopped'})
     else:
         return jsonify({'msg': 'Network Already Stopped'})
-
 
 @app.route('/network', methods=['GET'])
 def network_exists():
