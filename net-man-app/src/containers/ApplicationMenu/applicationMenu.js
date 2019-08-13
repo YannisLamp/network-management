@@ -21,7 +21,8 @@ class CreateNetwork extends Component {
         graphNodes: null,
         graphLinks: null,
         nodesInfo: null,
-        linksInfo: null
+        linksInfo: null,
+        nodeConnectorData: null
     }
 
 
@@ -37,12 +38,47 @@ class CreateNetwork extends Component {
 
         openDaylightApi.getTopology()
             .then(data => {
-                console.log('openDaylight data:');
+                console.log('openDaylight topology data:');
                 console.log(data['network-topology'].topology);
                 
                 this.setGraphData(data['network-topology'].topology);
             });
+
+
+        openDaylightApi.getNodes()
+        .then(data => {
+            console.log('openDaylight node data:');
+            console.log(data.nodes.node);
+
+            // data.nodes.node is the array of nodes
+            this.setNodeConnectorData(data.nodes.node);
+        });
     }
+
+    // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
+    // Genika statistcs pros to paron, mexri na ta emfanizoume
+    setNodeConnectorData = (nodes) => {
+        // Object vs Array? (same thing??)
+        //let retNodeConnectorData = [];
+        let retNodeConnectorData = {};
+
+        // Nodes only contains switches
+        for (let node of nodes) { 
+            for (let connector of node['node-connector']) {
+                retNodeConnectorData[connector.id] = connector;
+            }
+        }
+
+        console.log('node connectors');
+        console.log(retNodeConnectorData);
+
+        this.setState(
+            produce(draft => {
+                draft.nodeConnectorData = retNodeConnectorData;
+            })
+        );
+    }
+
 
     setGraphData = (statistics) => {
         let retNodes = [];
