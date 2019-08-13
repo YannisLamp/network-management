@@ -18,8 +18,6 @@ class StatisticsApp extends Component {
         selectedLinkId: null
     }
 
-    
-
     nodeClickedHandler = (nodeId) => {
         // alert(`node clicked ${nodeId}`);
         // console.log("=========================")
@@ -75,8 +73,8 @@ class StatisticsApp extends Component {
                             nodeClickedHandler={this.nodeClickedHandler}
                             linkClickedHandler={this.linkClickedHandler}
                             graphClickedHandler={this.graphClickedHandler}
-                            nodes={this.props.graphNodes}
-                            links={this.props.graphLinks}
+                            nodes={this.props.location.data.graphNodes}
+                            links={this.props.location.data.graphLinks}
                             graphWidth={graphWidth}
                             graphHeight={graphHeight}
                        />
@@ -100,7 +98,7 @@ class StatisticsApp extends Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    {this.props.nodesInfo[this.state.selectedNodeId].type}
+                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].type}
                                 </Col>
                             </Row>
 
@@ -110,7 +108,7 @@ class StatisticsApp extends Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    {this.props.nodesInfo[this.state.selectedNodeId].id}
+                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].id}
                                 </Col>
                             </Row>
 
@@ -120,7 +118,7 @@ class StatisticsApp extends Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    {this.props.nodesInfo[this.state.selectedNodeId].ip}
+                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].ip}
                                 </Col>
                             </Row>
 
@@ -130,7 +128,7 @@ class StatisticsApp extends Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    {this.props.nodesInfo[this.state.selectedNodeId].mac}
+                                    {this.props.location.data.nodesInfo[this.state.selectedNodeId].mac}
                                 </Col>
                             </Row>
 
