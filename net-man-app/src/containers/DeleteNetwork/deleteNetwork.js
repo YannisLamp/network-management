@@ -22,7 +22,7 @@ class DeleteNetwork extends Component {
                         </div>
                         <div className="font-italic text-muted mt-3 justify-content-center">
                             <div>
-                            Please wait ...
+                                Deleting Network ...
                             </div>
                         </div>
                     </div>

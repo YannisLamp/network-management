@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
-import { Button } from 'reactstrap';
-import { Jumbotron } from 'reactstrap';
+import { Container, Row, Col, Jumbotron, Spinner } from 'reactstrap';
 
 import { Link, withRouter } from 'react-router-dom';
 
@@ -223,6 +221,26 @@ class CreateNetwork extends Component {
     render() {
         return (
             <Container fluid className={styles.MenuContainer}>
+
+                { !this.state.graphNodes ?
+                <>
+                    <Row>
+                        <Col className="d-flex justify-content-center">
+                            <div>
+                                <Spinner style={{ width: '10rem', height: '10rem' }} color="primary" />
+                            </div>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col className="d-flex justify-content-center font-italic text-muted">
+                            <div>
+                                Retrieving OpenDaylight data ...
+                            </div>
+                        </Col>
+                    </Row>
+                </>
+                :
                 <Row>
                     <Col sm={6}>
                         <Link 
@@ -276,6 +294,7 @@ class CreateNetwork extends Component {
                     {/* </Link> */}
                     </Col>
                 </Row>
+                }
 
             </Container>
         );
