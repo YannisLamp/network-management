@@ -272,26 +272,32 @@ class CreateNetwork extends Component {
                         </Link>
                     </Col>
 
-                    {/* <Col sm={1}/> */}
-
                     <Col sm={6}>
-                    {/* <Link to="/topology" className={styles.MenuLink}> */}
-                        <Jumbotron onClick={this.getODLinfo}>   
-                        {/* <Jumbotron> */}
-                            <h1 className="display-5">Application 2</h1>
-                            <p 
-                                className="lead"
-                            >
-                                This is a simple hero unit, a simple Jumbotron-style component 
-                                for calling extra attention to featured content or information.
-                            </p>
-                            <hr className="my-2" />
-                            <p>
-                                It uses utility classes for typography and spacing to space content 
-                                out within the larger container.
-                            </p>
-                        </Jumbotron>
-                    {/* </Link> */}
+                        <Link 
+                            className={styles.MenuLink}
+                            to={{   
+                                    pathname: '/sortest_path', 
+                                    data: { 
+                                        graphNodes: this.state.graphNodes,
+                                        graphLinks: this.state.graphLinks
+                                    } 
+                                }} 
+                        >
+                            <Jumbotron>
+                                <h1 className="display-5">Application 2</h1>
+                                <p 
+                                    className="lead"
+                                >
+                                    This is a simple hero unit, a simple Jumbotron-style component 
+                                    for calling extra attention to featured content or information.
+                                </p>
+                                <hr className="my-2" />
+                                <p>
+                                    It uses utility classes for typography and spacing to space content 
+                                    out within the larger container.
+                                </p>
+                            </Jumbotron>
+                        </Link>
                     </Col>
                 </Row>
                 }

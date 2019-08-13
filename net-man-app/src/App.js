@@ -6,6 +6,7 @@ import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 import StatisticsApp from './containers/StatisticsApp/statisticsApp';
+import SortestPathApp from './containers/SortestPathApp/sortestPathApp';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -91,6 +92,13 @@ class App extends Component {
 					exact
 					render={() => ( <StatisticsApp />)}
 				/>
+
+                <Route
+					path={ ["/sortest_path"] }
+					exact
+					render={() => ( <SortestPathApp />)}
+				/>
+
 
 				<Route
 					path={ ["/delete_network"] }
