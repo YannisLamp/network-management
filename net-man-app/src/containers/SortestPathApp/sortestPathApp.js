@@ -4,6 +4,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 
 //import styles from './statisticsApp.module.css';
 import { openDaylightApi } from '../../services/openDaylightApi';
+import { openDaylightFlowsApi } from '../../services/openDaylightFlowsApi';
 
 import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
@@ -16,7 +17,9 @@ class SortestPathApp extends Component {
     state = {
         selectedNodeIdsource: null,
         selectedNodeIddest: null,
-        errorMessage: ""
+        errorMessage: "",
+
+        // list of shortest path mac addresses
     }
 
     linkClickedHandler = (linkId) => {
@@ -75,7 +78,51 @@ class SortestPathApp extends Component {
 
     calcSortestPathHandler = () => {
         //API REQUEST
+
+        //letItFlow
     }
+
+
+    // creates all flows, call in calcSortestPathHandler api.then
+    letItFlow = (shortestPathIds) => {
+        // First get shortest path ids => macs
+        // shortestPathMacs = [];
+        // for (let nodeId of shortestPathIds) {
+        //     shortestPathMacs.push(this.props.location.data.nodesInfo[nodeId].mac);
+        // }
+        
+        //
+
+        let srcNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIdsource].mac;
+        let destNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIddest].mac;
+        // First get all node connectors for each node
+
+        // let onlySwitches = 
+        for (let i=1; i < shortestPathIds.length(); i++) {
+            // Create individual flow
+            openDaylightFlowsApi.createFlow(shortestPathIds[i], 0, 150, srcNodeMac, destNodeMac, 
+                this.props.location.data.linkConcatToPort[this.state.selectedNodeIdsource+''+this.state.selectedNodeIddest])
+                .then(response => {
+                    console.log('paopapapapa');
+                    console.log(response);
+                })
+
+
+                
+        }
+
+
+        console.log(this.props.location.data.nodesInfo);
+        //console.log(this.props.location.data.linksInfo);
+        //console.log(this.props.location.data.nodeConnectorData);
+        // this.props.location.data.nodeConnectorData: null
+
+
+
+
+
+    }
+
 
     resetSelectedNodesHandler = () => {
 
@@ -86,6 +133,12 @@ class SortestPathApp extends Component {
     }
 
     render () {
+        openDaylightFlowsApi.createFlow('openflow:1', '0', '150', '00:00:00:00:00:01', '00:00:00:00:00:03', 
+            '1')
+            .then(response => {
+                console.log('paopapapapa');
+                console.log(response);
+            })
 
         console.log("inside statistics app rendering");
 
@@ -94,7 +147,11 @@ class SortestPathApp extends Component {
         const graphWidth = getWidth() * 1;
         const graphHeight = getHeight() * 0.6;
 
-        console.log(this.state)
+        //console.log(this.state)
+
+        console.log('nodes::::');
+        console.log(this.props.location);
+        console.log(this.props.location.data.nodesInfo);
 
         return (
             <>

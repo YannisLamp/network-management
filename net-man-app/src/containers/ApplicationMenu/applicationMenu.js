@@ -20,7 +20,8 @@ class CreateNetwork extends Component {
         graphLinks: null,
         nodesInfo: null,
         linksInfo: null,
-        nodeConnectorData: null
+        nodeConnectorData: null,
+        linkConcatToPort: null,
     }
 
 
@@ -35,29 +36,49 @@ class CreateNetwork extends Component {
         // alert("go to retrieve data")
 
         openDaylightApi.getTopology()
-            .then(data => {
-                console.log('openDaylight topology data:');
-                console.log(data['network-topology'].topology);
-                console.log("----------------");
+            .then(topData => {
                 
-                this.setGraphData(data['network-topology'].topology);
+                
+                openDaylightApi.getNodes()
+                    .then(data => {
+                        console.log('openDaylight node data:');
+                        console.log(data.nodes.node);
+                        console.log("----------------");
 
-                console.log("=========================");
+
+                        // data.nodes.node is the array of nodes
+                        this.setNodeConnectorData(data.nodes.node);
+
+                        console.log("=========================");
+
+
+
+
+                        console.log('openDaylight topology data:');
+                        console.log(topData['network-topology'].topology);
+                        console.log("----------------");
+                            
+                        this.setGraphData(topData['network-topology'].topology);
+
+                        console.log("=========================");
+
+
+                    });
+                
+                
+                
+                
+                
+                
+
+
+
+
+
             });
 
 
-        openDaylightApi.getNodes()
-            .then(data => {
-                console.log('openDaylight node data:');
-                console.log(data.nodes.node);
-                console.log("----------------");
-
-
-                // data.nodes.node is the array of nodes
-                this.setNodeConnectorData(data.nodes.node);
-
-                console.log("=========================");
-            });
+        
     }
 
     // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
@@ -134,19 +155,46 @@ class CreateNetwork extends Component {
                     svg: svgIcon,
                 }
                 retNodes.push(currNode);
+
+
+
+
             }
 
             // Then links
+            let linkConcatToPort = {}
             for (let link of topology.link) {
-                // console.log(link);
-                // console.log("=============");
+                console.log('linkInfo')
+                console.log(link);
+                console.log("=============");
+
+                let linkSrc = link.source['source-node'];
+                let linkDest = link.destination['dest-node'];
+                
+                if (this.state.nodeConnectorData[link['link-id']]) {
+                    linkConcatToPort[linkSrc + '' + linkDest] = this.state.nodeConnectorData[link['link-id']]['flow-node-inventory:port-number'];
+                }
+                
 
                 const currLink = {
+                    color: 'red',
                     source: link.source['source-node'],
                     target: link.destination['dest-node'], 
                 }
                 retLinks.push(currLink);
             }
+
+
+
+            console.log('LINK CONCAT TO PORT ')
+            console.log(linkConcatToPort);
+
+            this.setState(
+                produce(draft => {
+                    draft.linkConcatToPort = linkConcatToPort;
+                })
+            );
+
         } 
 
         console.log("nodes info: ");
@@ -159,6 +207,9 @@ class CreateNetwork extends Component {
                 draft.nodesInfo = retNodesInfo;
             })
         );
+
+
+        
     }
 
 
@@ -279,7 +330,12 @@ class CreateNetwork extends Component {
                                     pathname: '/sortest_path', 
                                     data: { 
                                         graphNodes: this.state.graphNodes,
-                                        graphLinks: this.state.graphLinks
+                                        graphLinks: this.state.graphLinks,
+
+                                        nodesInfo: this.state.nodesInfo,
+                                        linksInfo: this.state.linksInfo,
+                                        //nodeConnectorData: this.state.nodeConnectorData
+                                        linkConcatToPort: this.state.linkConcatToPort
                                     } 
                                 }} 
                         >
