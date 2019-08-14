@@ -62,15 +62,11 @@ def createNet(controllerIp, controllerPort, topoType,
 
     # Actually start the network
     net.start()
-<<<<<<< HEAD
-    #net.pingAll()
-=======
     dumpNodeConnections(net.hosts)
     net.pingAll()
->>>>>>> b45b37fc85e847de318b5453814cf0b85a0f7bd4
 
     # Drop the user in to a CLI so user can run commands.
-    CLI( net )
+    #CLI( net )
 
     # Export local net
     global gnet
@@ -172,12 +168,16 @@ def find_shortest_path():
 
 
 
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     # app.run(debug=True)
     http_server = WSGIServer(('', 5000), app)
     print "INFO: Server Started!"
     http_server.serve_forever()
-
-
-
-
