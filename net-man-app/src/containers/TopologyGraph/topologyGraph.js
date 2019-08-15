@@ -52,23 +52,30 @@ class TopologyGraph extends Component {
         // console.log("graph Height", this.props.graphHeight);
 
         const myConfig = {
+            // focusZoom: 1,
             nodeHighlightBehavior: true,
+            highlightDegree: 0,
             node: {
-                color: 'lightgreen',
-                size: 350,
-                highlightStrokeColor: 'blue'
+                fontColor: "gray",  // green when clicked
+                size: 450,
+                fontSize: 18,
+                fontWeight: "normal",
+
+                highlightFontSize: 18,
+                highlightFontWeight: "bold",
             },
             link: {
-                highlightColor: 'lightblue'
+                // color: 'gray',  // blue when clicked
+                // highlightColor: 'lightblue'
             },
             //width: 1550, //props
             width: this.props.graphWidth,
             height: this.props.graphHeight,
             d3: {
-                gravity: -150,
-                //linkLength: 100,
-                //linkLength: (d) => 100,
-                //alphaTarget: 1,
+                gravity: -230,
+                // linkLength: 150,
+                // linkLength: (d) => 150,
+                // alphaTarget: 0.5,
             }
         };
         
