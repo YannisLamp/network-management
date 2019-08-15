@@ -72,17 +72,17 @@ class CreateNetwork extends Component {
 
         let retGraphNodes = [];
         let retNodesInfo = {};
-        for (let nTopo of nodesTopo) 
+        for (let node of nodesTopo) 
         { 
             // {<node1_id> : {}, <node2_id> : {} ...}
-            const nodeId = nTopo['node-id'];
+            const nodeId = node['node-id'];
             retNodesInfo[nodeId] = {};
             retNodesInfo[nodeId]["id"] = nodeId;
 
             let nodeSVGicon = null;
 
             //check if node is host or switch
-            if (nTopo['termination-point'][0]['tp-id'] !== nodeId) 
+            if (node['termination-point'][0]['tp-id'] !== nodeId) 
             {   //it is switch
                 nodeSVGicon = switchSVG;
                 retNodesInfo[nodeId]["type"] = "switch";
@@ -96,8 +96,8 @@ class CreateNetwork extends Component {
                 nodeSVGicon = pcSVG;
 
                 retNodesInfo[nodeId]["type"] = "host";
-                retNodesInfo[nodeId]["ip"] = nTopo["host-tracker-service:addresses"][0].ip;
-                retNodesInfo[nodeId]["mac"] = nTopo["host-tracker-service:addresses"][0].mac;
+                retNodesInfo[nodeId]["ip"] = node["host-tracker-service:addresses"][0].ip;
+                retNodesInfo[nodeId]["mac"] = node["host-tracker-service:addresses"][0].mac;
             }
 
             //isws na pros8esoume kai me poia nodes einai connected
