@@ -57,9 +57,11 @@ class CreateNetwork extends Component {
 
                         // console.log("=========================");
 
+                        const topologyNodes = topologyData['network-topology'].topology[0].node;
+                        const nodesAnalytics = nodesData.nodes.node;
+                        const nodesConnectors = this.getNodesConnectorsData(nodesAnalytics);
 
-
-                        this.setNodesDataSets(topologyData['network-topology'].topology[0].node, this.getNodesConnectorsData(nodesData.nodes.node));
+                        this.setNodesDataSets(topologyNodes, nodesConnectors);
                     });
             });
     }
