@@ -79,7 +79,6 @@ class CreateNetwork extends Component {
             // }
             
             const graphLink = {
-                color: 'gray',
                 source: sourceNode,
                 target: destNode, 
             }

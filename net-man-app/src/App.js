@@ -120,7 +120,7 @@ class App extends Component {
             <div className="App">
                 <div className="AppContents">
                     <NetNavbar networkCreated={this.state.networkCreated} />
-                    <Container fluid className="content">
+                    <Container fluid className="content h-100">
 
                         {this.state.networkCreated ? 
                             this.withNetRoutes()
