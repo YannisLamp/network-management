@@ -41,29 +41,57 @@ class CreateNetwork extends Component {
                         // console.log('++++++> openDaylight nodes data:');
                         // console.log(nodesData.nodes.node);
                         // console.log("----------------");
-
-                        // data.nodes.node is the array of nodes
-                        // this.setNodeConnectorData(data.nodes.node);
-
-                        
                         // console.log("=========================");
 
 
-                        // console.log('++++++> openDaylight topology data:');
-                        // console.log(topologyData['network-topology'].topology);
-                        // console.log("----------------");
-                            
-                        // this.setGraphData(topologyData['network-topology'].topology);
-
+                        console.log('++++++> openDaylight topology data:');
+                        console.log(topologyData['network-topology'].topology);
+                        console.log("----------------");
                         // console.log("=========================");
 
+                        // topologyData['network-topology'].topology[0].node is the array of nodes
                         const topologyNodes = topologyData['network-topology'].topology[0].node;
-                        const nodesAnalytics = nodesData.nodes.node;
+
+                        // topologyData['network-topology'].topology[0].link is the array of links
+                        const topologyLinks = topologyData['network-topology'].topology[0].link;
+
+                        // nodesData.nodes.node is the array of nodes
+                        const nodesAnalytics = nodesData.nodes.node;    
                         const nodesConnectors = this.getNodesConnectorsData(nodesAnalytics);
 
+                        this.setLinksDataSets(topologyLinks, nodesConnectors);
                         this.setNodesDataSets(topologyNodes, nodesConnectors);
                     });
             });
+    }
+
+    setLinksDataSets = (linksTopo, nodesConnectors) => {
+        
+        let retGraphLinks = [];
+        let retLinksInfo = {};
+        for (let link of linksTopo) 
+        {
+            const sourceNode = link.source['source-node'];
+            const destNode = link.destination['dest-node'];
+            
+            if (this.state.nodeConnectorData[link['link-id']]) {
+                linkConcatToPort[linkSrc + '/' + linkDest] = this.state.nodeConnectorData[link['link-id']]['flow-node-inventory:port-number'];
+            }
+            
+            const graphLink = {
+                color: 'gray',
+                source: sourceNode,
+                target: destNode, 
+            }
+            retGraphLinks.push(graphLink);
+        }
+
+        this.setState(
+            produce(draft => {
+                draft.graphLinks = retGraphLinks;
+                draft.linksInfo = retLinksInfo;
+            })
+        );
     }
 
     setNodesDataSets = (nodesTopo, nodesConnectors) => {

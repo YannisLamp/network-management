@@ -133,12 +133,12 @@ class SortestPathApp extends Component {
     }
 
     render () {
-        openDaylightFlowsApi.createFlow('openflow:1', '0', '150', '00:00:00:00:00:01', '00:00:00:00:00:03', 
-            '1')
-            .then(response => {
-                console.log('paopapapapa');
-                console.log(response);
-            })
+        // openDaylightFlowsApi.createFlow('openflow:1', '0', '150', '00:00:00:00:00:01', '00:00:00:00:00:03', 
+        //     '1')
+        //     .then(response => {
+        //         console.log('paopapapapa');
+        //         console.log(response);
+        //     })
 
         console.log("inside statistics app rendering");
 
