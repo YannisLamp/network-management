@@ -94,7 +94,7 @@ class App extends Component {
 				/>
 
                 <Route
-					path={ ["/sortest_path"] }
+					path={ ["/flows"] }
 					exact
 					render={() => ( <SortestPathApp />)}
 				/>

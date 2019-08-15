@@ -44,9 +44,9 @@ class CreateNetwork extends Component {
                         // console.log("=========================");
 
 
-                        console.log('++++++> openDaylight topology data:');
-                        console.log(topologyData['network-topology'].topology);
-                        console.log("----------------");
+                        // console.log('++++++> openDaylight topology data:');
+                        // console.log(topologyData['network-topology'].topology);
+                        // console.log("----------------");
                         // console.log("=========================");
 
                         // topologyData['network-topology'].topology[0].node is the array of nodes
@@ -74,9 +74,9 @@ class CreateNetwork extends Component {
             const sourceNode = link.source['source-node'];
             const destNode = link.destination['dest-node'];
             
-            if (this.state.nodeConnectorData[link['link-id']]) {
-                linkConcatToPort[linkSrc + '/' + linkDest] = this.state.nodeConnectorData[link['link-id']]['flow-node-inventory:port-number'];
-            }
+            // if (this.state.nodeConnectorData[link['link-id']]) {
+            //     linkConcatToPort[linkSrc + '/' + linkDest] = this.state.nodeConnectorData[link['link-id']]['flow-node-inventory:port-number'];
+            // }
             
             const graphLink = {
                 color: 'gray',
@@ -337,6 +337,11 @@ class CreateNetwork extends Component {
         console.log("--> Nodes Info: ", this.state.nodesInfo);
         console.log("--------------------");
 
+        console.log("========================");
+
+        console.log("--> Graph Links: ", this.state.graphLinks )
+        console.log("--------------------");
+
         console.log("--> LinksInfo: ", this.state.linksInfo )
         console.log("--------------------");
 
@@ -405,7 +410,7 @@ class CreateNetwork extends Component {
                         <Link 
                             className={styles.MenuLink}
                             to={{   
-                                    pathname: '/sortest_path', 
+                                    pathname: '/flows', 
                                     data: { 
                                         graphNodes: this.state.graphNodes,
                                         graphLinks: this.state.graphLinks,
