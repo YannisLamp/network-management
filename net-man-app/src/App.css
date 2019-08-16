@@ -33,3 +33,11 @@
     font-size: calc(12px + 2vmin);
 }
 
+.customBorder1 {
+    border: 1px rgb(32, 31, 28);
+    /* border-width: 2px; */
+    box-shadow: 1px 1px 8px 2px #ccc;
+    border-radius: 5px;
+}
+
+

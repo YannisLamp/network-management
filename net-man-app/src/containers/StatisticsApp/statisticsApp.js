@@ -9,6 +9,7 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
+import HostInfo from '../../components/StatisticsApp/hostInfo';
 
 
 class StatisticsApp extends Component {
@@ -80,9 +81,8 @@ class StatisticsApp extends Component {
             if (type === "host")
             {
                 return (
-                <div>
-                    host
-                </div>);
+                    <HostInfo nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}/>    
+                );
             }
             else if (type === "switch")
             {
