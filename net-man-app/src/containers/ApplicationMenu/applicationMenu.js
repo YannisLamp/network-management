@@ -127,6 +127,7 @@ class CreateNetwork extends Component {
                 retNodesInfo[nodeId]["type"] = "host";
                 retNodesInfo[nodeId]["ip"] = node["host-tracker-service:addresses"][0].ip;
                 retNodesInfo[nodeId]["mac"] = node["host-tracker-service:addresses"][0].mac;
+                retNodesInfo[nodeId]["attachedTo"] = node["host-tracker-service:attachment-points"][0]["tp-id"];
             }
 
             //isws na pros8esoume kai me poia nodes einai connected

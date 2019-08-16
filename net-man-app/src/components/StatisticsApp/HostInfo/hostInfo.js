@@ -6,7 +6,7 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
 
 const hostInfo = (props) => {
 
-    // console.log("")
+    // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: ",props.nodeInfo)
 
     return (
         <Container className="customBorder1" fluid style={{backgroundColor: "white"}}>
