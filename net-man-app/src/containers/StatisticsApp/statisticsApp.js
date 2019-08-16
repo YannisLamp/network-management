@@ -9,7 +9,7 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
-import HostInfo from '../../components/StatisticsApp/hostInfo';
+import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
 
 
 class StatisticsApp extends Component {
