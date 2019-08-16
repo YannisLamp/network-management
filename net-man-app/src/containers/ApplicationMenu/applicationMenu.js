@@ -383,6 +383,7 @@ class CreateNetwork extends Component {
                                     data: { 
                                         graphNodes: this.state.graphNodes,
                                         graphLinks: this.state.graphLinks,
+
                                         nodesInfo: this.state.nodesInfo,
                                         linksInfo: this.state.linksInfo
                                     } 
@@ -413,11 +414,9 @@ class CreateNetwork extends Component {
                                     data: { 
                                         graphNodes: this.state.graphNodes,
                                         graphLinks: this.state.graphLinks,
-
+                                        
                                         nodesInfo: this.state.nodesInfo,
-                                        linksInfo: this.state.linksInfo,
-                                        //nodeConnectorData: this.state.nodeConnectorData
-                                        linkConcatToPort: this.state.linkConcatToPort
+                                        linksInfo: this.state.linksInfo
                                     } 
                                 }} 
                         >

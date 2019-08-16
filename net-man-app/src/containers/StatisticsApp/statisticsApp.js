@@ -33,6 +33,7 @@ class StatisticsApp extends Component {
         this.setState(
             produce(draft => {
                 draft.selectedNodeId = nodeId;
+                draft.selectedLinkId = null;
             })
         );
     }
@@ -42,21 +43,89 @@ class StatisticsApp extends Component {
 
         this.setState(
             produce(draft => {
+                draft.selectedNodeId = null;
                 draft.selectedLinkId = linkId;
             })
         );
     }
 
-    graphClickedHandler = () => {
-        alert("graph background clicked");
+
+    getSelectedType = () => {
+        if (this.state.selectedNodeId || this.state.selectedLinkId)
+        {
+            if (this.state.selectedNodeId)
+            { //node clicked: (host or switch)
+                return this.props.location.data.nodesInfo[this.state.selectedNodeId].type;
+            }
+            else
+            { // link clicked
+                return "link";
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
+
+    renderSideInfo = () => {
+        const type = this.getSelectedType();
+        // alert(`type: ${type}`)
+        if (!type)
+        {
+            return null;
+        }
+        else
+        {
+            if (type === "host")
+            {
+                return (
+                <div>
+                    host
+                </div>);
+            }
+            else if (type === "switch")
+            {
+                return "switch";
+            }
+            else if (type === "link")
+            {
+                return "link"
+            }
+            else 
+            {
+                alert("den paizeis me poiothta"); //REMOVE IT !!!!!!!!!!
+                return "den paizeis me poiothta";
+            }
+        }
+    }
+
+
+    renderSwitchInfo = () => {
+        const type = this.getSelectedType();
+        if ((!type) || (type !== "switch"))
+        {
+            return null;
+        }
+        else
+        {
+            return (
+                <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
+                    SWITCH INFO
+                </div>
+            );
+        }
+    }
+
+
+    
 
     render () {
 
         console.log("inside statistics app rendering");
 
         // alert("rendering app")
-        // console.log(this.props.location.data.graphNodes);
+        console.log(this.props.location.data);
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
 
@@ -88,20 +157,11 @@ class StatisticsApp extends Component {
                             </div>
 
                             <div className="w-100 p-2" style={{backgroundColor: "GhostWhite"}}>
-                                {this.state.selectedNodeId || this.state.selectedLinkId ?
-                                    // <HostInfo/>
-                                    null
-                                : null
-                                }
+                                {this.renderSideInfo()}
                             </div>
                         </div>
 
-                        {this.state.selectedNodeId ?
-                            <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
-                                wswswswswsw
-                            </div>
-                            : null
-                        }
+                        {this.renderSwitchInfo()}
                     </div>
                 }
             </>
