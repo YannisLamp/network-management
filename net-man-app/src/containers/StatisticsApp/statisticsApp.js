@@ -72,7 +72,10 @@ class StatisticsApp extends Component {
             if (type === "host")
             {
                 return (
-                    <HostInfo nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}/>    
+                    <HostInfo 
+                        nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
+                        switchClickedHandler={()=>this.nodeClickedHandler(this.props.location.data.nodesInfo[this.state.selectedNodeId].attachedTo.nodeId)}
+                    />    
                 );
             }
             else if (type === "switch")

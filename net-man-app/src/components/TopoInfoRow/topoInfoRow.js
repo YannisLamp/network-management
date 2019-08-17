@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 
 
 const topoInfoRow = (props) => {
@@ -10,8 +10,15 @@ const topoInfoRow = (props) => {
                 {props.name}
             </Col>
 
-            <Col sm="8" className="border-left align-self-center">
-                {props.value}
+            <Col sm="8" className="border-left align-self-center" 
+                 onClick={()=> { if (props.nodeClickedHandler) { props.nodeClickedHandler(); } else { return; } } }
+            >
+                {   
+                    props.clickableValue ?
+                    <Button color="link">{props.value}</Button>
+                    : props.value
+                }
+                
             </Col>
         </Row>
     );
