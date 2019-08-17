@@ -15,7 +15,7 @@ import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
 class StatisticsApp extends Component {
 
     state = {
-        selectedNodeId: null,
+        selectedNodeId: this.props.location.data ? this.props.location.data.nodesInfo[Object.keys(this.props.location.data.nodesInfo)[0]].id : null,
         selectedLinkId: null
     }
 
