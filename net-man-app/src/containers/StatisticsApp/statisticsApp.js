@@ -11,6 +11,7 @@ import produce from 'immer';
 import { getWidth, getHeight } from '../../utilities/utilities';
 import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
 import SwitchInfo from '../../components/StatisticsApp/SwitchInfo/switchInfo';
+import SwitchPortInfo from '../../components/StatisticsApp/SwitchInfo/SwitchPortInfo/switchPortInfo';
 import { getGraphLinks, getGraphNodes, getFirstNodeId, getNodeFirstPortInfo, getSwitchPortInfo } from '../../utilities/ODL_utilities';
 
 
@@ -126,7 +127,8 @@ class StatisticsApp extends Component {
         {
             return (
                 <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
-                    {this.state.selectedPortInfo.id}
+                    {/* {this.state.selectedPortInfo.id} */}
+                    <SwitchPortInfo switchPortInfo={this.state.selectedPortInfo}/>
                 </div>
             );
         }
