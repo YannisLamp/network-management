@@ -56,16 +56,16 @@ class CreateNetwork extends Component {
                         const topologyLinks = topologyData['network-topology'].topology[0].link;
 
                         // nodesData.nodes.node is the array of nodes
-                        const nodesAnalytics = nodesData.nodes.node;    
-                        const nodesConnectors = this.getNodesConnectorsData(nodesAnalytics);
+                        const switchesAnalytics = nodesData.nodes.node;    
 
-                        this.setLinksDataSets(topologyLinks, nodesConnectors);
-                        this.setNodesDataSets(topologyNodes, nodesConnectors);
+                        let switchesDatasets = this.extractSwitchesInfo(switchesAnalytics);
+                        this.setLinksInfo(topologyLinks);
+                        this.setNodesInfo(topologyNodes, switchesDatasets);
                     });
             });
     }
 
-    setLinksDataSets = (linksTopo, nodesConnectors) => {
+    setLinksInfo = (linksTopo) => {
         
         let retGraphLinks = [];
         let retLinksInfo = {};
@@ -132,14 +132,15 @@ class CreateNetwork extends Component {
         );
     }
 
-    setNodesDataSets = (nodesTopo, nodesConnectors) => {
+    setNodesInfo = (nodesTopo, switchesDatasets) => {
         // nodesConnectors:
         // nodesTopo: includes both hosts and switches info. 
         // However, nodesTopo does not contain extensive info about switches.
         // So, will use nodesAnalytics to extract hosts' info
 
         let retGraphNodes = [];
-        let retNodesInfo = {};
+        let retNodesInfo = switchesDatasets.switchesInfo;
+
         for (let node of nodesTopo) 
         { 
             // {<node1_id> : {}, <node2_id> : {} ...}
@@ -153,11 +154,11 @@ class CreateNetwork extends Component {
             if (node['termination-point'][0]['tp-id'] !== nodeId) 
             {   //it is switch
                 nodeSVGicon = switchSVG;
-                retNodesInfo[nodeId]["type"] = "switch";
+                // retNodesInfo[nodeId]["type"] = "switch";
 
-                retNodesInfo[nodeId]["switchType"] = nodesConnectors[nodeId]["switchType"];
-                retNodesInfo[nodeId]["info"] = nodesConnectors[nodeId]["info"]; //isws peritto !!!!!!!!
-                retNodesInfo[nodeId]["connectors"] = nodesConnectors[nodeId]["connectors"];
+                // retNodesInfo[nodeId]["switchType"] = nodesConnectors[nodeId]["switchType"];
+                // retNodesInfo[nodeId]["info"] = nodesConnectors[nodeId]["info"]; //isws peritto !!!!!!!!
+                // retNodesInfo[nodeId]["connectors"] = nodesConnectors[nodeId]["connectors"];
             }
             else
             {   //it is host
@@ -166,7 +167,10 @@ class CreateNetwork extends Component {
                 retNodesInfo[nodeId]["type"] = "host";
                 retNodesInfo[nodeId]["ip"] = node["host-tracker-service:addresses"][0].ip;
                 retNodesInfo[nodeId]["mac"] = node["host-tracker-service:addresses"][0].mac;
-                retNodesInfo[nodeId]["attachedTo"] = node["host-tracker-service:attachment-points"][0]["tp-id"];
+
+                retNodesInfo[nodeId]["attachedTo"] = {};
+                retNodesInfo[nodeId]["attachedTo"]["portId"] = node["host-tracker-service:attachment-points"][0]["tp-id"];
+                retNodesInfo[nodeId]["attachedTo"]["nodeId"] = switchesDatasets.portsToIDs[retNodesInfo[nodeId]["attachedTo"]["portId"]];
             }
 
             //isws na pros8esoume kai me poia nodes einai connected
@@ -187,26 +191,29 @@ class CreateNetwork extends Component {
     }
 
     // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
-    getNodesConnectorsData = (nodesAnalytics) => {
+    extractSwitchesInfo = (switchesAnalytics) => {
 
-        let retNodesConnectorsData = {};
+        let retPortsToIDs = {}
+        let retSwitchesInfo = {};
 
         // nodesAnalytics only contains switches
-        for (let node of nodesAnalytics) 
+        for (let switchInfo of switchesAnalytics) 
         { 
-            retNodesConnectorsData[node.id] = {};
-            retNodesConnectorsData[node.id]["switchType"] = node["flow-node-inventory:hardware"];
+            retSwitchesInfo[switchInfo.id] = {};
+            retSwitchesInfo[switchInfo.id]["type"] = "switch"
+            retSwitchesInfo[switchInfo.id]["switchType"] = switchInfo["flow-node-inventory:hardware"];
 
-            retNodesConnectorsData[node.id]["info"] = node; //isws peritto !!!!!!!!
+            retSwitchesInfo[switchInfo.id]["info"] = switchInfo; //isws peritto !!!!!!!!
 
-            retNodesConnectorsData[node.id]["connectors"] = {};
-            for (let connector of node['node-connector']) 
+            retSwitchesInfo[switchInfo.id]["connectors"] = {};
+            for (let connector of switchInfo['node-connector']) 
             {
-                retNodesConnectorsData[node.id]["connectors"][connector.id] = connector;
+                retSwitchesInfo[switchInfo.id]["connectors"][connector.id] = connector;
+                retPortsToIDs[connector.id] = switchInfo.id;
             }
         }
 
-        return retNodesConnectorsData;
+        return {portsToIDs: retPortsToIDs, switchesInfo: retSwitchesInfo};
     }
 
 
