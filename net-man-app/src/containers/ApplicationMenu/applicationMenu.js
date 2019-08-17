@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import styles from './applicationMenu.module.css';
 import { openDaylightApi } from '../../services/openDaylightApi';
 import { networkApi } from '../../services/networkApi';
-import { getODLnodes, getODLlinks } from '../../utilities/ODL_utilities';
+import { getODLnodes, getODLlinks, getNodesInfo, getLinksInfo, extractSwitchesInfo } from '../../utilities/ODL_utilities';
 import pcSVG from '../../assets/svg/pcIcon.svg';
 import switchSVG from '../../assets/svg/hub.svg';
 import produce from 'immer';
@@ -16,8 +16,6 @@ import produce from 'immer';
 class CreateNetwork extends Component {
     
     state = {
-        graphNodes: null,
-        graphLinks: null,
         nodesInfo: null,
         linksInfo: null
     }
@@ -58,163 +56,21 @@ class CreateNetwork extends Component {
                         // nodesData.nodes.node is the array of nodes
                         const switchesAnalytics = nodesData.nodes.node;    
 
-                        let switchesDatasets = this.extractSwitchesInfo(switchesAnalytics);
-                        this.setLinksInfo(topologyLinks);
-                        this.setNodesInfo(topologyNodes, switchesDatasets);
+                        const switchesDatasets = extractSwitchesInfo(switchesAnalytics);
+                        const linksInfo = getLinksInfo(topologyLinks);
+                        const nodesInfo = getNodesInfo(topologyNodes, switchesDatasets);
+
+                        this.setState(
+                            produce(draft => {
+                                draft.nodesInfo = nodesInfo;
+                                draft.linksInfo = linksInfo;
+                            })
+                        );
                     });
             });
     }
 
-    setLinksInfo = (linksTopo) => {
-        
-        let retGraphLinks = [];
-        let retLinksInfo = {};
-        for (let link of linksTopo) 
-        {
-            const sourceNodeId = link.source['source-node'];
-            const destNodeId = link.destination['dest-node'];
-
-            const linkInfoId = sourceNodeId + "/" + destNodeId;
-            retLinksInfo[linkInfoId] = {};
-
-            retLinksInfo[linkInfoId]["sourceInfo"] = {};
-            retLinksInfo[linkInfoId]["sourceInfo"]["nodeId"] = sourceNodeId;
-            retLinksInfo[linkInfoId]["sourceInfo"]["portId"] = link.source['source-tp'];
-            if (sourceNodeId === link.source['source-tp']) // sourceNodeId === sourceNodePortId
-            { // source node is a host 
-                retLinksInfo[linkInfoId]["sourceInfo"]["nodeType"] = "host";
-            }
-            else
-            {
-                retLinksInfo[linkInfoId]["sourceInfo"]["nodeType"] = "switch";
-            }
-            // if (sourceNodeId === link.source['source-tp']) // sourceNodeId === sourceNodePortId
-            // { // source node is a host that does not have ports numbers
-            //     retLinksInfo[linkInfoId]["sourceInfo"]["portNumber"] = null;
-            // }
-            // else
-            // {
-            //     retLinksInfo[linkInfoId]["sourceInfo"]["portNumber"] = nodesConnectors[sourceNodeId][link.source['source-tp']];
-            // }
-
-            retLinksInfo[linkInfoId]["destInfo"] = {};
-            retLinksInfo[linkInfoId]["destInfo"]["nodeId"] = destNodeId;
-            retLinksInfo[linkInfoId]["destInfo"]["portId"] = link.destination['dest-tp'];
-            if (destNodeId === link.destination['dest-tp']) // destNodeId === destNodePortId
-            { // destination node is a host
-                retLinksInfo[linkInfoId]["destInfo"]["nodeType"] = "host";
-            }
-            else
-            {
-                retLinksInfo[linkInfoId]["destInfo"]["nodeType"] = "switch";
-            }
-            // if (destNodeId === link.destination['dest-tp']) // destNodeId === destNodePortId
-            // { // destination node is a host that does not have ports numbers
-            //     retLinksInfo[linkInfoId]["destInfo"]["portNumber"] = null;
-            // }
-            // else
-            // {
-            //     retLinksInfo[linkInfoId]["destInfo"]["portNumber"] = nodesConnectors[destNodeId][link.destination['dest-tp']];
-            // }
-            
-            const graphLink = {
-                source: sourceNodeId,
-                target: destNodeId, 
-            }
-            retGraphLinks.push(graphLink);
-        }
-
-        this.setState(
-            produce(draft => {
-                draft.graphLinks = retGraphLinks;
-                draft.linksInfo = retLinksInfo;
-            })
-        );
-    }
-
-    setNodesInfo = (nodesTopo, switchesDatasets) => {
-        // nodesConnectors:
-        // nodesTopo: includes both hosts and switches info. 
-        // However, nodesTopo does not contain extensive info about switches.
-        // So, will use nodesAnalytics to extract hosts' info
-
-        let retGraphNodes = [];
-        let retNodesInfo = switchesDatasets.switchesInfo;
-
-        for (let node of nodesTopo) 
-        { 
-            // {<node1_id> : {}, <node2_id> : {} ...}
-            const nodeId = node['node-id'];
-            retNodesInfo[nodeId] = {};
-            retNodesInfo[nodeId]["id"] = nodeId;
-
-            let nodeSVGicon = null;
-
-            //check if node is host or switch
-            if (node['termination-point'][0]['tp-id'] !== nodeId) 
-            {   //it is switch
-                nodeSVGicon = switchSVG;
-                // retNodesInfo[nodeId]["type"] = "switch";
-
-                // retNodesInfo[nodeId]["switchType"] = nodesConnectors[nodeId]["switchType"];
-                // retNodesInfo[nodeId]["info"] = nodesConnectors[nodeId]["info"]; //isws peritto !!!!!!!!
-                // retNodesInfo[nodeId]["connectors"] = nodesConnectors[nodeId]["connectors"];
-            }
-            else
-            {   //it is host
-                nodeSVGicon = pcSVG;
-
-                retNodesInfo[nodeId]["type"] = "host";
-                retNodesInfo[nodeId]["ip"] = node["host-tracker-service:addresses"][0].ip;
-                retNodesInfo[nodeId]["mac"] = node["host-tracker-service:addresses"][0].mac;
-
-                retNodesInfo[nodeId]["attachedTo"] = {};
-                retNodesInfo[nodeId]["attachedTo"]["portId"] = node["host-tracker-service:attachment-points"][0]["tp-id"];
-                retNodesInfo[nodeId]["attachedTo"]["nodeId"] = switchesDatasets.portsToIDs[retNodesInfo[nodeId]["attachedTo"]["portId"]];
-            }
-
-            //isws na pros8esoume kai me poia nodes einai connected
-
-            const graphNode = {
-                id: nodeId,
-                svg: nodeSVGicon,
-            }
-            retGraphNodes.push(graphNode);
-        }
-
-        this.setState(
-            produce(draft => {
-                draft.graphNodes = retGraphNodes;
-                draft.nodesInfo = retNodesInfo;
-            })
-        );
-    }
-
-    // this.state.nodeConnectorData[nodeConnector.id (dld linkid)] = statistics
-    extractSwitchesInfo = (switchesAnalytics) => {
-
-        let retPortsToIDs = {}
-        let retSwitchesInfo = {};
-
-        // nodesAnalytics only contains switches
-        for (let switchInfo of switchesAnalytics) 
-        { 
-            retSwitchesInfo[switchInfo.id] = {};
-            retSwitchesInfo[switchInfo.id]["type"] = "switch"
-            retSwitchesInfo[switchInfo.id]["switchType"] = switchInfo["flow-node-inventory:hardware"];
-
-            retSwitchesInfo[switchInfo.id]["info"] = switchInfo; //isws peritto !!!!!!!!
-
-            retSwitchesInfo[switchInfo.id]["connectors"] = {};
-            for (let connector of switchInfo['node-connector']) 
-            {
-                retSwitchesInfo[switchInfo.id]["connectors"][connector.id] = connector;
-                retPortsToIDs[connector.id] = switchInfo.id;
-            }
-        }
-
-        return {portsToIDs: retPortsToIDs, switchesInfo: retSwitchesInfo};
-    }
+    
 
 
     setGraphData = (statistics) => {
