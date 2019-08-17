@@ -126,8 +126,7 @@ class StatisticsApp extends Component {
         else
         {
             return (
-                <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
-                    {/* {this.state.selectedPortInfo.id} */}
+                <div className="d-flex d-flex-row p-3 align-items-center" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
                     <SwitchPortInfo switchPortInfo={this.state.selectedPortInfo}/>
                 </div>
             );
