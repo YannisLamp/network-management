@@ -176,3 +176,25 @@ export const getGraphNodes = (nodesInfo, selectedNodesIDs) => {
     return retGraphNodes;
     
 }
+
+
+export const getFirstNodeId = (nodesInfo) => {
+    return Object.keys(nodesInfo)[0] ;
+}
+
+
+export const getNodeFirstPortInfo = (nodesInfo, nodeId) => {
+    if (nodesInfo[nodeId].connectors)
+    {
+        return nodesInfo[nodeId].connectors[Object.keys(nodesInfo[nodeId].connectors)[0]] ;
+    }
+    else 
+    {
+        return null;
+    }
+}
+
+
+export const getSwitchPortInfo = (nodesInfo, selectedNodeId, selectedSwitchPortId) => {
+    return nodesInfo[selectedNodeId].connectors[selectedSwitchPortId];
+}
