@@ -15,7 +15,7 @@ const topoInfoRow = (props) => {
             >
                 {   
                     props.clickableValue ?
-                    <Button color="link">{props.value}</Button>
+                    <Button className="p-0" color="link">{props.value}</Button>
                     : props.value
                 }
                 
