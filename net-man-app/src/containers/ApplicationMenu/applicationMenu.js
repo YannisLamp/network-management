@@ -71,16 +71,55 @@ class CreateNetwork extends Component {
         let retLinksInfo = {};
         for (let link of linksTopo) 
         {
-            const sourceNode = link.source['source-node'];
-            const destNode = link.destination['dest-node'];
-            
-            // if (this.state.nodeConnectorData[link['link-id']]) {
-            //     linkConcatToPort[linkSrc + '/' + linkDest] = this.state.nodeConnectorData[link['link-id']]['flow-node-inventory:port-number'];
+            const sourceNodeId = link.source['source-node'];
+            const destNodeId = link.destination['dest-node'];
+
+            const linkInfoId = sourceNodeId + "/" + destNodeId;
+            retLinksInfo[linkInfoId] = {};
+
+            retLinksInfo[linkInfoId]["sourceInfo"] = {};
+            retLinksInfo[linkInfoId]["sourceInfo"]["nodeId"] = sourceNodeId;
+            retLinksInfo[linkInfoId]["sourceInfo"]["portId"] = link.source['source-tp'];
+            if (sourceNodeId === link.source['source-tp']) // sourceNodeId === sourceNodePortId
+            { // source node is a host 
+                retLinksInfo[linkInfoId]["sourceInfo"]["nodeType"] = "host";
+            }
+            else
+            {
+                retLinksInfo[linkInfoId]["sourceInfo"]["nodeType"] = "switch";
+            }
+            // if (sourceNodeId === link.source['source-tp']) // sourceNodeId === sourceNodePortId
+            // { // source node is a host that does not have ports numbers
+            //     retLinksInfo[linkInfoId]["sourceInfo"]["portNumber"] = null;
+            // }
+            // else
+            // {
+            //     retLinksInfo[linkInfoId]["sourceInfo"]["portNumber"] = nodesConnectors[sourceNodeId][link.source['source-tp']];
+            // }
+
+            retLinksInfo[linkInfoId]["destInfo"] = {};
+            retLinksInfo[linkInfoId]["destInfo"]["nodeId"] = destNodeId;
+            retLinksInfo[linkInfoId]["destInfo"]["portId"] = link.destination['dest-tp'];
+            if (destNodeId === link.destination['dest-tp']) // destNodeId === destNodePortId
+            { // destination node is a host
+                retLinksInfo[linkInfoId]["destInfo"]["nodeType"] = "host";
+            }
+            else
+            {
+                retLinksInfo[linkInfoId]["destInfo"]["nodeType"] = "switch";
+            }
+            // if (destNodeId === link.destination['dest-tp']) // destNodeId === destNodePortId
+            // { // destination node is a host that does not have ports numbers
+            //     retLinksInfo[linkInfoId]["destInfo"]["portNumber"] = null;
+            // }
+            // else
+            // {
+            //     retLinksInfo[linkInfoId]["destInfo"]["portNumber"] = nodesConnectors[destNodeId][link.destination['dest-tp']];
             // }
             
             const graphLink = {
-                source: sourceNode,
-                target: destNode, 
+                source: sourceNodeId,
+                target: destNodeId, 
             }
             retGraphLinks.push(graphLink);
         }

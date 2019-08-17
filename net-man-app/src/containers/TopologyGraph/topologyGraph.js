@@ -66,7 +66,7 @@ class TopologyGraph extends Component {
             },
             link: {
                 // color: 'gray',  // blue when clicked
-                // highlightColor: 'lightblue'
+                highlightColor: 'lightblue'
             },
             //width: 1550, //props
             width: this.props.graphWidth,
