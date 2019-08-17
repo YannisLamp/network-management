@@ -11,15 +11,19 @@ import produce from 'immer';
 import { getWidth, getHeight } from '../../utilities/utilities';
 import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
 import SwitchInfo from '../../components/StatisticsApp/SwitchInfo/switchInfo';
-import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
+import { getGraphLinks, getGraphNodes, getFirstNodeId, getNodeFirstPortInfo, getSwitchPortInfo } from '../../utilities/ODL_utilities';
 
 
 class StatisticsApp extends Component {
 
     state = {
-        selectedNodeId: this.props.location.data ? Object.keys(this.props.location.data.nodesInfo)[0] : null,
+        selectedNodeId: this.props.location.data ? getFirstNodeId(this.props.location.data.nodesInfo) : null,
         selectedLinkId: null,
-        selectedPortId: null
+        selectedPortInfo: this.props.location.data ? getNodeFirstPortInfo(this.props.location.data.nodesInfo, getFirstNodeId(this.props.location.data.nodesInfo)) : null
+    }
+
+    graphClickedHandler = () => {
+        return;
     }
 
     nodeClickedHandler = (nodeId) => {
@@ -28,6 +32,7 @@ class StatisticsApp extends Component {
             produce(draft => {
                 draft.selectedNodeId = nodeId;
                 draft.selectedLinkId = null;
+                draft.selectedPortInfo = getNodeFirstPortInfo(this.props.location.data.nodesInfo, nodeId);                
             })
         );
     }
@@ -39,6 +44,7 @@ class StatisticsApp extends Component {
             produce(draft => {
                 draft.selectedNodeId = null;
                 draft.selectedLinkId = linkId;
+                draft.selectedPortInfo = null;
             })
         );
     }
@@ -109,7 +115,7 @@ class StatisticsApp extends Component {
         {
             return (
                 <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
-                    SWITCH INFO
+                    {this.state.selectedPortInfo.id}
                 </div>
             );
         }
