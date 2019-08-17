@@ -42,7 +42,7 @@ const switchInfo = (props) => {
                                 <Button 
                                     className="p-0" 
                                     color="link"
-                                    onClick={()=>alert("aas")}
+                                    onClick={()=>props.switchPortClickedHandler(portId)}
                                 >
                                     {portId}
                                 </Button>

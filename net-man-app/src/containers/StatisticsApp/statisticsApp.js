@@ -22,6 +22,14 @@ class StatisticsApp extends Component {
         selectedPortInfo: this.props.location.data ? getNodeFirstPortInfo(this.props.location.data.nodesInfo, getFirstNodeId(this.props.location.data.nodesInfo)) : null
     }
 
+    switchPortClickedHandler = (portId) => {
+        this.setState(
+            produce(draft => {
+                draft.selectedPortInfo = getSwitchPortInfo(this.props.location.data.nodesInfo, this.state.selectedNodeId, portId);                
+            })
+        );
+    }
+
     graphClickedHandler = () => {
         return;
     }
@@ -89,7 +97,10 @@ class StatisticsApp extends Component {
             else if (type === "switch")
             {
                 return (
-                    <SwitchInfo nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}/>    
+                    <SwitchInfo 
+                        nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
+                        switchPortClickedHandler={this.switchPortClickedHandler}
+                    />    
                 );
             }
             else if (type === "link")
