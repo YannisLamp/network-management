@@ -100,6 +100,8 @@ export const extractSwitchesInfo = (switchesAnalytics) => {
     for (let switchInfo of switchesAnalytics) 
     { 
         retSwitchesInfo[switchInfo.id] = {};
+        retSwitchesInfo[switchInfo.id]["id"] = switchInfo.id;
+
         retSwitchesInfo[switchInfo.id]["type"] = "switch"
         retSwitchesInfo[switchInfo.id]["switchType"] = switchInfo["flow-node-inventory:hardware"];
 

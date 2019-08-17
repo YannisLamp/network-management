@@ -22,7 +22,7 @@ const hostInfo = (props) => {
             <TopoInfoRow name="ID" value={props.nodeInfo.id}/>
             <TopoInfoRow name="IP address" value={props.nodeInfo.ip}/>
             <TopoInfoRow name="MAC address" value={props.nodeInfo.mac}/>
-            <TopoInfoRow name="Attached to" value={props.nodeInfo.attachedTo}/>
+            <TopoInfoRow name="Attached to" value={props.nodeInfo.attachedTo.portId}/>
         </Container>
     );
 }
