@@ -175,15 +175,6 @@ class CreateNetwork extends Component {
 
     //will be remove only for testing purposes
 
-    testODLAPI = () => {
-
-        openDaylightApi.getNodes()
-            .then(data => {
-                alert("OPD Data received !");
-                console.log(data);     
-            });
-
-    }
 
     getODLinfo  = () => {
         openDaylightApi.getTopology()
@@ -247,18 +238,11 @@ class CreateNetwork extends Component {
         console.log("--> LinksInfo: ", this.state.linksInfo )
         console.log("--------------------");
 
-        // console.log("--> node Connector Data: ", this.state.nodeConnectorData)
-        // console.log("--------------------");
-
-        // console.log("--> links Concat to Port: ", this.state.linkConcatToPort)
-        // console.log("--------------------");
-        // console.log("======================================");
-
 
         return (
             <Container fluid className={styles.MenuContainer}>
 
-                { !this.state.graphNodes ?
+                { !this.state.nodesInfo ?
                 <>
                     <Row>
                         <Col className="d-flex justify-content-center">
@@ -284,9 +268,6 @@ class CreateNetwork extends Component {
                             to={{   
                                     pathname: '/statistics', 
                                     data: { 
-                                        graphNodes: this.state.graphNodes,
-                                        graphLinks: this.state.graphLinks,
-
                                         nodesInfo: this.state.nodesInfo,
                                         linksInfo: this.state.linksInfo
                                     } 
@@ -315,9 +296,6 @@ class CreateNetwork extends Component {
                             to={{   
                                     pathname: '/flows', 
                                     data: { 
-                                        graphNodes: this.state.graphNodes,
-                                        graphLinks: this.state.graphLinks,
-                                        
                                         nodesInfo: this.state.nodesInfo,
                                         linksInfo: this.state.linksInfo
                                     } 

@@ -117,10 +117,60 @@ export const extractSwitchesInfo = (switchesAnalytics) => {
 }
 
 
-export const getGraphLinks = () => {
+export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
 
+    let retGraphLinks = [];
+    for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
+    {
+        // console.log(key, value);
+
+        let color = "#d3d3d3"; //default
+        if (selectedLinksIDs.includes(linkId))
+        {
+            color = "RoyalBlue";
+        }
+
+        const graphLink = {
+            color: color,
+            source: linkInfo.sourceInfo.nodeId,
+            target: linkInfo.destInfo.nodeId
+        }
+
+        retGraphLinks.push(graphLink);
+    }
+
+    return retGraphLinks;
 }
 
-export const getGraphNodes = () => {
+export const getGraphNodes = (nodesInfo, selectedNodesIDs) => {
+    let retGraphNodes = [];
+    // console.log("selected node id: ", selectedNodesIDs)
+    for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
+    {
+        // console.log("now checking: ")
+        // console.log(nodeId);
+
+        let color = "gray"; //default
+        if (selectedNodesIDs.includes(nodeId))
+        {
+            color = "RoyalBlue";
+        }
+
+        let svgIcon = switchSVG;
+        if (nodeInfo.type === "host")
+        {
+            svgIcon = pcSVG;
+        }
+    
+        const graphNode = {
+            fontColor: color,
+            id: nodeId,
+            svg: svgIcon,
+        }
+
+        retGraphNodes.push(graphNode);
+    }
+
+    return retGraphNodes;
     
 }

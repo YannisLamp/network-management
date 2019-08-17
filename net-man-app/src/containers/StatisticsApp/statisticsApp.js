@@ -10,26 +10,17 @@ import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
 import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
+import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
 
 
 class StatisticsApp extends Component {
 
     state = {
-        selectedNodeId: this.props.location.data ? this.props.location.data.nodesInfo[Object.keys(this.props.location.data.nodesInfo)[0]].id : null,
+        selectedNodeId: this.props.location.data ? Object.keys(this.props.location.data.nodesInfo)[0] : null,
         selectedLinkId: null
     }
 
     nodeClickedHandler = (nodeId) => {
-        // alert(`node clicked ${nodeId}`);
-        // console.log("=========================")
-
-        // console.log(`node ${nodeId} info: `, this.state.nodesInfo[nodeId])
-       
-        // console.log("=========================")
-
-        // console.log(this.state.nodesInfo);
-
-        // console.log("=========================")
         
         this.setState(
             produce(draft => {
@@ -40,7 +31,7 @@ class StatisticsApp extends Component {
     }
 
     linkClickedHandler = (linkId) => {
-        alert(`link clicked ${linkId}`);
+        // alert(`link clicked ${linkId}`);
 
         this.setState(
             produce(draft => {
@@ -126,6 +117,7 @@ class StatisticsApp extends Component {
 
         // alert("rendering app")
         console.log(this.props.location.data);
+        console.log(this.state)
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
 
@@ -149,11 +141,11 @@ class StatisticsApp extends Component {
                                     nodeClickedHandler={this.nodeClickedHandler}
                                     linkClickedHandler={this.linkClickedHandler}
                                     graphClickedHandler={this.graphClickedHandler}
-                                    nodes={this.props.location.data.graphNodes}
-                                    links={this.props.location.data.graphLinks}
+                                    nodes={getGraphNodes(this.props.location.data.nodesInfo, [this.state.selectedNodeId])}
+                                    links={getGraphLinks(this.props.location.data.linksInfo, [this.state.selectedLinkId])}
                                     graphWidth={graphWidth}
                                     graphHeight={graphHeight}
-                            />
+                                />
                             </div>
 
                             <div className="w-100 p-2" style={{backgroundColor: "GhostWhite"}}>
