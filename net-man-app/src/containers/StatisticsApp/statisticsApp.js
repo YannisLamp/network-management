@@ -11,15 +11,28 @@ import produce from 'immer';
 import { getWidth, getHeight } from '../../utilities/utilities';
 import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
 import SwitchInfo from '../../components/StatisticsApp/SwitchInfo/switchInfo';
-import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
+import SwitchPortInfo from '../../components/StatisticsApp/SwitchInfo/SwitchPortInfo/switchPortInfo';
+import { getGraphLinks, getGraphNodes, getFirstNodeId, getNodeFirstPortInfo, getSwitchPortInfo } from '../../utilities/ODL_utilities';
 
 
 class StatisticsApp extends Component {
 
     state = {
-        selectedNodeId: this.props.location.data ? Object.keys(this.props.location.data.nodesInfo)[0] : null,
+        selectedNodeId: this.props.location.data ? getFirstNodeId(this.props.location.data.nodesInfo) : null,
         selectedLinkId: null,
-        selectedPortId: null
+        selectedPortInfo: this.props.location.data ? getNodeFirstPortInfo(this.props.location.data.nodesInfo, getFirstNodeId(this.props.location.data.nodesInfo)) : null
+    }
+
+    switchPortClickedHandler = (portId) => {
+        this.setState(
+            produce(draft => {
+                draft.selectedPortInfo = getSwitchPortInfo(this.props.location.data.nodesInfo, this.state.selectedNodeId, portId);                
+            })
+        );
+    }
+
+    graphClickedHandler = () => {
+        return;
     }
 
     nodeClickedHandler = (nodeId) => {
@@ -28,6 +41,7 @@ class StatisticsApp extends Component {
             produce(draft => {
                 draft.selectedNodeId = nodeId;
                 draft.selectedLinkId = null;
+                draft.selectedPortInfo = getNodeFirstPortInfo(this.props.location.data.nodesInfo, nodeId);                
             })
         );
     }
@@ -39,6 +53,7 @@ class StatisticsApp extends Component {
             produce(draft => {
                 draft.selectedNodeId = null;
                 draft.selectedLinkId = linkId;
+                draft.selectedPortInfo = null;
             })
         );
     }
@@ -83,7 +98,10 @@ class StatisticsApp extends Component {
             else if (type === "switch")
             {
                 return (
-                    <SwitchInfo nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}/>    
+                    <SwitchInfo 
+                        nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
+                        switchPortClickedHandler={this.switchPortClickedHandler}
+                    />    
                 );
             }
             else if (type === "link")
@@ -108,8 +126,8 @@ class StatisticsApp extends Component {
         else
         {
             return (
-                <div className="d-flex d-flex-row" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
-                    SWITCH INFO
+                <div className="d-flex d-flex-row p-3 align-items-center" style={{borderBottom: "2px solid gray", backgroundColor: "GhostWhite"}}>
+                    <SwitchPortInfo switchPortInfo={this.state.selectedPortInfo}/>
                 </div>
             );
         }
