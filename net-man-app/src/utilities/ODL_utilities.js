@@ -1,23 +1,21 @@
 import pcSVG from '../assets/svg/pcIcon.svg';
 import switchSVG from '../assets/svg/hub.svg';
 
-export const getODLnodes = (topologies) => {
-    const topo = topologies[0];
+export const getODLnodes = (nodesInfo) => {
     let retNodes = [];
-    for (let node of topo.node) 
+    for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
     {
-        retNodes.push(node['node-id']);
+        retNodes.push(nodeId);
     }
 
     return retNodes;
 }
 
-export const getODLlinks = (topologies) => {
-    const topo = topologies[0];
+export const getODLlinks = (linksInfo) => {
     let retLinks = [];
-    for (let link of topo.link)
+    for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
     {
-        retLinks.push([link.source['source-node'], link.destination['dest-node']]);
+        retLinks.push( [linkInfo.sourceInfo.nodeId, linkInfo.destInfo.nodeId] );
     }
 
     return retLinks;
