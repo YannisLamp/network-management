@@ -1,0 +1,69 @@
+
+h26 ping -c 20 h7 without flows
+
+ATTEMPT 1
+20 packets transmitted, 20 received, 0% packet loss, time 19439ms
+rtt min/avg/max/mdev = 0.163/0.254/1.040/0.183 ms
+
+ATTEMPT 2
+-- 10.0.0.7 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 19430ms
+rtt min/avg/max/mdev = 0.162/0.249/1.174/0.215 ms
+
+ATTEMPT 3
+--- 10.0.0.7 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 19438ms
+rtt min/avg/max/mdev = 0.156/0.257/1.049/0.199 ms
+mininet> h26 ping -c 100 h7
+
+
+ATTEMPT 4 [100 PACKETS]
+
+--- 10.0.0.7 ping statistics ---
+100 packets transmitted, 100 received, 0% packet loss, time 101322ms
+rtt min/avg/max/mdev = 0.151/0.205/0.439/0.051 ms
+
+
+
+AFTER FLOW IN OpenFlow14
+ATTEMPT 1
+--- 10.0.0.7 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 19428ms
+rtt min/avg/max/mdev = 0.125/0.248/1.043/0.191 ms
+
+
+ATTEMPT 2
+--- 10.0.0.7 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 19410ms
+rtt min/avg/max/mdev = 0.146/0.234/1.062/0.193 ms
+
+
+ATTEMPT 3
+--- 10.0.0.7 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 19419ms
+rtt min/avg/max/mdev = 0.155/0.246/1.041/0.192 ms
+
+
+
+ATTEMPT 4 [100 PACKETS]
+
+--- 10.0.0.7 ping statistics ---
+100 packets transmitted, 100 received, 0% packet loss, time 101343ms
+rtt min/avg/max/mdev = 0.152/0.204/1.183/0.105 ms
+
+
+
+AFTER FLOW IN OpenFlow14 + OpenFlow2
+
+--- 10.0.0.7 ping statistics ---
+100 packets transmitted, 100 received, 0% packet loss, time 101353ms
+rtt min/avg/max/mdev = 0.141/0.195/1.094/0.099 ms
+
+
+AFTER ALL FLOWS ADDED
+
+100 packets transmitted, 100 received, 0% packet loss, time 101348ms
+rtt min/avg/max/mdev = 0.105/0.165/0.999/0.089 ms
+
+
+time 101367ms

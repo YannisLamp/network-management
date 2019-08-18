@@ -10,6 +10,10 @@ from mininet.clean import Cleanup
 from functools import partial
 from mininet.util import dumpNodeConnections
 
+from flask import request
+import requests
+# from flask import response
+
 # from functools import partial
 import networkx as nx
 
@@ -22,6 +26,10 @@ app = Flask(__name__)
 cors = CORS(app)
 
 gnet = None
+
+gflows_list = None
+
+
 
 
 def createNet(controllerIp, controllerPort, topoType,
@@ -66,11 +74,13 @@ def createNet(controllerIp, controllerPort, topoType,
     net.pingAll()
 
     # Drop the user in to a CLI so user can run commands.
-    #CLI( net )
+    # CLI( net )
 
     # Export local net
     global gnet
     gnet = net
+
+    global gflows_list
 
 
 # @app.route('/')
@@ -164,13 +174,112 @@ def find_shortest_path():
     return jsonify({'shortest_path': shortest_path})
 
 
+@app.route('/create_flows', methods=['POST'])
+def create_flow():
+
+    #auta tha einai xwmena se lista kai tha ta kanw iterate
+    switch_id        = request.json.get('switchId') # openflow:<number>
+    flow_id          = request.json.get('flowId') #mporei na mh to pairnw kai na to ftiaxnw egw apo openflow<x>_myflow
+    port_number      = request.json.get('portNumber')
+    table_id         = request.json.get('tableId')
+    
+
+    src_mac_address  = request.json.get('srcMacAddress')
+    dest_mac_address = request.json.get('destMacAddress')
+
+
+    create_flow()
+    # NODE_INFO = [OBJECT],OPOU OBJECT
+    flows_list=[]
+
+    # kalw epanalhptika th create flow pou ftiaxnei kai ta url
+
+     gflows_list= flows_list
+
+
+    # response = requests.post("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/1", json=jsonify(flow_dict))
+    response = requests.get("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/0")
+    print response
+
+    return response
+    # return jsonify({'success': True})
+
+
+
+def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,port_number):
+    # NODE_INFO = [OBJECT],OPOU OBJECT
+
+
+
+    flow_dict = {'flow': [{
+        'id': flow_id,
+        'match': {'ethernet-match':{'ethernet-source':{'address': src_mac_address}, 'ethernet-destination':{'address': dest_mac_address}, 'ethernet-type':{'type': '0x800'} }},
+        'instructions': {'instruction': [ { 'apply-actions':{'action': [{'output-action':{'output-node-connector':port_number} , 'order': '1' }] } ,'order':'1'}]  },
+        'installHw':'false',
+        'table_id':table_id }]}
+
+    # nested_dict = { 'dictA': {'key_1': 'value_1'},
+    #             'dictB': {'key_2': 'value_2'}
+    # json.dumps({'id': 5, '6': 7}, indent=4))
+    # json.dumps(flow_dict, indent=4))
+
+    print(jsonify(flow_dict))
+
+    url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:"+openflow_id+"/table/"+table_id+"/flow/"+flow_id
+
+    response = requests.post("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:27/table/0/flow/1", json=jsonify(flow_dict))
+
+    print response.json()
+
+    return jsonify(flow_dict) #todo add sort_keys=True
+
+
+# https://realpython.com/python-requests/
+@app.route('/hello', methods=['GET'])
+def hello():
+    # response = requests.get("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/0")
+    # print response.json()
+
+    # return jsonify(response.json())
+    response = requests.get(
+        'http://localhost:8181/restconf/operational/network-topology:network-topology',
+        # params={'q': 'requests+language:python'},
+        headers={'Accept': 'application/json','Authorization': 'Basic YWRtaW46YWRtaW4='},
+    )
+
+    return response.json()
+
+
+@app.route('/pingall', methods=['POST'])
+def pingall():
+    gnet.pingAll()
+    return jsonify({'success': True})
+
+
+@app.route('/ping_hosts', methods=['POST'])
+def ping_between_hosts():
+    h_source = request.json.get('H_source')
+    h_dest = request.json.get('H_dest')
+
+
+    gnet.ping(h_source,h_dest)
+    #startpings( host, ips )
+    h_source, h_dest  = gnet.hosts[index_src], gnet.hosts[index_dest]
+
+    # xrono prin [check if exists if not calculate it]
+    # xrono meta
+    # diafora
+    # poso xrono pio grhgoro %
+
+    # print h_source.cmd('ping -c50 %s' % h_dest.IP()
+    # return jsonify({'success': True})
 
 
 
 
-
-
-
+# domh list/dict na krataei ola ta dhmiourgithenta flows
+#delete endpoint gia to flow
+#delete all flows
 
 
 
