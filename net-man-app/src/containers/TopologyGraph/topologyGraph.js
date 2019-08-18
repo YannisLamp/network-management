@@ -30,7 +30,7 @@ class TopologyGraph extends Component {
     // };
     
     onClickLink = (source, target) => {
-        this.props.linkClickedHandler(source + "-" + target);
+        this.props.linkClickedHandler(source + "/" + target);
     }
     
     // onMouseOverLink = function(source, target) {
