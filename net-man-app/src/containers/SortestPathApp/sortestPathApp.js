@@ -106,7 +106,20 @@ class SortestPathApp extends Component {
     }
 
     createFlowsHandler = () => {
+        this.setState(
+            produce(draft => {
+                draft.errorMessage = null;
+            })
+        );
         alert("creating flows");
+
+
+        this.setState(
+            produce(draft => {
+                draft.sortestPath = [];
+            })
+        );
+        alert("Flows created")
     }
 
     calcSortestPathHandler = () => {
@@ -243,14 +256,19 @@ class SortestPathApp extends Component {
                         </div>
 
                         <div className="d-flex d-flex-row p-2" style={{backgroundColor: "GhostWhite"}}>
-                            <NodesSelection 
-                                selectedNodeIdsource={this.state.selectedNodeIdsource} 
-                                selectedNodeIddest={this.state.selectedNodeIddest}
-                                resetSelectedNodesHandler={this.resetSelectedNodesHandler}
-                                removeSelectedNodeHandler={this.removeSelectedNodeHandler}
-                                nodesSet={this.nodesSet()}
-                                createFlowsHandler={this.createFlowsHandler}
-                            />
+                            {
+                                !this.state.sortestPath.length ?
+                                    <NodesSelection 
+                                        selectedNodeIdsource={this.state.selectedNodeIdsource} 
+                                        selectedNodeIddest={this.state.selectedNodeIddest}
+                                        resetSelectedNodesHandler={this.resetSelectedNodesHandler}
+                                        removeSelectedNodeHandler={this.removeSelectedNodeHandler}
+                                        nodesSet={this.nodesSet()}
+                                        createFlowsHandler={this.createFlowsHandler}
+                                    />
+                                :
+                                null
+                            }
                         </div>   
                     </div>      
                 </>
