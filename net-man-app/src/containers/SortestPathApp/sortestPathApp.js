@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Table, Spinner, Button } from 'reactstrap';
+import { Container, Row, Col, Table, Spinner, Button, Alert } from 'reactstrap';
 import { withRouter, Redirect } from 'react-router-dom';
 
 //import styles from './statisticsApp.module.css';
@@ -10,6 +10,10 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
+import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
+
+import NodesSelection from '../../components/flowsApp/nodesSelection';
+
 
 
 class SortestPathApp extends Component {
@@ -17,7 +21,8 @@ class SortestPathApp extends Component {
     state = {
         selectedNodeIdsource: null,
         selectedNodeIddest: null,
-        errorMessage: "",
+        sortestPath: [],
+        errorMessage: null,
 
         // list of shortest path mac addresses
     }
@@ -31,6 +36,17 @@ class SortestPathApp extends Component {
     }
 
     nodeClickedHandler = (nodeId) => {
+
+        if (this.props.location.data.nodesInfo[nodeId].type === "switch")
+        {
+            this.setState(
+                produce(draft => {
+                    draft.errorMessage = "You must choose only host nodes.";
+                })
+            );
+            return;
+        }
+
         if (this.nodesSet())
         {
             //set error message
@@ -46,6 +62,7 @@ class SortestPathApp extends Component {
         { // user has not chosen a source node yet
             this.setState(
                 produce(draft => {
+                    draft.errorMessage = null;
                     draft.selectedNodeIdsource = nodeId;
                 })
             );
@@ -56,6 +73,7 @@ class SortestPathApp extends Component {
             {
                 this.setState(
                     produce(draft => {
+                        draft.errorMessage = null;
                         draft.selectedNodeIddest = nodeId;
                     })
                 );
@@ -73,7 +91,7 @@ class SortestPathApp extends Component {
     }
 
     nodesSet = () => {
-        return this.state.selectedNodeIdsource && this.state.selectedNodeIddest
+        return this.state.selectedNodeIdsource && this.state.selectedNodeIddest;
     }
 
     calcSortestPathHandler = () => {
@@ -125,11 +143,37 @@ class SortestPathApp extends Component {
 
 
     resetSelectedNodesHandler = () => {
-
+        this.setState(
+            produce(draft => {
+                draft.errorMessage = null;
+                draft.selectedNodeIddest = null;
+                draft.selectedNodeIdsource = null;
+            })
+        );
     }
 
-    removeNodeHandler = (nodeId) => {
+    removeSelectedNodeHandler = (type) => {
+        this.setState(
+            produce(draft => {
+                draft.errorMessage = null;
+                if (type === "source")
+                {
+                    draft.selectedNodeIdsource = null;
+                }
+                else
+                {
+                    draft.selectedNodeIddest = null;
+                }
+            })
+        );
+    }
 
+    onDismissAlert = () => {
+        this.setState(
+            produce(draft => {
+                draft.errorMessage = null;
+            })
+        );
     }
 
     render () {
@@ -144,14 +188,13 @@ class SortestPathApp extends Component {
 
         // alert("rendering app")
         // console.log(this.props.location.data.graphNodes);
-        const graphWidth = getWidth() * 1;
+        const graphWidth = getWidth() * 0.9;
         const graphHeight = getHeight() * 0.6;
 
         //console.log(this.state)
 
         console.log('nodes::::');
-        console.log(this.props.location);
-        console.log(this.props.location.data.nodesInfo);
+        console.log(this.props.location.data);
 
         return (
             <>
@@ -160,90 +203,39 @@ class SortestPathApp extends Component {
                 :
 
                 <>
-                    <div className="d-flex d-flex-row border">
-                        <div className="border">
+                    <Alert color="danger" isOpen={this.state.errorMessage !== null} toggle={this.onDismissAlert}>
+                        {this.state.errorMessage}
+                    </Alert>
+
+                    <div style={{border: "2px solid gray"}}>
+
+                        <div className="d-flex d-flex-row justify-content-center" style={{backgroundColor: "GhostWhite"}}>
+                            <div className="font-weight-bold customHeader1">
+                                Topology Flows Creation
+                            </div>
+                        </div>
+
+                        <div className="d-flex d-flex-row" style={{borderTop: "2px solid gray", borderBottom: "2px solid gray"}}>
                             <TopologyGraph
                                 nodeClickedHandler={this.nodeClickedHandler}
                                 linkClickedHandler={this.linkClickedHandler}
                                 graphClickedHandler={this.graphClickedHandler}
-                                nodes={this.props.location.data.graphNodes}
-                                links={this.props.location.data.graphLinks}
+                                nodes={getGraphNodes(this.props.location.data.nodesInfo, this.state.sortestPath)}
+                                links={getGraphLinks(this.props.location.data.linksInfo, this.state.sortestPath)}
                                 graphWidth={graphWidth}
                                 graphHeight={graphHeight}
-                        />
+                            />
                         </div>
-                    </div>
 
-                    <div className="d-flex d-flex-row border p-2">
-                        <Container fluid>
-
-                            <Row className="border">
-                                <Col sm="12" className="font-weight-bold border d-flex justify-content-center">
-                                    <div>
-                                        Selected Nodes
-                                    </div>
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="4" className="font-weight-bold border">
-                                    Source Node
-                                </Col>
-
-                                <Col sm="6" className="border">
-                                    {this.state.selectedNodeIdsource ? this.state.selectedNodeIdsource
-                                    : 
-                                        <div className="font-italic text-muted">
-                                            None selected
-                                        </div>
-                                    }
-                                </Col>
-
-                                <Col sm="2" className="d-flex justify-content-end">
-                                    <Button size="md">
-                                    aa
-                                    </Button>
-                                </Col>
-                            </Row>
-
-                            <Row className="border">
-                                <Col sm="4" className="font-weight-bold border">
-                                    Destination Node
-                                </Col>
-
-                                <Col sm="6" className="border">
-                                    {this.state.selectedNodeIddest ? this.state.selectedNodeIddest
-                                    : 
-                                        <div className="font-italic text-muted">
-                                            None selected
-                                        </div>
-                                    }                                
-                                </Col>
-
-                                <Col sm="2" className="d-flex justify-content-end">
-                                    <Button size="md">
-                                        Remove <i className="fas fa-trash-alt"></i>
-                                    </Button>
-                                </Col>
-                            </Row>
-
-                            {
-                                ! this.nodesSet() ? null
-                                :
-                                <Row className="border mt-3">
-                                    <Col sm="12" className="border d-flex justify-content-end">
-                                        <Button size="lg" className="font-weight-bold mr-2">
-                                            Reset Nodes
-                                        </Button>
-
-                                        <Button size="lg" color="primary" className="font-weight-bold">
-                                            Find Path
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            }
-                        </Container>
-                    </div>         
+                        <div className="d-flex d-flex-row p-2" style={{backgroundColor: "GhostWhite"}}>
+                            <NodesSelection 
+                                selectedNodeIdsource={this.state.selectedNodeIdsource} 
+                                selectedNodeIddest={this.selectedNodeIddest}
+                                resetSelectedNodesHandler={this.resetSelectedNodesHandler}
+                                removeSelectedNodeHandler={this.removeSelectedNodeHandler}
+                            />
+                        </div>   
+                    </div>      
                 </>
                 }
             </>
