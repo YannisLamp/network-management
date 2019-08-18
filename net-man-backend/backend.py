@@ -177,7 +177,21 @@ def find_shortest_path():
     return jsonify({'shortest_path': shortest_path})
 
 
-@app.route('/create_flows', methods=['POST'])
+
+@app.route('/flows', methods=['DELETE'])
+def delete_flows():
+    for url in gflows_list:
+        delete_flow(url)
+
+    return jsonify({'success': True})
+
+def delete_flow(url):
+    response = requests.delete(url, headers={'Accept': 'application/json','Authorization': 'Basic YWRtaW46YWRtaW4='})
+
+
+
+
+@app.route('/flows', methods=['POST'])
 def create_flows():
 
     #auta tha einai xwmena se lista kai tha ta kanw iterate
@@ -230,7 +244,7 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
     # nested_dict = { 'dictA': {'key_1': 'value_1'},
     #             'dictB': {'key_2': 'value_2'}
 
-    
+
     # http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/2/flow/0
 
     url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/"+str(openflow_id)+"/table/"+str(table_id)+"/flow/"+str(flow_id)
