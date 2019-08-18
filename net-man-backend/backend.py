@@ -10,15 +10,18 @@ from mininet.clean import Cleanup
 from functools import partial
 from mininet.util import dumpNodeConnections
 
-from flask import request
-import requests
+
+
 # from flask import response
 
 # from functools import partial
 import networkx as nx
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request ,make_response
 from flask_cors import CORS
+
+import requests
+import json
 
 from gevent.pywsgi import WSGIServer
 
@@ -27,7 +30,7 @@ cors = CORS(app)
 
 gnet = None
 
-gflows_list = None
+gflows_list = []
 
 
 
@@ -175,41 +178,47 @@ def find_shortest_path():
 
 
 @app.route('/create_flows', methods=['POST'])
-def create_flow():
+def create_flows():
 
     #auta tha einai xwmena se lista kai tha ta kanw iterate
-    switch_id        = request.json.get('switchId') # openflow:<number>
-    flow_id          = request.json.get('flowId') #mporei na mh to pairnw kai na to ftiaxnw egw apo openflow<x>_myflow
-    port_number      = request.json.get('portNumber')
-    table_id         = request.json.get('tableId')
-    
+    content_json = request.get_json()
 
-    src_mac_address  = request.json.get('srcMacAddress')
-    dest_mac_address = request.json.get('destMacAddress')
+    print "hi"
+    print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
 
+    src_mac_address  = content_json['srcMacAddress']
+    dest_mac_address = content_json['destMacAddress']
 
-    create_flow()
-    # NODE_INFO = [OBJECT],OPOU OBJECT
-    flows_list=[]
+    nodes_info       = content_json['nodesInfo']
+
+    for switch_info in nodes_info:
+        switch_id        = switch_info['switchId'] # openflow:<number>
+        port_number      = switch_info['portNumber']
+        table_id         = switch_info['tableId']
+
+        flow_id = 0#str(switch_id) +"_myFlow"
+
+        response_from_odl = create_flow(switch_id, table_id, flow_id, src_mac_address, dest_mac_address,port_number)
+        print response_from_odl
+
 
     # kalw epanalhptika th create flow pou ftiaxnei kai ta url
 
-     gflows_list= flows_list
 
 
-    # response = requests.post("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/1", json=jsonify(flow_dict))
-    response = requests.get("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/0")
-    print response
+     # iterate through the flow_list and for each-one call create_flow
 
-    return response
+
+    return response_from_odl #return make_response(jsonify(data), 200)
+    # return jsonify({'success': True}) #return make_response(jsonify(data), 200)
+
     # return jsonify({'success': True})
 
 
 
 def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,port_number):
-    # NODE_INFO = [OBJECT],OPOU OBJECT
 
-
+    # flows_list=[]
 
     flow_dict = {'flow': [{
         'id': flow_id,
@@ -220,18 +229,28 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
 
     # nested_dict = { 'dictA': {'key_1': 'value_1'},
     #             'dictB': {'key_2': 'value_2'}
-    # json.dumps({'id': 5, '6': 7}, indent=4))
-    # json.dumps(flow_dict, indent=4))
 
-    print(jsonify(flow_dict))
+    
+    # http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/2/flow/0
 
-    url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:"+openflow_id+"/table/"+table_id+"/flow/"+flow_id
+    url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/"+str(openflow_id)+"/table/"+str(table_id)+"/flow/"+str(flow_id)
+    print url_to_send_to_odl
 
-    response = requests.post("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:27/table/0/flow/1", json=jsonify(flow_dict))
+    gflows_list.append(url_to_send_to_odl)
 
-    print response.json()
+    # requests.put('https://httpbin.org/put', data={'key':'value'})
+    print flow_dict
 
-    return jsonify(flow_dict) #todo add sort_keys=True
+    # json.dumps(response.text)
+    response = requests.put(url_to_send_to_odl, json=json.dumps(flow_dict) ,headers={'Accept': 'application/json','Authorization': 'Basic YWRtaW46YWRtaW4='})
+    #
+    # print response.json()
+
+
+    return  response.json() #todo add sort_keys=True
+    # return jsonify({'success': True})
+
+
 
 
 # https://realpython.com/python-requests/
