@@ -194,10 +194,9 @@ def delete_flow(url):
 @app.route('/flows', methods=['POST'])
 def create_flows():
 
-    #auta tha einai xwmena se lista kai tha ta kanw iterate
+
     content_json = request.get_json()
 
-    print "hi"
     print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
 
     src_mac_address  = content_json['srcMacAddress']
@@ -206,22 +205,13 @@ def create_flows():
     nodes_info       = content_json['nodesInfo']
 
     for switch_info in nodes_info:
-        switch_id        = switch_info['switchId'] # openflow:<number>
-        port_number      = switch_info['portNumber']
-        table_id         = switch_info['tableId']
-
-        flow_id = 0#str(switch_id) +"_myFlow"
+        switch_id    = switch_info['switchId'] # openflow:<number>
+        port_number  = switch_info['portNumber']
+        table_id     = switch_info['tableId']
+        flow_id      = 0
 
         response_from_odl = create_flow(switch_id, table_id, flow_id, src_mac_address, dest_mac_address,port_number)
         print response_from_odl
-
-
-    # kalw epanalhptika th create flow pou ftiaxnei kai ta url
-
-
-
-     # iterate through the flow_list and for each-one call create_flow
-
 
     return response_from_odl #return make_response(jsonify(data), 200)
     # return jsonify({'success': True}) #return make_response(jsonify(data), 200)
@@ -232,7 +222,6 @@ def create_flows():
 
 def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,port_number):
 
-    # flows_list=[]
 
     flow_dict = {'flow': [{
         'id': flow_id,
@@ -240,10 +229,6 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
         'instructions': {'instruction': [ { 'apply-actions':{'action': [{'output-action':{'output-node-connector':port_number} , 'order': '1' }] } ,'order':'1'}]  },
         'installHw':'false',
         'table_id':table_id }]}
-
-    # nested_dict = { 'dictA': {'key_1': 'value_1'},
-    #             'dictB': {'key_2': 'value_2'}
-
 
     # http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/2/flow/0
 
@@ -261,7 +246,7 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
     # print response.json()
 
 
-    return  response.json() #todo add sort_keys=True
+    return  response #.json()
     # return jsonify({'success': True})
 
 
