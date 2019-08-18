@@ -10,6 +10,7 @@ import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
 import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
+import LinkInfo from '../../components/StatisticsApp/LinkInfo/linkInfo';
 import SwitchInfo from '../../components/StatisticsApp/SwitchInfo/switchInfo';
 import SwitchPortInfo from '../../components/StatisticsApp/SwitchInfo/SwitchPortInfo/switchPortInfo';
 import { getGraphLinks, getGraphNodes, getFirstNodeId, getNodeFirstPortInfo, getSwitchPortInfo } from '../../utilities/ODL_utilities';
@@ -106,7 +107,13 @@ class StatisticsApp extends Component {
             }
             else if (type === "link")
             {
-                return "link"
+                return (
+                    <LinkInfo 
+                        nodesInfo={this.props.location.data.nodesInfo}
+                        linkInfo={this.props.location.data.linksInfo[this.state.selectedLinkId]}
+                        nodeClickedHandler={this.nodeClickedHandler}
+                    />    
+                );
             }
             else 
             {

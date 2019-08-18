@@ -34,6 +34,7 @@ export const getLinksInfo = (linksTopo) => {
 
         const linkInfoId = sourceNodeId + "/" + destNodeId;
         retLinksInfo[linkInfoId] = {};
+        retLinksInfo[linkInfoId]["id"] = linkInfoId;
 
         retLinksInfo[linkInfoId]["sourceInfo"] = {};
         retLinksInfo[linkInfoId]["sourceInfo"]["nodeId"] = sourceNodeId;
