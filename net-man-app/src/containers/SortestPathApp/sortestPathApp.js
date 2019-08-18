@@ -60,12 +60,23 @@ class SortestPathApp extends Component {
 
         if (!this.state.selectedNodeIdsource)
         { // user has not chosen a source node yet
-            this.setState(
-                produce(draft => {
-                    draft.errorMessage = null;
-                    draft.selectedNodeIdsource = nodeId;
-                })
-            );
+            if (this.state.selectedNodeIddest !== nodeId)
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.errorMessage = null;
+                        draft.selectedNodeIdsource = nodeId;
+                    })
+                );
+            }
+            else
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.errorMessage = "The source node must de different than the destination one.";
+                    })
+                );
+            }
         }
         else //user has already chosen a source node 
         { //this is the selected node
@@ -92,6 +103,10 @@ class SortestPathApp extends Component {
 
     nodesSet = () => {
         return this.state.selectedNodeIdsource && this.state.selectedNodeIddest;
+    }
+
+    createFlowsHandler = () => {
+        alert("creating flows");
     }
 
     calcSortestPathHandler = () => {
@@ -230,9 +245,11 @@ class SortestPathApp extends Component {
                         <div className="d-flex d-flex-row p-2" style={{backgroundColor: "GhostWhite"}}>
                             <NodesSelection 
                                 selectedNodeIdsource={this.state.selectedNodeIdsource} 
-                                selectedNodeIddest={this.selectedNodeIddest}
+                                selectedNodeIddest={this.state.selectedNodeIddest}
                                 resetSelectedNodesHandler={this.resetSelectedNodesHandler}
                                 removeSelectedNodeHandler={this.removeSelectedNodeHandler}
+                                nodesSet={this.nodesSet()}
+                                createFlowsHandler={this.createFlowsHandler}
                             />
                         </div>   
                     </div>      
