@@ -240,7 +240,7 @@ class FlowsApp extends Component {
                 nodesInfo: flowsSwitchesData
             };
             console.log("====>data for flows creation: ", flowsCreationData);
-            networkApi.createFlows()
+            networkApi.createFlows(flowsCreationData)
             .then(data => {
 
                 if (data.success)
