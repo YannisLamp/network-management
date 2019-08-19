@@ -173,12 +173,13 @@ def find_shortest_path():
     node_dest = request.json.get('node_dest')
     shortest_path = nx.shortest_path(graph, node_src, node_dest)
 
+    global gshortest_path
     gshortest_path = shortest_path #make list global
     # shortest_path.reverse()
 
     # print shortest_path
 
-    return jsonify({'shortest_path': shortest_path})
+    return jsonify({'shortest_path': gshortest_path})
 
 
 @app.route('/shortest_path', methods=['GET'])
