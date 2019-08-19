@@ -29,11 +29,11 @@ const flowsInfo = (props) => {
                             <td>{props.selectedNodeIdsource}</td>
                             <td>{props.selectedNodeIddest}</td>
 
-                            <td>{props.flowsInfo.sourceDest.timeBefore}</td>
-                            <td>{props.flowsInfo.sourceDest.timeAfter}</td>
+                            <td>{props.flowsInfo.timeBefore}</td>
+                            <td>{props.flowsInfo.timeAfter}</td>
 
-                            <td>{props.flowsInfo.sourceDest.timeDiff}</td>
-                            <td>{props.flowsInfo.sourceDest.timeDiffPrc}</td>
+                            <td>{props.flowsInfo.timeDiff}</td>
+                            <td>{props.flowsInfo.timeDiffPrc}</td>
                         </tr>
                     </tbody>
                 </Table>
