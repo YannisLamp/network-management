@@ -10,7 +10,7 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
-import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
+import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath } from '../../utilities/ODL_utilities';
 
 import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
 
@@ -116,7 +116,9 @@ class FlowsApp extends Component {
 
         this.setState(
             produce(draft => {
-                draft.sortestPath = [];
+                // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
+                draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+
             })
         );
         alert("Flows created")
@@ -249,7 +251,7 @@ class FlowsApp extends Component {
                                 linkClickedHandler={this.linkClickedHandler}
                                 graphClickedHandler={this.graphClickedHandler}
                                 nodes={getGraphNodes(this.props.location.data.nodesInfo, this.state.sortestPath)}
-                                links={getGraphLinks(this.props.location.data.linksInfo, this.state.sortestPath)}
+                                links={getGraphLinks(this.props.location.data.linksInfo, extractLinksFromNodesPath(this.state.sortestPath))}
                                 graphWidth={graphWidth}
                                 graphHeight={graphHeight}
                             />
