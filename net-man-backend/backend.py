@@ -198,12 +198,24 @@ def get_shortest_path():
 def delete_flows():
     global gshortest_path
     global gflows_list
+    global gstats_list
 
     for url in gflows_list:
         delete_flow(url)
 
+    print 'before ::'+ str(gshortest_path)
+
     del gshortest_path[:]   # delete shortest path list
+    print 'after ::'+ str(gshortest_path)
+
+    print 'before ::'+ str(gflows_list)
+
     del gflows_list[:]      # delete all urls from global list
+
+    print 'after ::'+ str(gflows_list)
+
+    del gstats_list[:]
+
     return jsonify({'success': True})
 
 def delete_flow(url):
@@ -242,6 +254,9 @@ def stats():
     time_diff     = time_before - time_after
     time_diff_prc = ((time_before - time_after)/time_after)*100 #following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
 
+    print 'time_before [{}] & time_after {} years old'. format(time_before, time_after)
+
+
     stats_dict  = {'sourceDest':{'timeBefore': str(time_before),'timeAfter':str(time_after),'timeDiff':str(time_diff),'timeDiffPrc':str(time_diff_prc)}  ,'success': True}
 
     return json.dumps(stats_dict)
@@ -276,7 +291,7 @@ def create_flows():
     # todo here check if flows exist!!
     # call ping_between_hosts_and_get_avrg_time() with the flows
     time_with_flows =ping_between_hosts_and_get_avrg_time()
-    gstats_list.append(float(time_without_flows)) #store in gstats_list[1] the avrg time before setting the flows
+    gstats_list.append(float(time_with_flows)) #store in gstats_list[1] the avrg time before setting the flows
 
     return stats()
 
