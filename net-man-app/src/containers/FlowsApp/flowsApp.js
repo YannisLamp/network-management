@@ -50,7 +50,7 @@ class FlowsApp extends Component {
             );   
         });
 
-        networkApi.getFlows()
+        openDaylightApi.getFlows()
         .then(data => {
             // alert("Shortest path retrieved");
             console.log("flows info: ", data);
@@ -174,7 +174,7 @@ class FlowsApp extends Component {
         // alert("flows deleted")
 
         // return;
-        networkApi.deleteFlows()
+        openDaylightApi.deleteFlows()
         .then(data => {
             // alert("Shortest path calculated");
             console.log("deleting flows");
@@ -240,7 +240,7 @@ class FlowsApp extends Component {
                 nodesInfo: flowsSwitchesData
             };
             console.log("====>data for flows creation: ", flowsCreationData);
-            networkApi.createFlows()
+            openDaylightApi.createFlows()
             .then(data => {
 
                 if (data.success)
