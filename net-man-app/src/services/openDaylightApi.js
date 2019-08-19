@@ -4,6 +4,8 @@ import handleError from './handleError';
 export const openDaylightApi = {
     getNodes,
     getTopology,
+    createFlows,
+    deleteFlows
 };
 
 function getNodes() {
@@ -54,6 +56,36 @@ function getTopology() {
             },
             error => {
                 console.log('Error in opendaylight getNodes');
+                handleError(error)
+            }
+        );
+}
+
+
+function createFlows(jsonRequest) {
+
+    return axios.post('/flows', jsonRequest)
+        .then(
+            response => {
+                return response.data;
+            },
+            error => {
+                console.log('Error in flows creation');
+                handleError(error)
+            }
+        );
+}
+
+
+function deleteFlows() {
+    return axios.delete('/flows')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in flows deletion');
                 handleError(error)
             }
         );
