@@ -12,11 +12,11 @@ import produce from 'immer';
 import { getWidth, getHeight } from '../../utilities/utilities';
 import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
 
-import NodesSelection from '../../components/flowsApp/nodesSelection';
+import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
 
 
 
-class SortestPathApp extends Component {
+class FlowsApp extends Component {
 
     state = {
         selectedNodeIdsource: null,
@@ -281,4 +281,4 @@ class SortestPathApp extends Component {
 }
 
 
-export default withRouter(SortestPathApp);
+export default withRouter(FlowsApp);
