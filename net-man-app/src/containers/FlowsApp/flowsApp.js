@@ -131,8 +131,23 @@ class FlowsApp extends Component {
         return this.state.selectedNodeIdsource && this.state.selectedNodeIddest;
     }
 
+
     deleteFlowsHandler = () => {
-        
+        networkApi.deleteFlows()
+        .then(data => {
+            // alert("Shortest path calculated");
+            console.log("deleting flows");
+            if (data.success)
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.shortestPath = [];
+                        draft.selectedNodeIdsource = null;
+                        draft.selectedNodeIddest = null;
+                    })
+                );   
+            }
+        });
     }
 
     createFlowsHandler = () => {
