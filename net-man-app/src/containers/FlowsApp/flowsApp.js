@@ -12,7 +12,7 @@ import produce from 'immer';
 import { getWidth, getHeight } from '../../utilities/utilities';
 import { getGraphLinks, getGraphNodes } from '../../utilities/ODL_utilities';
 
-import NodesSelection from '../../components/flowsApp/nodesSelection';
+import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
 
 
 
