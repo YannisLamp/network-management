@@ -3,6 +3,7 @@ import { Container, Row, Col, Table, Spinner, Button, Alert } from 'reactstrap';
 import { withRouter, Redirect } from 'react-router-dom';
 
 //import styles from './statisticsApp.module.css';
+import { networkApi } from '../../services/networkApi';
 import { openDaylightApi } from '../../services/openDaylightApi';
 import { openDaylightFlowsApi } from '../../services/openDaylightFlowsApi';
 
@@ -10,7 +11,7 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
-import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath } from '../../utilities/ODL_utilities';
+import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath, getODLnodes, getODLlinks } from '../../utilities/ODL_utilities';
 
 import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
 
@@ -27,6 +28,26 @@ class FlowsApp extends Component {
         // list of shortest path mac addresses
     }
 
+    componentDidMount() {
+        networkApi.getShortestPath()
+        .then(data => {
+            alert("Shortest path retrieved");
+            console.log("shortest path: ", data.shortest_path);
+            this.setState(
+                produce(draft => {
+                    // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
+                    // draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+                    draft.sortestPath = data.shortest_path;
+                    if (data.shortest_path.length)
+                    {
+                        draft.selectedNodeIdsource = data.shortest_path[0];
+                        draft.selectedNodeIddest = data.shortest_path[data.shortest_path.length-1];
+                    }
+                })
+            );   
+        });
+    }
+
     linkClickedHandler = (linkId) => {
         return;
     }
@@ -36,6 +57,11 @@ class FlowsApp extends Component {
     }
 
     nodeClickedHandler = (nodeId) => {
+
+        if (this.state.shortestPath.length)
+        { // shortest path has been calculated and flows have been created
+            return;
+        }
 
         if (this.props.location.data.nodesInfo[nodeId].type === "switch")
         {
@@ -269,7 +295,7 @@ class FlowsApp extends Component {
                                         createFlowsHandler={this.createFlowsHandler}
                                     />
                                 :
-                                null
+                                "shortest path calculated flows created"
                             }
                         </div>   
                     </div>      

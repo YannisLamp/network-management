@@ -5,6 +5,7 @@ export const networkApi = {
     createNetwork,
     deleteNetwork,
     networkExists,
+    calcShortestPath,
     getShortestPath,
     pingAll
 };
@@ -51,7 +52,7 @@ function networkExists() {
     );
 }
 
-function getShortestPath(jsonRequest) {
+function calcShortestPath(jsonRequest) {
     return axios.post('/shortest_path', jsonRequest)
         .then(
             response => {
@@ -62,6 +63,20 @@ function getShortestPath(jsonRequest) {
                 handleError(error)
             }
         );
+}
+
+function getShortestPath() {
+    return axios.get('/shortest_path')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in retrieving shortest path');
+                handleError(error)
+            }
+    );
 }
 
 
