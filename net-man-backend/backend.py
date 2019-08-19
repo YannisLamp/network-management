@@ -32,6 +32,7 @@ cors = CORS(app)
 gnet = None
 
 gflows_list = []
+gshortest_list = []
 
 
 
@@ -85,6 +86,7 @@ def createNet(controllerIp, controllerPort, topoType,
     gnet = net
 
     global gflows_list
+    global gshortest_list
 
 
 # @app.route('/')
@@ -171,6 +173,7 @@ def find_shortest_path():
     node_dest = request.json.get('node_dest')
     shortest_path = nx.shortest_path(graph, node_src, node_dest)
 
+    gshortest_path = shortest_path #make list global
     # shortest_path.reverse()
 
     # print shortest_path
@@ -178,13 +181,18 @@ def find_shortest_path():
     return jsonify({'shortest_path': shortest_path})
 
 
+@app.route('/shortest_path', methods=['GET'])
+def get_shortest_path():
+    return  jsonify({'shortest_path': gshortest_path})
+
 
 @app.route('/flows', methods=['DELETE'])
 def delete_flows():
     for url in gflows_list:
         delete_flow(url)
 
-    del gflows_list[:] #delete all urls from global list
+    del gshortest_path[:]   # delete shortest path list
+    del gflows_list[:]      # delete all urls from global list
     return jsonify({'success': True})
 
 def delete_flow(url):
@@ -241,9 +249,7 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
         json_file.write(json.dumps(flow_dict, json_file))
     json_file.close()
 
-
     # response = requests.put(url_to_send_to_odl, json=json.dumps(flow_dict) ,
-    # headers={'Accept': 'application/html','Authorization': 'Basic YWRtaW46YWRtaW4='})#.json()
 
     resp, content = h.request(
           uri = url_to_send_to_odl,
@@ -283,7 +289,6 @@ def pingall():
     return jsonify({'success': True})
 
 
-# todo
 @app.route('/ping_hosts', methods=['POST'])
 def ping_between_hosts():
     h_source = request.json.get('H_source')
@@ -300,6 +305,7 @@ def ping_between_hosts():
     # poso xrono pio grhgoro %
 
     # print h_source.cmd('ping -c50 %s' % h_dest.IP()
+    print h1.cmd( 'ping -c1', h2.IP() )
     # return jsonify({'success': True})
 
 
