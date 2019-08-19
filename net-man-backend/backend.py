@@ -242,7 +242,7 @@ def stats():
     time_diff     = time_before - time_after
     time_diff_prc = ((time_before - time_after)/time_after)*100 #following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
 
-    stats_dict  = {'sourceDest':{'timeBefore': time_before,'timeAfter':time_after,'timeDiff':time_diff,'timeDiffPrc':time_diff_prc}  ,'success': True}
+    stats_dict  = {'sourceDest':{'timeBefore': str(time_before),'timeAfter':str(time_after),'timeDiff':str(time_diff),'timeDiffPrc':str(time_diff_prc)}  ,'success': True}
 
     return json.dumps(stats_dict)
 
@@ -254,7 +254,7 @@ def create_flows():
     global gstats_list
     # call ping_between_hosts_and_get_avrg_time() without flows
     time_without_flows =ping_between_hosts_and_get_avrg_time()
-    gstats_list.append(time_without_flows) #store in gstats_list[0] the avrg time before setting the flows
+    gstats_list.append(float(time_without_flows)) #store in gstats_list[0] the avrg time before setting the flows
 
     content_json = request.get_json()
     print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
@@ -276,7 +276,7 @@ def create_flows():
     # todo here check if flows exist!!
     # call ping_between_hosts_and_get_avrg_time() with the flows
     time_with_flows =ping_between_hosts_and_get_avrg_time()
-    gstats_list.append(time_without_flows) #store in gstats_list[1] the avrg time before setting the flows
+    gstats_list.append(float(time_without_flows)) #store in gstats_list[1] the avrg time before setting the flows
 
     return stats()
 
