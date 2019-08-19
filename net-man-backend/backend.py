@@ -230,32 +230,29 @@ def delete_flow(url):
 
 @app.route('/flows', methods=['GET'])
 def stat_flows():
+    if len(gstats_list) is not 2:
+        return jsonify({'success': False})
+
     return stats()
 
 
 def stats():
-    time_before =gstats_list[0]
-    time_after  =gstats_list[1]
-    time_diff   = time_before - time_after
-    # timeDiffPrc =
+    time_before   = gstats_list[0]
+    time_after    = gstats_list[1]
+    time_diff     = time_before - time_after
+    time_diff_prc = ((time_before - time_after)/time_after)*100 #following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
 
-    # stats_dict  = {'sourceDest':{'timeBefore': time_before,'timeAfter'=time_after,'timeDiff':}    ,'success': true}
-    #
-    #
-    # stats_dict = {'flow': [{
-    #         'id': flow_id,
-    #         'match': {'ethernet-match':{'ethernet-source':{'address': src_mac_address}, 'ethernet-destination':{'address': dest_mac_address}, 'ethernet-type':{'type': '0x800'} }},
-    #         'instructions': {'instruction': [ { 'apply-actions':{'action': [{'output-action':{'output-node-connector':port_number} , 'order': '1' }] } ,'order':'1'}]  },
-    #         'installHw':'false',
-    #         'table_id':table_id }]}
-    #
+    stats_dict  = {'sourceDest':{'timeBefore': time_before,'timeAfter':time_after,'timeDiff':time_diff,'timeDiffPrc':time_diff_prc}  ,'success': True}
+
+    return json.dumps(stats_dict)
+
 
 
 
 @app.route('/flows', methods=['POST'])
 def create_flows():
     global gstats_list
-    # ping_between_hosts() #xwris flows
+    # call ping_between_hosts_and_get_avrg_time() without flows
     time_without_flows =ping_between_hosts_and_get_avrg_time()
     gstats_list.append(time_without_flows) #store in gstats_list[0] the avrg time before setting the flows
 
@@ -277,13 +274,11 @@ def create_flows():
 
 
     # todo here check if flows exist!!
-    # ping_between_hosts() #me flows
+    # call ping_between_hosts_and_get_avrg_time() with the flows
     time_with_flows =ping_between_hosts_and_get_avrg_time()
     gstats_list.append(time_without_flows) #store in gstats_list[1] the avrg time before setting the flows
 
-    stats()
-
-    return jsonify({'success': True})
+    return stats()
 
 
 
@@ -305,6 +300,10 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
     print url_to_send_to_odl
     gflows_list.append(url_to_send_to_odl)
 
+    # monitor urls that we send to odl
+    with open('diagnostics/urls.txt',mode='a+') as urls_file:
+        urls_file.write(url_to_send_to_odl)
+    urls_file.close()
 
     # monitor json that we send to odl
     with open('diagnostics/requestsToODL.json',mode='a+') as json_file:
@@ -410,7 +409,7 @@ def ping_between_hosts_and_get_avrg_time():
 
     # print h1.cmd( 'ping -c1', h2.IP() )
     # return jsonify({'success': True})
-    return jsonify({'success': True})
+    # return jsonify({'success': True})
 
 
 
