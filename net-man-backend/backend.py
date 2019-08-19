@@ -32,7 +32,7 @@ cors = CORS(app)
 gnet = None
 
 gflows_list = []
-gshortest_list = []
+gshortest_path = []
 
 
 
@@ -86,7 +86,7 @@ def createNet(controllerIp, controllerPort, topoType,
     gnet = net
 
     global gflows_list
-    global gshortest_list
+    global gshortest_path
 
 
 # @app.route('/')
@@ -291,13 +291,18 @@ def pingall():
 
 @app.route('/ping_hosts', methods=['POST'])
 def ping_between_hosts():
-    h_source = request.json.get('H_source')
-    h_dest = request.json.get('H_dest')
 
+    # h_src = gshortest_list[0]
+    # h_dest= gshortest_list[-1]
+    # print 'h_src = [{}] & h_dest = {}  .'. format(h_src, h_dest)
+    # gnet.ping(h_src,h_dest)
 
-    gnet.ping(h_source,h_dest)
+    # gnet.ping('h1','h2')
+
+    print gnet.hosts
+
     #startpings( host, ips )
-    h_source, h_dest  = gnet.hosts[index_src], gnet.hosts[index_dest]
+    # h_source, h_dest  = gnet.hosts[index_src], gnet.hosts[index_dest]
 
     # xrono prin [check if exists if not calculate it]
     # xrono meta
@@ -305,7 +310,7 @@ def ping_between_hosts():
     # poso xrono pio grhgoro %
 
     # print h_source.cmd('ping -c50 %s' % h_dest.IP()
-    print h1.cmd( 'ping -c1', h2.IP() )
+    # print h1.cmd( 'ping -c1', h2.IP() )
     # return jsonify({'success': True})
 
 
