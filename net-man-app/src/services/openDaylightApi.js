@@ -5,6 +5,7 @@ export const openDaylightApi = {
     getNodes,
     getTopology,
     createFlows,
+    getFlows,
     deleteFlows
 };
 
@@ -71,6 +72,20 @@ function createFlows(jsonRequest) {
             },
             error => {
                 console.log('Error in flows creation');
+                handleError(error)
+            }
+        );
+}
+
+function getFlows() {
+    return axios.get('/flows')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in retrieving flows info');
                 handleError(error)
             }
         );

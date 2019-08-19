@@ -14,6 +14,7 @@ import { getWidth, getHeight } from '../../utilities/utilities';
 import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath, getODLnodes, getODLlinks, getFlowsSwitchesData } from '../../utilities/ODL_utilities';
 
 import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
+import FlowsInfo from '../../components/flowsApp/FlowsInfo/flowsInfo';
 
 
 
@@ -23,7 +24,8 @@ class FlowsApp extends Component {
         selectedNodeIdsource: null,
         selectedNodeIddest: null,
         shortestPath: [],
-        errorMessage: null
+        errorMessage: null,
+        flowsInfo: null
     }
 
     componentDidMount() {
@@ -38,8 +40,6 @@ class FlowsApp extends Component {
             console.log("shortest path: ", data.shortest_path);
             this.setState(
                 produce(draft => {
-                    // draft.shortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
-                    // draft.shortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
                     draft.shortestPath = data.shortest_path;
                     if (data.shortest_path.length)
                     {
@@ -48,6 +48,20 @@ class FlowsApp extends Component {
                     }
                 })
             );   
+        });
+
+        networkApi.getFlows()
+        .then(data => {
+            // alert("Shortest path retrieved");
+            console.log("flows info: ", data);
+            if (data.success)
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.flowsInfo = data.sourceDest;
+                    })
+                );   
+            }
         });
     }
 
@@ -146,6 +160,7 @@ class FlowsApp extends Component {
                         draft.shortestPath = [];
                         draft.selectedNodeIdsource = null;
                         draft.selectedNodeIddest = null;
+                        draft.flowsInfo = null;
                     })
                 );   
             }
@@ -154,6 +169,11 @@ class FlowsApp extends Component {
 
 
     deleteFlowsHandler = () => {
+
+        // this.deleteShortestPathHandler();
+        // alert("flows deleted")
+
+        // return;
         networkApi.deleteFlows()
         .then(data => {
             // alert("Shortest path calculated");
@@ -165,6 +185,7 @@ class FlowsApp extends Component {
                         draft.shortestPath = [];
                         draft.selectedNodeIdsource = null;
                         draft.selectedNodeIddest = null;
+                        draft.flowsInfo = null;
                     })
                 );   
             }
@@ -193,71 +214,73 @@ class FlowsApp extends Component {
         // console.log("node dest: ", node_dest);
         // console.log("--------------");
 
-        const requestData = {
+        const calcShortestPathData = {
             nodes: nodes,
             links: links,
             node_source: node_source,
             node_dest: node_dest
         }
 
-        console.log(requestData);
+        console.log(calcShortestPathData);
 
-        networkApi.calcShortestPath(requestData)
+        networkApi.calcShortestPath(calcShortestPathData)
         .then(data => {
             // alert("Shortest path calculated");
-            console.log("shortest path: ", data.shortest_path);
-            this.setState(
-                produce(draft => {
-                    // draft.shortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
-                    // draft.shortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
-                    draft.shortestPath = data.shortest_path;
-                })
-            );   
+            const shortestPath = data.shortest_path;
+            console.log("shortest path: ", shortestPath);
+
+            const srcNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIdsource].mac;
+            const destNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIddest].mac;
+
+            const flowsSwitchesData = getFlowsSwitchesData(shortestPath, this.props.location.data.linksInfo, this.props.location.data.nodesInfo, 0);
+
+            const flowsCreationData = {
+                srcMacAddress: srcNodeMac,
+                destMacAddress: destNodeMac,
+                nodesInfo: flowsSwitchesData
+            };
+            console.log("====>data for flows creation: ", flowsCreationData);
+            networkApi.createFlows()
+            .then(data => {
+
+                if (data.success)
+                {
+                    this.setState(
+                        produce(draft => {
+                            draft.flowsInfo = data.sourceDest;
+                            draft.shortestPath = shortestPath;
+                        })
+                    );   
+                    alert("Flows created")
+                }
+                else
+                {
+                    alert("Flows creation FAILED")
+                }
+
+            });
+
+            // const dummyFlowsInfo = {
+            //     success: true,
+            //     sourceDest: {
+            //         timeBefore: "0.892",
+            //         timeAfter: "0.6419",
+            //         timeDiff: "0.257",
+            //         timeDiffPrc: "20"
+            //     }
+            // }
+
+            // this.setState(
+            //     produce(draft => {
+            //         draft.shortestPath = data.shortest_path;
+            //         draft.flowsInfo = dummyFlowsInfo;
+            //     })
+            // );  
         });
 
         // alert("Flows created")
     }
 
-
-    // creates all flows, call in calcSortestPathHandler api.then
-    letItFlow = (shortestPathIds) => {
-        // First get shortest path ids => macs
-        // shortestPathMacs = [];
-        // for (let nodeId of shortestPathIds) {
-        //     shortestPathMacs.push(this.props.location.data.nodesInfo[nodeId].mac);
-        // }
-        
-        //
-
-        let srcNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIdsource].mac;
-        let destNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIddest].mac;
-        // First get all node connectors for each node
-
-        // let onlySwitches = 
-        for (let i=1; i < shortestPathIds.length(); i++) {
-            // Create individual flow
-            openDaylightFlowsApi.createFlow(shortestPathIds[i], 0, 150, srcNodeMac, destNodeMac, 
-                this.props.location.data.linkConcatToPort[this.state.selectedNodeIdsource+''+this.state.selectedNodeIddest])
-                .then(response => {
-                    console.log('paopapapapa');
-                    console.log(response);
-                })
-
-
-                
-        }
-
-
-        console.log(this.props.location.data.nodesInfo);
-        //console.log(this.props.location.data.linksInfo);
-        //console.log(this.props.location.data.nodeConnectorData);
-        // this.props.location.data.nodeConnectorData: null
-
-
-
-
-
-    }
 
 
     resetSelectedNodesHandler = () => {
@@ -295,21 +318,14 @@ class FlowsApp extends Component {
     }
 
     render () {
-        // openDaylightFlowsApi.createFlow('openflow:1', '0', '150', '00:00:00:00:00:01', '00:00:00:00:00:03', 
-        //     '1')
-        //     .then(response => {
-        //         console.log('paopapapapa');
-        //         console.log(response);
-        //     })
 
         console.log("inside statistics app rendering");
 
         // alert("rendering app")
-        // console.log(this.props.location.data.graphNodes);
         const graphWidth = getWidth() * 0.9;
         const graphHeight = getHeight() * 0.6;
 
-        //console.log(this.state)
+        console.log(this.state)
 
         console.log('nodes::::');
         console.log(this.props.location.data);
@@ -357,10 +373,12 @@ class FlowsApp extends Component {
                                         createFlowsHandler={this.createFlowsHandler}
                                     />
                                 :
-                                <>
-                                "shortest path calculated flows created"
-                                <Button className="p-0" color="link" onClick={this.deleteShortestPathHandler}>Delete Flows</Button>
-                                </>
+                                    <FlowsInfo 
+                                        selectedNodeIdsource={this.state.selectedNodeIdsource} 
+                                        selectedNodeIddest={this.state.selectedNodeIddest}
+                                        flowsInfo={this.state.flowsInfo}
+                                        deleteFlowsHandler={this.deleteFlowsHandler}
+                                    />
                             }
                         </div>   
                     </div>      

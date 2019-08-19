@@ -134,6 +134,26 @@ export const extractLinksFromNodesPath = (nodesPath) => {
     return extractedLinksIDs;
 }
 
+export const getFlowsSwitchesData = (nodesPath, linksInfo, nodesInfo, tableId) => {
+
+    let flowsSwitchesData = [];
+    for (let i=1; i < nodesPath.length-1; i++)
+    {
+        const linkId = nodesPath[i] + "/" + nodesPath[i+1];
+        const switchPortId = linksInfo[linkId].sourceInfo.portId;
+        const switchPortNum = nodesInfo[nodesPath[i]].connectors[switchPortId]["flow-node-inventory:port-number"];
+
+        const flowSwitchData = {
+            switchId: nodesPath[i],
+            portNumber: switchPortNum,
+            tableId: tableId
+        };
+        flowsSwitchesData.push(flowSwitchData);
+    }
+
+    return flowsSwitchesData;
+}
+
 
 export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
 
