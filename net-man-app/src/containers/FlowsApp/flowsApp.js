@@ -25,7 +25,8 @@ class FlowsApp extends Component {
         selectedNodeIddest: null,
         shortestPath: [],
         errorMessage: null,
-        flowsInfo: null
+        flowsInfo: null,
+        isCreatingFlows: false
     }
 
     componentDidMount() {
@@ -36,32 +37,27 @@ class FlowsApp extends Component {
 
         networkApi.getShortestPath()
         .then(data => {
-            // alert("Shortest path retrieved");
-            console.log("shortest path: ", data.shortest_path);
-            this.setState(
-                produce(draft => {
-                    draft.shortestPath = data.shortest_path;
-                    if (data.shortest_path.length)
-                    {
-                        draft.selectedNodeIdsource = data.shortest_path[0];
-                        draft.selectedNodeIddest = data.shortest_path[data.shortest_path.length-1];
-                    }
-                })
-            );   
-        });
 
-        networkApi.getFlows()
-        .then(data => {
-            // alert("Shortest path retrieved");
-            console.log("flows info: ", data);
-            if (data.success)
-            {
+            const shortestPath = data.shortest_path;
+            console.log("shortest path: ", shortestPath);
+
+            networkApi.getFlows()
+            .then(flowsInfo => {
+                console.log("flows info: ", flowsInfo);
+              
                 this.setState(
                     produce(draft => {
-                        draft.flowsInfo = data.sourceDest;
+                        draft.flowsInfo = flowsInfo.success ? flowsInfo.sourceDest : null;
+                        draft.shortestPath = shortestPath;
+                        if (shortestPath.length)
+                        {
+                            draft.selectedNodeIdsource = shortestPath[0];
+                            draft.selectedNodeIddest = shortestPath[shortestPath.length-1];
+                        }
                     })
                 );   
-            }
+                
+            });
         });
     }
 
@@ -196,6 +192,7 @@ class FlowsApp extends Component {
         this.setState(
             produce(draft => {
                 draft.errorMessage = null;
+                draft.isCreatingFlows = true;
             })
         );
         // alert("creating flows");
@@ -249,13 +246,14 @@ class FlowsApp extends Component {
                         produce(draft => {
                             draft.flowsInfo = data.sourceDest;
                             draft.shortestPath = shortestPath;
+                            draft.isCreatingFlows = false;
                         })
                     );   
-                    alert("Flows created")
+                    // alert("Flows created")
                 }
                 else
                 {
-                    alert("Flows creation FAILED")
+                    alert("Flows creation FAILED try again")
                 }
 
             });
@@ -278,7 +276,6 @@ class FlowsApp extends Component {
             // );  
         });
 
-        // alert("Flows created")
     }
 
 
@@ -364,14 +361,25 @@ class FlowsApp extends Component {
                         <div className="d-flex d-flex-row p-2" style={{backgroundColor: "GhostWhite"}}>
                             {
                                 !this.state.shortestPath.length ?
-                                    <NodesSelection 
-                                        selectedNodeIdsource={this.state.selectedNodeIdsource} 
-                                        selectedNodeIddest={this.state.selectedNodeIddest}
-                                        resetSelectedNodesHandler={this.resetSelectedNodesHandler}
-                                        removeSelectedNodeHandler={this.removeSelectedNodeHandler}
-                                        nodesSet={this.nodesSet()}
-                                        createFlowsHandler={this.createFlowsHandler}
-                                    />
+                                    !this.state.isCreatingFlows ?
+                                        <NodesSelection 
+                                            selectedNodeIdsource={this.state.selectedNodeIdsource} 
+                                            selectedNodeIddest={this.state.selectedNodeIddest}
+                                            resetSelectedNodesHandler={this.resetSelectedNodesHandler}
+                                            removeSelectedNodeHandler={this.removeSelectedNodeHandler}
+                                            nodesSet={this.nodesSet()}
+                                            createFlowsHandler={this.createFlowsHandler}
+                                        />
+                                    : 
+                                        <Container fluid className="customBorder1">
+                                            <Row className="align-items-center">
+                                                <Col sm="12" className="d-flex justify-content-center pb-2 pt-2">
+                                                    <div>
+                                                        <Spinner style={{ width: '5rem', height: '5rem' }} color="primary" />
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </Container>
                                 :
                                     <FlowsInfo 
                                         selectedNodeIdsource={this.state.selectedNodeIdsource} 
