@@ -31,7 +31,7 @@ class FlowsApp extends Component {
     componentDidMount() {
         networkApi.getShortestPath()
         .then(data => {
-            alert("Shortest path retrieved");
+            // alert("Shortest path retrieved");
             console.log("shortest path: ", data.shortest_path);
             this.setState(
                 produce(draft => {
@@ -156,7 +156,7 @@ class FlowsApp extends Component {
                 draft.errorMessage = null;
             })
         );
-        alert("creating flows");
+        // alert("creating flows");
 
         const nodes = getODLnodes(this.props.location.data.nodesInfo);
         const links = getODLlinks(this.props.location.data.linksInfo);
@@ -183,7 +183,7 @@ class FlowsApp extends Component {
 
         networkApi.calcShortestPath(requestData)
         .then(data => {
-            alert("Shortest path calculated");
+            // alert("Shortest path calculated");
             console.log("shortest path: ", data.shortest_path);
             this.setState(
                 produce(draft => {
@@ -194,7 +194,7 @@ class FlowsApp extends Component {
             );   
         });
 
-        alert("Flows created")
+        // alert("Flows created")
     }
 
     calcshortestPathHandler = () => {
