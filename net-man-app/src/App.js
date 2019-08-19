@@ -5,8 +5,8 @@ import CreateNetwork from './containers/CreateNetwork/createNetwork';
 import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
-import StatisticsApp from './containers/StatisticsApp/statisticsApp';
-import SortestPathApp from './containers/SortestPathApp/sortestPathApp';
+import OverviewApp from './containers/OverviewApp/overviewApp';
+import FlowsApp from './containers/SortestPathApp/sortestPathApp';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -88,9 +88,9 @@ class App extends Component {
 				/>
 
                 <Route
-					path={ ["/statistics"] }
+					path={ ["/overview"] }
 					exact
-					render={() => ( <StatisticsApp />)}
+					render={() => ( <OverviewApp />)}
 				/>
 
                 <Route

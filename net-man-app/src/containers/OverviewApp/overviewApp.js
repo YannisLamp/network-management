@@ -9,14 +9,14 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
-import HostInfo from '../../components/StatisticsApp/HostInfo/hostInfo';
-import LinkInfo from '../../components/StatisticsApp/LinkInfo/linkInfo';
-import SwitchInfo from '../../components/StatisticsApp/SwitchInfo/switchInfo';
-import SwitchPortInfo from '../../components/StatisticsApp/SwitchInfo/SwitchPortInfo/switchPortInfo';
+import HostInfo from '../../components/OverviewApp/HostInfo/hostInfo';
+import LinkInfo from '../../components/OverviewApp/LinkInfo/linkInfo';
+import SwitchInfo from '../../components/OverviewApp/SwitchInfo/switchInfo';
+import SwitchPortInfo from '../../components/OverviewApp/SwitchInfo/SwitchPortInfo/switchPortInfo';
 import { getGraphLinks, getGraphNodes, getFirstNodeId, getNodeFirstPortInfo, getSwitchPortInfo } from '../../utilities/ODL_utilities';
 
 
-class StatisticsApp extends Component {
+class OverviewApp extends Component {
 
     state = {
         selectedNodeId: this.props.location.data ? getFirstNodeId(this.props.location.data.nodesInfo) : null,
@@ -196,4 +196,4 @@ class StatisticsApp extends Component {
 }
 
 
-export default withRouter(StatisticsApp);
+export default withRouter(OverviewApp);

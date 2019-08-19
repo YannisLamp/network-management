@@ -273,7 +273,7 @@ class CreateNetwork extends Component {
                         <Link 
                             className={styles.MenuLink}
                             to={{   
-                                    pathname: '/statistics', 
+                                    pathname: '/overview', 
                                     data: { 
                                         nodesInfo: this.state.nodesInfo,
                                         linksInfo: this.state.linksInfo
