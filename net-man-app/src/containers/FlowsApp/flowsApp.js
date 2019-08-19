@@ -131,6 +131,10 @@ class FlowsApp extends Component {
         return this.state.selectedNodeIdsource && this.state.selectedNodeIddest;
     }
 
+    deleteFlowsHandler = () => {
+        
+    }
+
     createFlowsHandler = () => {
         this.setState(
             produce(draft => {
@@ -139,14 +143,42 @@ class FlowsApp extends Component {
         );
         alert("creating flows");
 
+        const nodes = getODLnodes(this.props.location.data.nodesInfo);
+        const links = getODLlinks(this.props.location.data.linksInfo);
 
-        this.setState(
-            produce(draft => {
-                // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
-                draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+        const node_source = this.state.selectedNodeIdsource; 
+        const node_dest = this.state.selectedNodeIddest;
 
-            })
-        );
+        // console.log("nodes: ", nodes);
+        // console.log("--------------");
+        // console.log("links: ", links);
+        // console.log("--------------");
+        // console.log("node source: ", node_source);
+        // console.log("node dest: ", node_dest);
+        // console.log("--------------");
+
+        const requestData = {
+            nodes: nodes,
+            links: links,
+            node_source: node_source,
+            node_dest: node_dest
+        }
+
+        console.log(requestData);
+
+        networkApi.calcShortestPath(requestData)
+        .then(data => {
+            alert("Shortest path calculated");
+            console.log("shortest path: ", data.shortest_path);
+            this.setState(
+                produce(draft => {
+                    // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
+                    // draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+                    draft.sortestPath = data.shortest_path;
+                })
+            );   
+        });
+
         alert("Flows created")
     }
 
