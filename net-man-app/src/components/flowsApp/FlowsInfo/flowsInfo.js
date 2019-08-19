@@ -40,7 +40,7 @@ const flowsInfo = (props) => {
                 </Col>
             </Row>
 
-            <Row className="mt-3 mt-3">
+            <Row className="mt-3 mb-3">
                 <Col sm="12" className="d-flex justify-content-end">
                     <div>
                         <Button size="md" style={{color: "GhostWhite"}} className="font-weight-bold" onClick={props.deleteFlowsHandler}>

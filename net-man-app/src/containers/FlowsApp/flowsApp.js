@@ -36,32 +36,27 @@ class FlowsApp extends Component {
 
         networkApi.getShortestPath()
         .then(data => {
-            // alert("Shortest path retrieved");
-            console.log("shortest path: ", data.shortest_path);
-            this.setState(
-                produce(draft => {
-                    draft.shortestPath = data.shortest_path;
-                    if (data.shortest_path.length)
-                    {
-                        draft.selectedNodeIdsource = data.shortest_path[0];
-                        draft.selectedNodeIddest = data.shortest_path[data.shortest_path.length-1];
-                    }
-                })
-            );   
-        });
 
-        networkApi.getFlows()
-        .then(data => {
-            // alert("Shortest path retrieved");
-            console.log("flows info: ", data);
-            if (data.success)
-            {
+            const shortestPath = data.shortest_path;
+            console.log("shortest path: ", shortestPath);
+
+            networkApi.getFlows()
+            .then(flowsInfo => {
+                console.log("flows info: ", flowsInfo);
+              
                 this.setState(
                     produce(draft => {
-                        draft.flowsInfo = data.sourceDest;
+                        draft.flowsInfo = flowsInfo.success ? flowsInfo.sourceDest : null;
+                        draft.shortestPath = shortestPath;
+                        if (shortestPath.length)
+                        {
+                            draft.selectedNodeIdsource = shortestPath[0];
+                            draft.selectedNodeIddest = shortestPath[shortestPath.length-1];
+                        }
                     })
                 );   
-            }
+                
+            });
         });
     }
 
