@@ -6,7 +6,7 @@ import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 import OverviewApp from './containers/OverviewApp/overviewApp';
-import FlowsApp from './containers/SortestPathApp/sortestPathApp';
+import FlowsApp from './containers/FlowsApp/flowsApp';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -96,7 +96,7 @@ class App extends Component {
                 <Route
 					path={ ["/flows"] }
 					exact
-					render={() => ( <SortestPathApp />)}
+					render={() => ( <FlowsApp />)}
 				/>
 
 

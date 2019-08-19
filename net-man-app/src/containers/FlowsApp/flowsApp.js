@@ -16,7 +16,7 @@ import NodesSelection from '../../components/flowsApp/nodesSelection';
 
 
 
-class SortestPathApp extends Component {
+class FlowsApp extends Component {
 
     state = {
         selectedNodeIdsource: null,
@@ -281,4 +281,4 @@ class SortestPathApp extends Component {
 }
 
 
-export default withRouter(SortestPathApp);
+export default withRouter(FlowsApp);
