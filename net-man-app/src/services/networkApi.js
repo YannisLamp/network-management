@@ -7,6 +7,7 @@ export const networkApi = {
     networkExists,
     calcShortestPath,
     getShortestPath,
+    deleteShortestPath,
     pingAll
 };
 
@@ -77,6 +78,21 @@ function getShortestPath() {
                 handleError(error)
             }
     );
+}
+
+
+function deleteShortestPath() {
+    return axios.delete('/shortest_path')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in shortest path deletion');
+                handleError(error)
+            }
+        );
 }
 
 

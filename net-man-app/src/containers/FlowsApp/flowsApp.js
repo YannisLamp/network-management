@@ -11,7 +11,7 @@ import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
 import { getWidth, getHeight } from '../../utilities/utilities';
-import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath, getODLnodes, getODLlinks } from '../../utilities/ODL_utilities';
+import { getGraphLinks, getGraphNodes, extractLinksFromNodesPath, getODLnodes, getODLlinks, getFlowsSwitchesData } from '../../utilities/ODL_utilities';
 
 import NodesSelection from '../../components/flowsApp/NodesSelection/nodesSelection';
 
@@ -23,12 +23,15 @@ class FlowsApp extends Component {
         selectedNodeIdsource: null,
         selectedNodeIddest: null,
         shortestPath: [],
-        errorMessage: null,
-
-        // list of shortest path mac addresses
+        errorMessage: null
     }
 
     componentDidMount() {
+        if (!this.props.location.data)
+        {
+            return;
+        }
+
         networkApi.getShortestPath()
         .then(data => {
             // alert("Shortest path retrieved");
@@ -131,6 +134,24 @@ class FlowsApp extends Component {
         return this.state.selectedNodeIdsource && this.state.selectedNodeIddest;
     }
 
+    deleteShortestPathHandler = () => {
+        networkApi.deleteShortestPath()
+        .then(data => {
+            // alert("Shortest path calculated");
+            console.log("deleting shortestPath");
+            if (data.success)
+            {
+                this.setState(
+                    produce(draft => {
+                        draft.shortestPath = [];
+                        draft.selectedNodeIdsource = null;
+                        draft.selectedNodeIddest = null;
+                    })
+                );   
+            }
+        });
+    }
+
 
     deleteFlowsHandler = () => {
         networkApi.deleteFlows()
@@ -195,12 +216,6 @@ class FlowsApp extends Component {
         });
 
         // alert("Flows created")
-    }
-
-    calcshortestPathHandler = () => {
-        //API REQUEST
-
-        //letItFlow
     }
 
 
@@ -342,7 +357,10 @@ class FlowsApp extends Component {
                                         createFlowsHandler={this.createFlowsHandler}
                                     />
                                 :
+                                <>
                                 "shortest path calculated flows created"
+                                <Button className="p-0" color="link" onClick={this.deleteShortestPathHandler}>Delete Flows</Button>
+                                </>
                             }
                         </div>   
                     </div>      
