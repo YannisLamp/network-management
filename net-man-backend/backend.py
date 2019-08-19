@@ -11,7 +11,7 @@ from functools import partial
 from mininet.util import dumpNodeConnections
 
 
-
+import logging
 # from flask import response
 
 # from functools import partial
@@ -22,6 +22,7 @@ from flask_cors import CORS
 
 import requests
 import json
+import httplib2
 
 from gevent.pywsgi import WSGIServer
 
@@ -74,7 +75,7 @@ def createNet(controllerIp, controllerPort, topoType,
     # Actually start the network
     net.start()
     dumpNodeConnections(net.hosts)
-    net.pingAll()
+    # net.pingAll()
 
     # Drop the user in to a CLI so user can run commands.
     # CLI( net )
@@ -183,6 +184,7 @@ def delete_flows():
     for url in gflows_list:
         delete_flow(url)
 
+    del gflows_list[:] #delete all urls from global list
     return jsonify({'success': True})
 
 def delete_flow(url):
@@ -193,10 +195,7 @@ def delete_flow(url):
 
 @app.route('/flows', methods=['POST'])
 def create_flows():
-
-
     content_json = request.get_json()
-
     print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
 
     src_mac_address  = content_json['srcMacAddress']
@@ -206,22 +205,20 @@ def create_flows():
 
     for switch_info in nodes_info:
         switch_id    = switch_info['switchId'] # openflow:<number>
-        port_number  = switch_info['portNumber']
-        table_id     = switch_info['tableId']
-        flow_id      = 0
+        port_number  = str(switch_info['portNumber'])
+        table_id     = str(switch_info['tableId'])
+        flow_id      = '0'
 
         response_from_odl = create_flow(switch_id, table_id, flow_id, src_mac_address, dest_mac_address,port_number)
-        print response_from_odl
 
-    return response_from_odl #return make_response(jsonify(data), 200)
-    # return jsonify({'success': True}) #return make_response(jsonify(data), 200)
 
-    # return jsonify({'success': True})
+    # todo here check if flows exist!!
+
+    return jsonify({'success': True})
 
 
 
 def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,port_number):
-
 
     flow_dict = {'flow': [{
         'id': flow_id,
@@ -230,35 +227,47 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
         'installHw':'false',
         'table_id':table_id }]}
 
-    # http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/2/flow/0
+    #e.g http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/2/flow/0
+    h = httplib2.Http(".cache")
+    h.add_credentials('admin', 'admin')
 
     url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/"+str(openflow_id)+"/table/"+str(table_id)+"/flow/"+str(flow_id)
     print url_to_send_to_odl
-
     gflows_list.append(url_to_send_to_odl)
 
-    # requests.put('https://httpbin.org/put', data={'key':'value'})
-    print flow_dict
 
-    # json.dumps(response.text)
-    response = requests.put(url_to_send_to_odl, json=json.dumps(flow_dict) ,headers={'Accept': 'application/json','Authorization': 'Basic YWRtaW46YWRtaW4='})
-    #
-    # print response.json()
+    # monitor json that we send to odl
+    with open('diagnostics/requestsToODL.json',mode='a+') as json_file:
+        json_file.write(json.dumps(flow_dict, json_file))
+    json_file.close()
 
 
-    return  response #.json()
-    # return jsonify({'success': True})
+    # response = requests.put(url_to_send_to_odl, json=json.dumps(flow_dict) ,
+    # headers={'Accept': 'application/html','Authorization': 'Basic YWRtaW46YWRtaW4='})#.json()
 
+    resp, content = h.request(
+          uri = url_to_send_to_odl,
+          method = 'PUT',
+          headers={'Content-Type' : 'application/json'},
+          body=json.dumps(flow_dict)
+        )
+
+    # monitor json that we receive from odl
+    with open('diagnostics/responsesFromODL.json',mode='a+') as json_file2:
+        json_file2.write(json.dumps(resp, json_file2))
+    json_file2.close()
+
+
+    # return  response
+    # return make_response(jsonify(content), resp)
+    return jsonify({'success': True})
 
 
 
 # https://realpython.com/python-requests/
 @app.route('/hello', methods=['GET'])
 def hello():
-    # response = requests.get("http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/0/flow/0")
-    # print response.json()
 
-    # return jsonify(response.json())
     response = requests.get(
         'http://localhost:8181/restconf/operational/network-topology:network-topology',
         # params={'q': 'requests+language:python'},
@@ -274,6 +283,7 @@ def pingall():
     return jsonify({'success': True})
 
 
+# todo
 @app.route('/ping_hosts', methods=['POST'])
 def ping_between_hosts():
     h_source = request.json.get('H_source')
