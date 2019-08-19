@@ -208,6 +208,9 @@ def delete_flow(url):
 
 @app.route('/flows', methods=['POST'])
 def create_flows():
+
+    # ping_between_hosts() #xwris flows
+
     content_json = request.get_json()
     print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
 
@@ -226,12 +229,17 @@ def create_flows():
 
 
     # todo here check if flows exist!!
+    # ping_between_hosts() #me flows
+
+    # call statistics()
+
 
     return jsonify({'success': True})
 
 
 
 def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,port_number):
+
 
     flow_dict = {'flow': [{
         'id': flow_id,
@@ -294,7 +302,7 @@ def pingall():
     return jsonify({'success': True})
 
 
-@app.route('/ping_hosts', methods=['POST'])
+# @app.route('/ping_hosts', methods=['POST'])
 def ping_between_hosts():
     # global gshortest_path
 
@@ -307,11 +315,7 @@ def ping_between_hosts():
 
     print 'h_src_suffix = [{}] & h_dest_suffix = {}  .'. format(h_src_suffix, h_dest_suffix)
 
-
-    # print hex(new_int)[2:]
-
-
-    h_src, h_dest  = gnet.getNodeByName('h'+ src(h_src_suffix)), gnet.getNodeByName('h'+src(h_dest_suffix)) # to thelei h1 hf h9
+    h_src, h_dest  = gnet.getNodeByName('h'+ str(h_src_suffix)), gnet.getNodeByName('h'+str(h_dest_suffix)) # to thelei h1 hf h9
     print 'h_src = [{}] & h_dest = {}  '. format(h_src, h_dest)
 
 
@@ -319,7 +323,7 @@ def ping_between_hosts():
 
     # gnet.ping(h_src,h_dest)
 
-    print gnet.hosts
+    # print gnet.hosts
 
     #startpings( host, ips )
 
@@ -328,7 +332,8 @@ def ping_between_hosts():
     # diafora
     # poso xrono pio grhgoro %
 
-    # print h_src.cmd('ping -c10 %s' % h_dest.IP()) KSESXOLIASE ME FILE
+    test_ping = h_src.cmd('ping -c10 %s' % h_dest.IP())
+    print test_ping
 
 
     # print h1.cmd( 'ping -c1', h2.IP() )
