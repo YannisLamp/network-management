@@ -143,6 +143,10 @@ def network_exists():
 
 
 
+@app.route('/shortest_path', methods=['DELETE'])
+def delete_shortest_path():
+    del gshortest_path[:]   # delete shortest path list
+    return jsonify({'success': True})
 
 
 @app.route('/shortest_path', methods=['POST'])
@@ -292,27 +296,44 @@ def pingall():
 
 @app.route('/ping_hosts', methods=['POST'])
 def ping_between_hosts():
+    # global gshortest_path
 
-    # h_src = gshortest_list[0]
-    # h_dest= gshortest_list[-1]
-    # print 'h_src = [{}] & h_dest = {}  .'. format(h_src, h_dest)
+    h_src_name = gshortest_path[0]
+    h_dest_name= gshortest_path[-1]
+    h_src_id ,h_dest_id= "0x"+ h_src_name[-2:] ,"0x"+ h_dest_name[-2:]
+    print 'h_src_id = [{}] & h_dest_id = {}  .'. format(h_src_id, h_dest_id)
+
+    h_src_suffix , h_dest_suffix = int(h_src_id, 16) ,int(h_dest_id, 16) #hex(int(h_src_id, 16)),hex(int(h_dest_id, 16))     #convert hex string to hex number
+
+    print 'h_src_suffix = [{}] & h_dest_suffix = {}  .'. format(h_src_suffix, h_dest_suffix)
+
+
+    # print hex(new_int)[2:]
+
+
+    h_src, h_dest  = gnet.getNodeByName('h'+ src(h_src_suffix)), gnet.getNodeByName('h'+src(h_dest_suffix)) # to thelei h1 hf h9
+    print 'h_src = [{}] & h_dest = {}  '. format(h_src, h_dest)
+
+
     # gnet.ping(h_src,h_dest)
 
-    # gnet.ping('h1','h2')
+    # gnet.ping(h_src,h_dest)
 
     print gnet.hosts
 
     #startpings( host, ips )
-    # h_source, h_dest  = gnet.hosts[index_src], gnet.hosts[index_dest]
 
     # xrono prin [check if exists if not calculate it]
     # xrono meta
     # diafora
     # poso xrono pio grhgoro %
 
-    # print h_source.cmd('ping -c50 %s' % h_dest.IP()
+    # print h_src.cmd('ping -c10 %s' % h_dest.IP()) KSESXOLIASE ME FILE
+
+
     # print h1.cmd( 'ping -c1', h2.IP() )
     # return jsonify({'success': True})
+    return jsonify({'success': True})
 
 
 
