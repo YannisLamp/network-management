@@ -8,7 +8,10 @@ export const networkApi = {
     calcShortestPath,
     getShortestPath,
     deleteShortestPath,
-    pingAll
+    pingAll,
+    createFlows,
+    getFlows,
+    deleteFlows
 };
 
 function createNetwork(jsonRequest) {
@@ -104,6 +107,51 @@ function pingAll() {
             },
             error => {
                 console.log('Error in pingall');
+                handleError(error)
+            }
+        );
+}
+
+
+
+function createFlows(jsonRequest) {
+
+    return axios.post('/flows', jsonRequest)
+        .then(
+            response => {
+                return response.data;
+            },
+            error => {
+                console.log('Error in flows creation');
+                handleError(error)
+            }
+        );
+}
+
+function getFlows() {
+    return axios.get('/flows')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in retrieving flows info');
+                handleError(error)
+            }
+        );
+}
+
+
+function deleteFlows() {
+    return axios.delete('/flows')
+        .then(
+            response => {
+                console.log(response.headers);
+                return response.data;
+            },
+            error => {
+                console.log('Error in flows deletion');
                 handleError(error)
             }
         );
