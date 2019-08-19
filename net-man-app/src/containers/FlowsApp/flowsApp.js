@@ -22,7 +22,7 @@ class FlowsApp extends Component {
     state = {
         selectedNodeIdsource: null,
         selectedNodeIddest: null,
-        sortestPath: [],
+        shortestPath: [],
         errorMessage: null,
 
         // list of shortest path mac addresses
@@ -35,9 +35,9 @@ class FlowsApp extends Component {
             console.log("shortest path: ", data.shortest_path);
             this.setState(
                 produce(draft => {
-                    // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
-                    // draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
-                    draft.sortestPath = data.shortest_path;
+                    // draft.shortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
+                    // draft.shortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+                    draft.shortestPath = data.shortest_path;
                     if (data.shortest_path.length)
                     {
                         draft.selectedNodeIdsource = data.shortest_path[0];
@@ -172,9 +172,9 @@ class FlowsApp extends Component {
             console.log("shortest path: ", data.shortest_path);
             this.setState(
                 produce(draft => {
-                    // draft.sortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
-                    // draft.sortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
-                    draft.sortestPath = data.shortest_path;
+                    // draft.shortestPath = ["openflow:10", "openflow:9", "openflow:1"] ;
+                    // draft.shortestPath = ["openflow:1", "openflow:9", "openflow:10"] ;
+                    draft.shortestPath = data.shortest_path;
                 })
             );   
         });
@@ -182,7 +182,7 @@ class FlowsApp extends Component {
         alert("Flows created")
     }
 
-    calcSortestPathHandler = () => {
+    calcshortestPathHandler = () => {
         //API REQUEST
 
         //letItFlow
@@ -308,8 +308,8 @@ class FlowsApp extends Component {
                                 nodeClickedHandler={this.nodeClickedHandler}
                                 linkClickedHandler={this.linkClickedHandler}
                                 graphClickedHandler={this.graphClickedHandler}
-                                nodes={getGraphNodes(this.props.location.data.nodesInfo, this.state.sortestPath)}
-                                links={getGraphLinks(this.props.location.data.linksInfo, extractLinksFromNodesPath(this.state.sortestPath))}
+                                nodes={getGraphNodes(this.props.location.data.nodesInfo, this.state.shortestPath)}
+                                links={getGraphLinks(this.props.location.data.linksInfo, extractLinksFromNodesPath(this.state.shortestPath))}
                                 graphWidth={graphWidth}
                                 graphHeight={graphHeight}
                             />
@@ -317,7 +317,7 @@ class FlowsApp extends Component {
 
                         <div className="d-flex d-flex-row p-2" style={{backgroundColor: "GhostWhite"}}>
                             {
-                                !this.state.sortestPath.length ?
+                                !this.state.shortestPath.length ?
                                     <NodesSelection 
                                         selectedNodeIdsource={this.state.selectedNodeIdsource} 
                                         selectedNodeIddest={this.state.selectedNodeIddest}
