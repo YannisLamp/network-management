@@ -249,11 +249,11 @@ class FlowsApp extends Component {
                             draft.isCreatingFlows = false;
                         })
                     );   
-                    alert("Flows created")
+                    // alert("Flows created")
                 }
                 else
                 {
-                    alert("Flows creation FAILED")
+                    alert("Flows creation FAILED try again")
                 }
 
             });
