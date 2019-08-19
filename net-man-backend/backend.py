@@ -34,6 +34,7 @@ gnet = None
 gflows_list = []
 gshortest_path = []
 
+gstats_list=[]
 
 
 
@@ -87,6 +88,7 @@ def createNet(controllerIp, controllerPort, topoType,
 
     global gflows_list
     global gshortest_path
+    global gstats_list
 
 
 # @app.route('/')
@@ -145,6 +147,7 @@ def network_exists():
 
 @app.route('/shortest_path', methods=['DELETE'])
 def delete_shortest_path():
+    global gshortest_path
     del gshortest_path[:]   # delete shortest path list
     return jsonify({'success': True})
 
@@ -193,6 +196,9 @@ def get_shortest_path():
 
 @app.route('/flows', methods=['DELETE'])
 def delete_flows():
+    global gshortest_path
+    global gflows_list
+
     for url in gflows_list:
         delete_flow(url)
 
@@ -205,11 +211,53 @@ def delete_flow(url):
 
 
 
+# {
+#     success: true,
+#     sourceDest: {
+#         timeBefore: <val>,
+#         timeAfter: <val>,
+#         timeDiff: <val>,
+#         timeDiffPrc: <val>
+#     },
+#
+#     destSource: {
+#         timeBefore: <val>,
+#         timeAfter: <val>,
+#         timeDiff: <val>,
+#         timeDiffPrc: <val>
+#     }
+# }
+
+@app.route('/flows', methods=['GET'])
+def stat_flows():
+    return stats()
+
+
+def stats():
+    time_before =gstats_list[0]
+    time_after  =gstats_list[1]
+    time_diff   = time_before - time_after
+    # timeDiffPrc =
+
+    # stats_dict  = {'sourceDest':{'timeBefore': time_before,'timeAfter'=time_after,'timeDiff':}    ,'success': true}
+    #
+    #
+    # stats_dict = {'flow': [{
+    #         'id': flow_id,
+    #         'match': {'ethernet-match':{'ethernet-source':{'address': src_mac_address}, 'ethernet-destination':{'address': dest_mac_address}, 'ethernet-type':{'type': '0x800'} }},
+    #         'instructions': {'instruction': [ { 'apply-actions':{'action': [{'output-action':{'output-node-connector':port_number} , 'order': '1' }] } ,'order':'1'}]  },
+    #         'installHw':'false',
+    #         'table_id':table_id }]}
+    #
+
+
 
 @app.route('/flows', methods=['POST'])
 def create_flows():
-
+    global gstats_list
     # ping_between_hosts() #xwris flows
+    time_without_flows =ping_between_hosts_and_get_avrg_time()
+    gstats_list.append(time_without_flows) #store in gstats_list[0] the avrg time before setting the flows
 
     content_json = request.get_json()
     print 'Did I receive json format? [{}] --> Content is {} years old'. format(request.is_json, content_json)
@@ -230,9 +278,10 @@ def create_flows():
 
     # todo here check if flows exist!!
     # ping_between_hosts() #me flows
+    time_with_flows =ping_between_hosts_and_get_avrg_time()
+    gstats_list.append(time_without_flows) #store in gstats_list[1] the avrg time before setting the flows
 
-    # call statistics()
-
+    stats()
 
     return jsonify({'success': True})
 
@@ -303,7 +352,7 @@ def pingall():
 
 
 # @app.route('/ping_hosts', methods=['POST'])
-def ping_between_hosts():
+def ping_between_hosts_and_get_avrg_time():
     # global gshortest_path
 
     h_src_name = gshortest_path[0]
@@ -319,7 +368,10 @@ def ping_between_hosts():
     print 'h_src = [{}] & h_dest = {}  '. format(h_src, h_dest)
 
 
-    # gnet.ping(h_src,h_dest)
+
+
+    # test = gnet.ping(h_src,h_dest)
+    # print test
 
     # gnet.ping(h_src,h_dest)
 
@@ -335,6 +387,26 @@ def ping_between_hosts():
     test_ping = h_src.cmd('ping -c10 %s' % h_dest.IP())
     print test_ping
 
+    # print test_ping.split('')
+    print "AFTER SPLITTING ~~~~~~~~~~~~~~~~~~~"
+
+    avrgStats = test_ping.split("ping statistics",1)[1]
+    print avrgStats
+
+    print "AFTER 2ND SPLITTING ~~~~~~~~~~~~~~~~~~~"
+
+    split2 = avrgStats.split("/")
+    print split2
+    # thelw 4
+    avrgTime = split2[4]
+    print avrgTime
+    print 'avrgTime =[{}]'. format(avrgTime)
+
+    return avrgTime
+
+
+# [' ---\r\n10 packets transmitted, 10 received, 0% packet loss, time 9193ms\r\nrtt min', 'avg', 'max', 'mdev = 0.091', '0.190', '0.939', '0.250 ms\r\n']
+
 
     # print h1.cmd( 'ping -c1', h2.IP() )
     # return jsonify({'success': True})
@@ -343,10 +415,7 @@ def ping_between_hosts():
 
 
 
-# domh list/dict na krataei ola ta dhmiourgithenta flows
-#delete endpoint gia to flow
-#delete all flows
-
+# /flows GET
 
 
 
