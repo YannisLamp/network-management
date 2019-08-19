@@ -327,9 +327,16 @@ def create_flow(openflow_id,table_id,flow_id,src_mac_address,dest_mac_address,po
 
     # return  response
     # return make_response(jsonify(content), resp)
+
+    #send get in odl in 8181 to test the flow exists!
+    # if (flow_exists()):
+    #     pass
+
     return jsonify({'success': True})
 
 
+def flow_exists():
+    pass
 
 # https://realpython.com/python-requests/
 @app.route('/hello', methods=['GET'])
