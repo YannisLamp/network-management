@@ -118,6 +118,23 @@ export const extractSwitchesInfo = (switchesAnalytics) => {
 }
 
 
+export const extractLinksFromNodesPath = (nodesPath) => {
+
+    let extractedLinksIDs = [];
+    for (let i=0; i < nodesPath.length-1; i++)
+    {
+        const linkID = nodesPath[i] + "/" + nodesPath[i+1];
+        const linkIDalt = nodesPath[i+1] + "/" +nodesPath[i];
+
+        extractedLinksIDs.push(linkID);
+        extractedLinksIDs.push(linkIDalt);
+
+    }
+
+    return extractedLinksIDs;
+}
+
+
 export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
 
     let retGraphLinks = [];

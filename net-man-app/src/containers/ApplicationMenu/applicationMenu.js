@@ -280,18 +280,17 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron>
-                                <h1 className="display-5">Application 1</h1>
+                            <Jumbotron className="p-3">
+                                <h1 className="display-5">Overview Network</h1>
                                 <p 
                                     className="lead"
                                 >
-                                    This is a simple hero unit, a simple Jumbotron-style component 
-                                    for calling extra attention to featured content or information.
+                                    This is a web application that visualizes a mininet topology, providing usefull info and statistics as well.
                                 </p>
                                 <hr className="my-2" />
                                 <p>
-                                    It uses utility classes for typography and spacing to space content 
-                                    out within the larger container.
+                                    You can navigate among network nodes and links by clicking them on the topology graph.
+                                    You can also click on nodes in the info panel at the right side.
                                 </p>
                             </Jumbotron>
                         </Link>
