@@ -5,7 +5,8 @@ export const networkApi = {
     createNetwork,
     deleteNetwork,
     networkExists,
-    getShortestPath
+    getShortestPath,
+    pingAll
 };
 
 function createNetwork(jsonRequest) {
@@ -58,6 +59,20 @@ function getShortestPath(jsonRequest) {
             },
             error => {
                 console.log('Error in shortest path');
+                handleError(error)
+            }
+        );
+}
+
+
+function pingAll() {
+    return axios.post('/pingall')
+        .then(
+            response => {
+                return response.data;
+            },
+            error => {
+                console.log('Error in pingall');
                 handleError(error)
             }
         );
