@@ -242,7 +242,7 @@ class FlowsApp extends Component {
             console.log("====>data for flows creation: ", flowsCreationData);
             networkApi.createFlows(flowsCreationData)
             .then(data => {
-
+                console.log("flows info received: ", data)
                 if (data.success)
                 {
                     this.setState(
