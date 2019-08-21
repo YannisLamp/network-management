@@ -132,11 +132,11 @@ class CreateNetwork extends Component {
                                 }} 
                         >
                             <Jumbotron className="p-3">
-                                <h1 className="display-5">Overview Network</h1>
+                                <h1 className="display-5">Network Overview</h1>
                                 <p 
                                     className="lead"
                                 >
-                                    This is a web application that visualizes a mininet topology, providing usefull info and statistics as well.
+                                    This is a web application that visualizes a mininet topology, providing usefull info and statistics.
                                 </p>
                                 <hr className="my-2" />
                                 <p>
@@ -159,17 +159,17 @@ class CreateNetwork extends Component {
                                 }} 
                         >
                             <Jumbotron>
-                                <h1 className="display-5">Application 2</h1>
+                                <h1 className="display-5">Flow Creator</h1>
                                 <p 
                                     className="lead"
                                 >
-                                    This is a simple hero unit, a simple Jumbotron-style component 
-                                    for calling extra attention to featured content or information.
+                                    This is a web application that provides a selectable collection of mininet nodes, 
+                                    then given a pair, creates custom flows between them, improving network performance. 
                                 </p>
                                 <hr className="my-2" />
                                 <p>
-                                    It uses utility classes for typography and spacing to space content 
-                                    out within the larger container.
+                                    You can choose source and destination nodes to create custom flows between them. Then, 
+                                    proper measurements are made so that we can determine any network performance improvement.
                                 </p>
                             </Jumbotron>
                         </Link>
