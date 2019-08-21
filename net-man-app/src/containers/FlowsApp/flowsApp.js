@@ -5,7 +5,6 @@ import { withRouter, Redirect } from 'react-router-dom';
 //import styles from './statisticsApp.module.css';
 import { networkApi } from '../../services/networkApi';
 import { openDaylightApi } from '../../services/openDaylightApi';
-import { openDaylightFlowsApi } from '../../services/openDaylightFlowsApi';
 
 import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
