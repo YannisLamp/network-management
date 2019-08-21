@@ -326,7 +326,7 @@ def ping_between_hosts_and_get_avrg_time():
     # print 'h_src_suffix = [{}] & h_dest_suffix = [{}]  .'. format(h_src_suffix, h_dest_suffix)
 
     h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
-        'h' + str(h_dest_suffix))  # to thelei h1 hf h9
+        'h' + str(h_dest_suffix))  
     # print 'h_src = [{}] & h_dest = [{}]  '. format(h_src, h_dest)
 
     test_ping = h_src.cmd('ping -c10 %s' % h_dest.IP())
