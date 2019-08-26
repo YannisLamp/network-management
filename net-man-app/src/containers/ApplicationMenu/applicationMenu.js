@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Jumbotron, Spinner } from 'reactstrap';
+import { Container, Row, Col, Jumbotron, Spinner, Badge } from 'reactstrap';
 
 import { Link, withRouter } from 'react-router-dom';
 
@@ -119,6 +119,14 @@ class CreateNetwork extends Component {
                     </Row>
                 </>
                 :
+                <>
+                <Row>
+                    <Col className="d-flex justify-content-center mb-5 font-weight-bold">
+                        <div className={styles.title + " text-primary"}>
+                            Network Management Applications
+                        </div>
+                    </Col>
+                </Row>
                 <Row>
                     <Col sm={6}>
                         <Link 
@@ -131,7 +139,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron style={{height: '100%'}}>
+                            <Jumbotron className={styles.border + " h-100"} >
                                 <h1 className="display-5">Network Overview</h1>
                                 <p 
                                     className="lead"
@@ -158,7 +166,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron style={{height: '100%'}}>
+                            <Jumbotron className={styles.border + " h-100"}>
                                 <h1 className="display-5">Flow Creator</h1>
                                 <p 
                                     className="lead"
@@ -175,6 +183,7 @@ class CreateNetwork extends Component {
                         </Link>
                     </Col>
                 </Row>
+                </>
                 }
 
             </Container>
