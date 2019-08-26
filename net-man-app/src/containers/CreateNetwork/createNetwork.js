@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
-import { Container, Button, Row, Col, Form, FormGroup, Input, Label, Spinner, Card, CardHeader, CardText, CardBody, CardFooter,
-    CardTitle, CardSubtitle } from 'reactstrap';
+import { Button, Row, Col, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import produce from 'immer';
 import styles from './createNetwork.module.css';

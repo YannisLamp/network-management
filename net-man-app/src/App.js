@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 import CreateNetwork from './containers/CreateNetwork/createNetwork';
 import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
 
@@ -10,7 +10,7 @@ import FlowsApp from './containers/FlowsApp/flowsApp';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
-import Footer from './components/Footer/footer'
+//import Footer from './components/Footer/footer'
 import NetNavbar from './components/NetNavbar/netNavbar';
 
 import { networkApi } from './services/networkApi';
@@ -114,7 +114,7 @@ class App extends Component {
 
     render() {
 
-        console.log("Network Created: ", this.state.networkCreated);
+        //console.log("Network Created: ", this.state.networkCreated);
 
         return (
             <div className="App">

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Container, Row, Col, Table, Spinner } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
 
 
 
 const hostInfo = (props) => {
 
-    // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: ",props.nodeInfo)
+    // console.log("Node info: ", props.nodeInfo);
 
     return (
         <Container className="customBorder1" fluid style={{backgroundColor: "white"}}>

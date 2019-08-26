@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col, Button, Container } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const nodesSelection = (props) => {
 
-    console.log("dddddddddddddd", props)
+    //console.log("dddddddddddddd", props)
 
     return (
         <Container fluid className="customBorder1">

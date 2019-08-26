@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Jumbotron, Spinner, Badge } from 'reactstrap';
+import { Container, Row, Col, Jumbotron, Spinner } from 'reactstrap';
 
 import { Link, withRouter } from 'react-router-dom';
 
 import styles from './applicationMenu.module.css';
 import { openDaylightApi } from '../../services/openDaylightApi';
 import { networkApi } from '../../services/networkApi';
-import { getODLnodes, getODLlinks, getNodesInfo, getLinksInfo, extractSwitchesInfo } from '../../utilities/ODL_utilities';
-import pcSVG from '../../assets/svg/pcIcon.svg';
-import switchSVG from '../../assets/svg/hub.svg';
+import { getNodesInfo, getLinksInfo, extractSwitchesInfo } from '../../utilities/ODL_utilities';
+//import pcSVG from '../../assets/svg/pcIcon.svg';
+//import switchSVG from '../../assets/svg/hub.svg';
 import produce from 'immer';
 
 

@@ -5,7 +5,7 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
     
 const linkInfo = (props) =>  {
 
-    console.log("jjsjsjsjsjssj: ", props)
+    //console.log("jjsjsjsjsjssj: ", props)
 
     return (
         <Container className="customBorder1" fluid style={{backgroundColor: "white"}}>

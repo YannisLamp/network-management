@@ -32,21 +32,21 @@ function getNodes() {
         );
 }
 
-// Apo panw ta pairnoume ola
-function getFlowTables(nodeId, tableId) {
-    return axios.get('/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId)
-        .then(
-            response => {
-                console.log('openDaylight response:');
-                console.log(response);
-                return response.data;
-            },
-            error => {
-                console.log('Error in opendaylight getNodes');
-                handleError(error)
-            }
-        );
-}
+// We get everything from the Above service
+// function getFlowTables(nodeId, tableId) {
+//     return axios.get('/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId)
+//         .then(
+//             response => {
+//                 console.log('openDaylight response:');
+//                 console.log(response);
+//                 return response.data;
+//             },
+//             error => {
+//                 console.log('Error in opendaylight getNodes');
+//                 handleError(error)
+//             }
+//         );
+// }
 
 
 function getTopology() {
