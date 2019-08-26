@@ -59,6 +59,20 @@ class OverviewApp extends Component {
         );
     }
 
+    // Given the whole linksInfo, return an object that maps each linkId
+    // from the selected node to its destination node
+    filterLinksForselectedSwitch = () => {
+        const { selectedNodeId } = this.state;
+
+        let filteredLinks = {};
+        for (const [key, link] of Object.entries(this.props.location.data.linksInfo) ) {
+            if (link.sourceInfo.nodeId === selectedNodeId) {
+                filteredLinks[link.sourceInfo.portId] = link.destInfo;
+            }
+        }
+
+        return filteredLinks;
+    }
 
     getSelectedType = () => {
         if (this.state.selectedNodeId || this.state.selectedLinkId)
@@ -79,6 +93,9 @@ class OverviewApp extends Component {
     }
 
     renderSideInfo = () => {
+        // console.log('LINKS INFO TO PASS');
+        // console.log(this.props.location.data.linksInfo);
+
         const type = this.getSelectedType();
         // alert(`type: ${type}`)
         if (!type)
@@ -98,9 +115,11 @@ class OverviewApp extends Component {
             }
             else if (type === "switch")
             {
+                const filteredLinks = this.filterLinksForselectedSwitch();
                 return (
                     <SwitchInfo 
                         nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
+                        filteredLinks={filteredLinks}
                         switchPortClickedHandler={this.switchPortClickedHandler}
                     />    
                 );
