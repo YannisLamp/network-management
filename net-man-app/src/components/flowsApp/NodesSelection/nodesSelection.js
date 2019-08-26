@@ -5,8 +5,6 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const nodesSelection = (props) => {
 
-    //console.log("dddddddddddddd", props)
-
     return (
         <Container fluid className="customBorder1">
 

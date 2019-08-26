@@ -39,7 +39,6 @@ class DeleteNetwork extends Component {
         // api call to backend to actually delete network
         networkApi.deleteNetwork()
             .then(data => {
-                //alert(data.msg);
                 // this.setState(
                 //     produce(draft => {
                 //         draft.isLoading = !draft.isLoading;

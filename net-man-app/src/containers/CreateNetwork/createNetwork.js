@@ -125,9 +125,9 @@ class CreateNetwork extends Component {
             formData[key] = this.state.formElems[key].value;
         }
 
-        console.log("---Form Data---");
-        console.log(formData);
-        console.log("---------------");
+        // console.log("---Form Data---");
+        // console.log(formData);
+        // console.log("---------------");
 
 
         networkApi.createNetwork(formData)

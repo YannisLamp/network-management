@@ -185,8 +185,6 @@ export const getGraphNodes = (nodesInfo, selectedNodesIDs) => {
     // console.log("selected node id: ", selectedNodesIDs)
     for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
     {
-        // console.log("now checking: ")
-        // console.log(nodeId);
 
         let color = "gray"; //default
         if (selectedNodesIDs.includes(nodeId))

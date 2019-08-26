@@ -58,7 +58,6 @@ class OverviewApp extends Component {
     }
 
     linkClickedHandler = (linkId) => {
-        // alert(`link clicked ${linkId}`);
 
         this.setState(
             produce(draft => {
@@ -107,7 +106,6 @@ class OverviewApp extends Component {
         // console.log(this.props.location.data.linksInfo);
 
         const type = this.getSelectedType();
-        // alert(`type: ${type}`)
         if (!type)
         {
             return null;
@@ -148,7 +146,7 @@ class OverviewApp extends Component {
             }
             else 
             {
-                alert("den paizeis me poiothta"); //REMOVE IT !!!!!!!!!!
+                // Ti fasi??!
                 return "den paizeis me poiothta";
             }
         }
@@ -176,11 +174,9 @@ class OverviewApp extends Component {
 
     render () {
 
-        console.log("inside statistics app rendering");
-
-        // alert("rendering app")
-        console.log(this.props.location.data);
-        console.log(this.state)
+        //console.log("inside statistics app rendering");
+        //console.log(this.props.location.data);
+        //console.log(this.state)
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
 

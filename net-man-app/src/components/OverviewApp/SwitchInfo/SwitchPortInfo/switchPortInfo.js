@@ -5,8 +5,6 @@ import { Container, Row, Col, Table } from 'reactstrap';
 
 const switchPortInfo = (props) => {
 
-    // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: ",props.nodeInfo)
-
     return (
         // <div className="d-flex d-flex-column"
         <Container fluid>

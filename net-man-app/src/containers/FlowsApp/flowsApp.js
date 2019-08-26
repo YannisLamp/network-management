@@ -38,11 +38,11 @@ class FlowsApp extends Component {
         .then(data => {
 
             const shortestPath = data.shortest_path;
-            console.log("shortest path: ", shortestPath);
+            // console.log("shortest path: ", shortestPath);
 
             networkApi.getFlows()
             .then(flowsInfo => {
-                console.log("flows info: ", flowsInfo);
+                // console.log("flows info: ", flowsInfo);
               
                 this.setState(
                     produce(draft => {
@@ -146,8 +146,7 @@ class FlowsApp extends Component {
     deleteShortestPathHandler = () => {
         networkApi.deleteShortestPath()
         .then(data => {
-            // alert("Shortest path calculated");
-            console.log("deleting shortestPath");
+            // console.log("deleting shortestPath");
             if (data.success)
             {
                 this.setState(
@@ -166,13 +165,11 @@ class FlowsApp extends Component {
     deleteFlowsHandler = () => {
 
         // this.deleteShortestPathHandler();
-        // alert("flows deleted")
 
         // return;
         networkApi.deleteFlows()
         .then(data => {
-            // alert("Shortest path calculated");
-            console.log("deleting flows");
+            // console.log("deleting flows");
             if (data.success)
             {
                 this.setState(
@@ -194,7 +191,6 @@ class FlowsApp extends Component {
                 draft.isCreatingFlows = true;
             })
         );
-        // alert("creating flows");
 
         const nodes = getODLnodes(this.props.location.data.nodesInfo);
         const links = getODLlinks(this.props.location.data.linksInfo);
@@ -217,13 +213,12 @@ class FlowsApp extends Component {
             node_dest: node_dest
         }
 
-        console.log(calcShortestPathData);
+        // console.log(calcShortestPathData);
 
         networkApi.calcShortestPath(calcShortestPathData)
         .then(data => {
-            // alert("Shortest path calculated");
             const shortestPath = data.shortest_path;
-            console.log("shortest path: ", shortestPath);
+            // console.log("shortest path: ", shortestPath);
 
             const srcNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIdsource].mac;
             const destNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIddest].mac;
@@ -235,10 +230,10 @@ class FlowsApp extends Component {
                 destMacAddress: destNodeMac,
                 nodesInfo: flowsSwitchesData
             };
-            console.log("====>data for flows creation: ", flowsCreationData);
+            // console.log("====>data for flows creation: ", flowsCreationData);
             networkApi.createFlows(flowsCreationData)
             .then(data => {
-                console.log("flows info received: ", data)
+                // console.log("flows info received: ", data)
                 if (data.success)
                 {
                     this.setState(
@@ -247,8 +242,7 @@ class FlowsApp extends Component {
                             draft.shortestPath = shortestPath;
                             draft.isCreatingFlows = false;
                         })
-                    );   
-                    // alert("Flows created")
+                    );
                 }
                 else
                 {
@@ -314,17 +308,11 @@ class FlowsApp extends Component {
     }
 
     render () {
-
-        console.log("inside statistics app rendering");
-
-        // alert("rendering app")
         const graphWidth = getWidth() * 0.9;
         const graphHeight = getHeight() * 0.6;
 
-        console.log(this.state)
-
-        console.log('nodes::::');
-        console.log(this.props.location.data);
+        // console.log('nodes::::');
+        // console.log(this.props.location.data);
 
         return (
             <>

@@ -4,8 +4,6 @@ import { Container, Row, Col, Table, Button } from 'reactstrap';
 
 const flowsInfo = (props) => {
 
-    //console.log("nnnnnnnnnnnnnnnnnnnn: ", props)
-
     return (
         <Container fluid className="customBorder1">
             <Row>

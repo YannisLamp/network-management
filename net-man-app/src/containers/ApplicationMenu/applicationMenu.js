@@ -22,14 +22,10 @@ class CreateNetwork extends Component {
 
 
     componentDidMount() {
-        // alert("did mount"); peritto
         if (this.state.graphNodes)
         { // graph data have already been retrieved
-            alert("already retrieved")
             return;
         }
-
-        // alert("go to retrieve data")
 
         networkApi.pingAll()
             .then(pingAllres => {
@@ -40,7 +36,7 @@ class CreateNetwork extends Component {
                         openDaylightApi.getNodes()
                             .then(nodesData => {
 
-                                console.log("pingall: ", pingAllres)
+                                //console.log("pingall: ", pingAllres)
 
                                 // console.log('++++++> openDaylight nodes data:');
                                 // console.log(nodesData.nodes.node);
@@ -80,21 +76,21 @@ class CreateNetwork extends Component {
 
     render() {
 
-        console.log("---> Printing ODL Info <---");
+        // console.log("---> Printing ODL Info <---");
 
-        console.log("--> Graph Nodes: ", this.state.graphNodes);
-        console.log("--------------------");
+        // console.log("--> Graph Nodes: ", this.state.graphNodes);
+        // console.log("--------------------");
 
-        console.log("--> Nodes Info: ", this.state.nodesInfo);
-        console.log("--------------------");
+        // console.log("--> Nodes Info: ", this.state.nodesInfo);
+        // console.log("--------------------");
 
-        console.log("========================");
+        // console.log("========================");
 
-        console.log("--> Graph Links: ", this.state.graphLinks )
-        console.log("--------------------");
+        // console.log("--> Graph Links: ", this.state.graphLinks )
+        // console.log("--------------------");
 
-        console.log("--> LinksInfo: ", this.state.linksInfo )
-        console.log("--------------------");
+        // console.log("--> LinksInfo: ", this.state.linksInfo )
+        // console.log("--------------------");
 
 
         return (

@@ -5,8 +5,7 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
 
 
 const switchInfo = (props) => {
-
-    // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: ",props.nodeInfo)
+    
     return (
         <>
         <Container className="customBorder1" fluid style={{backgroundColor: "white"}}>

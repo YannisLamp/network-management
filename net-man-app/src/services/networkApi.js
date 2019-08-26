@@ -32,7 +32,6 @@ function deleteNetwork() {
     return axios.delete('/network')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {
@@ -46,7 +45,6 @@ function networkExists() {
     return axios.get('/network')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {
@@ -73,7 +71,6 @@ function getShortestPath() {
     return axios.get('/shortest_path')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {
@@ -88,7 +85,6 @@ function deleteShortestPath() {
     return axios.delete('/shortest_path')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {
@@ -132,7 +128,6 @@ function getFlows() {
     return axios.get('/flows')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {
@@ -147,7 +142,6 @@ function deleteFlows() {
     return axios.delete('/flows')
         .then(
             response => {
-                // console.log(response.headers);
                 return response.data;
             },
             error => {

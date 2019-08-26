@@ -42,7 +42,6 @@ class TopologyGraph extends Component {
     // };
 
     render(){
-        // alert("graph is rendering")
         const graphData = {
             nodes: this.props.nodes,
             links: this.props.links

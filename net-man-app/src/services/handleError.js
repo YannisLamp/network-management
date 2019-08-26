@@ -1,3 +1,4 @@
+// Some very standard request error handling here, :)
 export default function handleError(error) {
     if (error.response) {
         // The request was made and the server responded with a status code
