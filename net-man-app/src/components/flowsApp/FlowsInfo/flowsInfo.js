@@ -33,7 +33,7 @@ const flowsInfo = (props) => {
                             <td>{props.flowsInfo.timeAfter}</td>
 
                             <td>{props.flowsInfo.timeDiff}</td>
-                            <td>{props.flowsInfo.timeDiffPrc}</td>
+                            <td>{parseFloat(props.flowsInfo.timeDiffPrc).toFixed(2)}</td>
                         </tr>
                     </tbody>
                 </Table>
