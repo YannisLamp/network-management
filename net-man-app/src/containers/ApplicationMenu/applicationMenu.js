@@ -131,7 +131,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron style={{minHeight: '45vh'}}>
+                            <Jumbotron style={{height: '100%'}}>
                                 <h1 className="display-5">Network Overview</h1>
                                 <p 
                                     className="lead"
@@ -158,7 +158,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron style={{minHeight: '45vh'}}>
+                            <Jumbotron style={{height: '100%'}}>
                                 <h1 className="display-5">Flow Creator</h1>
                                 <p 
                                     className="lead"
