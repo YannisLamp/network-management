@@ -47,6 +47,17 @@ class OverviewApp extends Component {
         );
     }
 
+    switchClickedHandler = (nodeId, portId) => {
+        
+        this.setState(
+            produce(draft => {
+                draft.selectedNodeId = nodeId;
+                draft.selectedLinkId = null;
+                draft.selectedPortInfo = getSwitchPortInfo(this.props.location.data.nodesInfo, nodeId, portId);               
+            })
+        );
+    }
+
     linkClickedHandler = (linkId) => {
         // alert(`link clicked ${linkId}`);
 
@@ -109,7 +120,9 @@ class OverviewApp extends Component {
                 return (
                     <HostInfo 
                         nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
-                        switchClickedHandler={()=>this.nodeClickedHandler(this.props.location.data.nodesInfo[this.state.selectedNodeId].attachedTo.nodeId)}
+                        switchClickedHandler={()=>this.switchClickedHandler(
+                            this.props.location.data.nodesInfo[this.state.selectedNodeId].attachedTo.nodeId,
+                            this.props.location.data.nodesInfo[this.state.selectedNodeId].attachedTo.portId)}
                     />    
                 );
             }
