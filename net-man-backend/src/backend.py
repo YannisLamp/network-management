@@ -47,7 +47,15 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 
 global_net = None
-gflows_list = []
+
+with open('../flowsLog.txt', 'r') as glob_file:
+    try:
+        glob_data = json.load(glob_file)
+        gflows_list = glob_data['gflows_list']
+    except ValueError: 
+        gflows_list = []
+glob_file.close()
+
 gshortest_path = []
 gstats_list = []
 
@@ -124,6 +132,23 @@ def clean_up_everything():
 
     del gshortest_path[:]  # delete shortest path list
     del gflows_list[:]  # delete all urls from global list
+    # Also empty json file with saved flows
+
+    with open('../flowsLog.txt', 'r') as json_file:
+        try:
+            file_data = json.load(json_file)
+            file_data['gflows_list'] = []
+        except ValueError: 
+            file_data = []
+    json_file.close()
+
+    with open('../flowsLog.txt', 'w') as json_file:
+        try:
+            json.dump(file_data, json_file)
+    json_file.close()
+
+    #json_file.close()
+
     del gstats_list[:]  # delete stats list
 
 
@@ -260,6 +285,13 @@ def create_flows():
         flow_id = '0'
 
         response_from_odl = create_flow(switch_id, table_id, flow_id, src_mac_address, dest_mac_address, port_number)
+
+    # Update json file for saving flows
+    data = {}
+    data['gflows_list'] = gflows_list
+    with open('../flowsLog.txt') as json_file:
+        json.dump(data, json_file)
+    json_file.close()
 
     # todo here check if flows exist!!
     # call ping_between_hosts_and_get_avrg_time() with the flows
