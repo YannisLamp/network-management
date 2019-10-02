@@ -4,3 +4,4 @@ gevent
 networkx
 httplib2
 requests
+flask-swagger-ui
