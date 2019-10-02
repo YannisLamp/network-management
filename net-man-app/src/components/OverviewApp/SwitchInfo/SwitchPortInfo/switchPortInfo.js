@@ -6,7 +6,6 @@ import { Container, Row, Col, Table } from 'reactstrap';
 const switchPortInfo = (props) => {
 
     return (
-        // <div className="d-flex d-flex-column"
         <Container fluid>
             <Row className="customBorder1">
                 <Col sm="12" className="justify-content-center d-flex w-100 p-0">
@@ -22,7 +21,6 @@ const switchPortInfo = (props) => {
 
                     <tbody>
                         <tr>
-                            {/* <th scope="row">{props.switchPortInfo.id}</th> */}
                             <td>{props.switchPortInfo.id}</td>
                             <td>{props.switchPortInfo["flow-node-inventory:name"]}</td>
                             <td>{props.switchPortInfo["flow-node-inventory:port-number"]}</td>

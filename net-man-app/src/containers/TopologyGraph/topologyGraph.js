@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-
 import { withRouter } from 'react-router-dom';
-//import produce from 'immer';
-
 import styles from './topologyGraph.module.css';
 import { Graph } from 'react-d3-graph';
 

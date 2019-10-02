@@ -3,18 +3,12 @@ import './App.css';
 import { Container } from 'reactstrap';
 import CreateNetwork from './containers/CreateNetwork/createNetwork';
 import DeleteNetwork from './containers/DeleteNetwork/deleteNetwork';
-
 import ApplicationMenu from './containers/ApplicationMenu/applicationMenu';
 import OverviewApp from './containers/OverviewApp/overviewApp';
 import FlowsApp from './containers/FlowsApp/flowsApp';
-
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
-
-//import Footer from './components/Footer/footer'
 import NetNavbar from './components/NetNavbar/netNavbar';
-
 import { networkApi } from './services/networkApi';
-
 import produce from 'immer';
 
 class App extends Component {

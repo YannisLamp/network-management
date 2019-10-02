@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
-//import produce from 'immer';
 import { Spinner } from 'reactstrap';
 import { networkApi } from '../../services/networkApi';
 

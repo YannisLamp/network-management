@@ -24,11 +24,6 @@ const switchInfo = (props) => {
 
         <Container className="customBorder1 mt-3" fluid style={{backgroundColor: "white"}}>
             <Row className="border">
-                {/* <Col sm="12" className="font-weight-bold d-flex justify-content-center">
-                    <div>
-                        Switch's ports IDs
-                    </div>
-                </Col> */}
                 <Col sm="12" className="font-weight-bold d-flex justify-content-center">
                     <div>
                         Switch's ports
@@ -51,7 +46,6 @@ const switchInfo = (props) => {
             {
                 Object.keys(props.nodeInfo.connectors).map((portId, i) => (
                     <Row className="border" key={portId}>
-                        {/* <Col sm="3"> </Col> */}
                         <Col sm="4" className="font-weight-bold d-flex justify-content-start border-right">
                             <div>
                                 <Button 
