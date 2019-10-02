@@ -5,32 +5,39 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 # The team
 ## App1: Network Overview
 Ioannis Papadopoulos
+
 Giannis Lamprou
 
-## App2
+## App2: Flow Creator
 Dimitris Gaggas
+
 Nemanja Nedic
 
 # How to run
 In this sequence:
 ```export TERM=exterm-color```
 ```./distribution-karaf-0.5.4-Boron-SR4/bin/karaf –of13```
-```python2 backend.py```
-```cd net-man-app && npm start```
+```sudo python2 backend.py```
+```cd net-man-app && sudo npm start```
 
-if you close mininet use this to reset it.
+Login to OpenDaylight:
+
+```localhost:8181/index.html```
+
+user: admin
+
+pass: admin
+
+Navigate to: ```http://localhost:3000```
+
+NOTE: if you close mininet use this to reset it.
 ```sudo mn -c```
-
-Karaf localhost:8080
 
 # Application Documentation
 ## App1: Network Overview
-Node.js application for extracting statistics from OpenDaylight about the network
-localhost:3000
+Node.js application for extracting statistics from OpenDaylight about the network.
+It runs on  ```localhost:3000``` 
 
-call:
-pingall
-topology
 
 OpenAPI API's:
 ```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
@@ -42,8 +49,8 @@ OpenAPI API's:
 
 
 ## App2: Flow Creator
-Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
-This app will find the shortest path between two switches, then install some flows to create a path between them.
+Uses Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
+After finding the shortest path between two switches, then install some flows to create a path between them.
 It uses Flask micro web framework to provide a web interface for the functions of our app.
 
 
