@@ -14,24 +14,38 @@ Dimitris Gaggas
 Nemanja Nedic
 
 # How to run
+
 In this sequence:
+
 ```export TERM=exterm-color```
+
 ```./distribution-karaf-0.5.4-Boron-SR4/bin/karaf –of13```
+
 ```sudo python2 backend.py```
+
 ```cd net-man-app && sudo npm start```
 
 Login to OpenDaylight:
 
 ```localhost:8181/index.html```
 
-user: admin
+```user: admin```
 
-pass: admin
+```pass: admin```
+
+# How to use
 
 Navigate to: ```http://localhost:3000```
 
-NOTE: if you close mininet use this to reset it.
+You will be prompted with the network creation page. Select the netowrk properties or just press default values. (Note that Djikstra is pointless for a Linear Network, so if you want to inspect that functionality don't choose Linear.)
+
+NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it.
 ```sudo mn -c```
+
+This demo shows an example usage of the app
+TODO GIF DEMO HERE
+
+
 
 # Application Documentation
 ## App1: Network Overview
