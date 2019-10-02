@@ -3,6 +3,7 @@ import switchSVG from '../assets/svg/hub.svg';
 
 export const getODLnodes = (nodesInfo) => {
     let retNodes = [];
+    // eslint-disable-next-line
     for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
     {
         retNodes.push(nodeId);
@@ -13,6 +14,7 @@ export const getODLnodes = (nodesInfo) => {
 
 export const getODLlinks = (linksInfo) => {
     let retLinks = [];
+    // eslint-disable-next-line
     for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
     {
         retLinks.push( [linkInfo.sourceInfo.nodeId, linkInfo.destInfo.nodeId] );
@@ -160,8 +162,6 @@ export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
     let retGraphLinks = [];
     for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
     {
-        // console.log(key, value);
-
         let color = "#d3d3d3"; //default
         if (selectedLinksIDs.includes(linkId))
         {
@@ -182,7 +182,6 @@ export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
 
 export const getGraphNodes = (nodesInfo, selectedNodesIDs) => {
     let retGraphNodes = [];
-    // console.log("selected node id: ", selectedNodesIDs)
     for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
     {
 

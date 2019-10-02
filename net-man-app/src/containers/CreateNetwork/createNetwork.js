@@ -125,14 +125,8 @@ class CreateNetwork extends Component {
             formData[key] = this.state.formElems[key].value;
         }
 
-        // console.log("---Form Data---");
-        // console.log(formData);
-        // console.log("---------------");
-
-
         networkApi.createNetwork(formData)
             .then(data => {
-        
                 this.props.networkStateHandler();
                 this.props.history.replace('/');      
             });
@@ -178,7 +172,6 @@ class CreateNetwork extends Component {
                                     <Input type="select" value={this.state.formElems.topoType.value}  id="topoType" onChange={ (e) => this.inputChangedHandler(e, "topoType") }>
                                         <option value="linear">linear</option>
                                         <option value="tree">tree</option>
-                                        {/* <option value="single">single</option> */}
                                     </Input>
                                 </FormGroup>
                             </Col>

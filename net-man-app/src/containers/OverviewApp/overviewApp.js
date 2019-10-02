@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 
-//import styles from './statisticsApp.module.css';
-//import { openDaylightApi } from '../../services/openDaylightApi';
-
 import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
@@ -74,6 +71,7 @@ class OverviewApp extends Component {
         const { selectedNodeId } = this.state;
 
         let filteredLinks = {};
+        // eslint-disable-next-line
         for (const [key, link] of Object.entries(this.props.location.data.linksInfo) ) {
             if (link.sourceInfo.nodeId === selectedNodeId) {
                 filteredLinks[link.sourceInfo.portId] = link.destInfo;

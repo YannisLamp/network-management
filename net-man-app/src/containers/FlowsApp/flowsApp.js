@@ -36,14 +36,9 @@ class FlowsApp extends Component {
 
         networkApi.getShortestPath()
         .then(data => {
-
             const shortestPath = data.shortest_path;
-            // console.log("shortest path: ", shortestPath);
-
             networkApi.getFlows()
-            .then(flowsInfo => {
-                // console.log("flows info: ", flowsInfo);
-              
+            .then(flowsInfo => {              
                 this.setState(
                     produce(draft => {
                         draft.flowsInfo = flowsInfo.success ? flowsInfo.sourceDest : null;
@@ -146,7 +141,6 @@ class FlowsApp extends Component {
     deleteShortestPathHandler = () => {
         networkApi.deleteShortestPath()
         .then(data => {
-            // console.log("deleting shortestPath");
             if (data.success)
             {
                 this.setState(
@@ -163,13 +157,8 @@ class FlowsApp extends Component {
 
 
     deleteFlowsHandler = () => {
-
-        // this.deleteShortestPathHandler();
-
-        // return;
         networkApi.deleteFlows()
         .then(data => {
-            // console.log("deleting flows");
             if (data.success)
             {
                 this.setState(
@@ -213,12 +202,9 @@ class FlowsApp extends Component {
             node_dest: node_dest
         }
 
-        // console.log(calcShortestPathData);
-
         networkApi.calcShortestPath(calcShortestPathData)
         .then(data => {
             const shortestPath = data.shortest_path;
-            // console.log("shortest path: ", shortestPath);
 
             const srcNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIdsource].mac;
             const destNodeMac = this.props.location.data.nodesInfo[this.state.selectedNodeIddest].mac;
@@ -230,10 +216,8 @@ class FlowsApp extends Component {
                 destMacAddress: destNodeMac,
                 nodesInfo: flowsSwitchesData
             };
-            // console.log("====>data for flows creation: ", flowsCreationData);
             networkApi.createFlows(flowsCreationData)
             .then(data => {
-                // console.log("flows info received: ", data)
                 if (data.success)
                 {
                     this.setState(
@@ -251,22 +235,6 @@ class FlowsApp extends Component {
 
             });
 
-            // const dummyFlowsInfo = {
-            //     success: true,
-            //     sourceDest: {
-            //         timeBefore: "0.892",
-            //         timeAfter: "0.6419",
-            //         timeDiff: "0.257",
-            //         timeDiffPrc: "20"
-            //     }
-            // }
-
-            // this.setState(
-            //     produce(draft => {
-            //         draft.shortestPath = data.shortest_path;
-            //         draft.flowsInfo = dummyFlowsInfo;
-            //     })
-            // );  
         });
 
     }
@@ -310,9 +278,6 @@ class FlowsApp extends Component {
     render () {
         const graphWidth = getWidth() * 0.9;
         const graphHeight = getHeight() * 0.6;
-
-        // console.log('nodes::::');
-        // console.log(this.props.location.data);
 
         return (
             <>
