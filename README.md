@@ -37,10 +37,11 @@ Login to OpenDaylight:
 
 Navigate to: ```http://localhost:3000```
 
-You will be prompted with the network creation page. Select the netowrk properties or just press default values. (Note that Djikstra is pointless for a Linear Network, so if you want to inspect that functionality don't choose Linear.)
+You will be prompted with the network creation page. Select the netowrk properties or just press default values.
 
-NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it.
-```sudo mn -c```
+Note: Djikstra is pointless for a Linear Network, so if you want to inspect that functionality don't choose Linear.
+Note: If tree topology is selected, it might take some time to create the network since the network size increases exponentially based on the input parameters. We suggest that for demo purposes you select a smaller network tree.
+NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
 
 This demo shows an example usage of the app
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/Peek%202019-10-02%2017-58.gif "Demo1")
