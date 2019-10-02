@@ -62,6 +62,11 @@ This demo show how to create a network on the app:
 This is a demo of the Network Overview app and the stastistics it provides:
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/network_overview.gif "Network Overview")
 
+Clarification:
+
+Rx: # received
+
+Tx: # transmitted
 
 Node.js application for extracting statistics from OpenDaylight about the network.
 
