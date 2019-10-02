@@ -13,7 +13,7 @@ import produce from 'immer';
 
 
 
-class CreateNetwork extends Component {
+class ApplicationMenu extends Component {
     
     state = {
         nodesInfo: null,
@@ -32,43 +32,47 @@ class CreateNetwork extends Component {
 
                 openDaylightApi.getTopology()
                     .then(topologyData => {
-                        
-                        openDaylightApi.getNodes()
-                            .then(nodesData => {
+                        if (topologyData)
+                        {
+                            openDaylightApi.getNodes()
+                                .then(nodesData => {
+                                    if (nodesData)
+                                    {
+                                        //console.log("pingall: ", pingAllres)
 
-                                //console.log("pingall: ", pingAllres)
-
-                                // console.log('++++++> openDaylight nodes data:');
-                                // console.log(nodesData.nodes.node);
-                                // console.log("----------------");
-                                // console.log("=========================");
+                                        // console.log('++++++> openDaylight nodes data:');
+                                        // console.log(nodesData.nodes.node);
+                                        // console.log("----------------");
+                                        // console.log("=========================");
 
 
-                                // console.log('++++++> openDaylight topology data:');
-                                // console.log(topologyData['network-topology'].topology);
-                                // console.log("----------------");
-                                // console.log("=========================");
+                                        // console.log('++++++> openDaylight topology data:');
+                                        // console.log(topologyData['network-topology'].topology);
+                                        // console.log("----------------");
+                                        // console.log("=========================");
 
-                                // topologyData['network-topology'].topology[0].node is the array of nodes
-                                const topologyNodes = topologyData['network-topology'].topology[0].node;
+                                        // topologyData['network-topology'].topology[0].node is the array of nodes
+                                        const topologyNodes = topologyData['network-topology'].topology[0].node;
 
-                                // topologyData['network-topology'].topology[0].link is the array of links
-                                const topologyLinks = topologyData['network-topology'].topology[0].link;
+                                        // topologyData['network-topology'].topology[0].link is the array of links
+                                        const topologyLinks = topologyData['network-topology'].topology[0].link;
 
-                                // nodesData.nodes.node is the array of nodes
-                                const switchesAnalytics = nodesData.nodes.node;    
+                                        // nodesData.nodes.node is the array of nodes
+                                        const switchesAnalytics = nodesData.nodes.node;    
 
-                                const switchesDatasets = extractSwitchesInfo(switchesAnalytics);
-                                const linksInfo = getLinksInfo(topologyLinks);
-                                const nodesInfo = getNodesInfo(topologyNodes, switchesDatasets);
+                                        const switchesDatasets = extractSwitchesInfo(switchesAnalytics);
+                                        const linksInfo = getLinksInfo(topologyLinks);
+                                        const nodesInfo = getNodesInfo(topologyNodes, switchesDatasets);
 
-                                this.setState(
-                                    produce(draft => {
-                                        draft.nodesInfo = nodesInfo;
-                                        draft.linksInfo = linksInfo;
-                                    })
-                                );
-                            });
+                                        this.setState(
+                                            produce(draft => {
+                                                draft.nodesInfo = nodesInfo;
+                                                draft.linksInfo = linksInfo;
+                                            })
+                                        );
+                                    }
+                                });
+                        }
                     });
             });
     }
@@ -190,4 +194,4 @@ class CreateNetwork extends Component {
 
 
 
-export default withRouter(CreateNetwork);
+export default withRouter(ApplicationMenu);
