@@ -1,6 +1,7 @@
 # Software Defined Networking
 
-Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight platform for creating a Software-Defined-Networking Controller.
+Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
+App1 is a React frontend that serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly.
 
 # The team
 
@@ -49,13 +50,25 @@ Note: If tree topology is selected, it might take some time to create the networ
 
 NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
 
+
+
+
+
+# How it works
+
+## Network Creation
+
 This demo show how to create a network on the app:
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/create_network.gif "Create Network")
 
+App1: starting it check weather a network already exists or not by asking App2 about the status. If not you will be prompted to create one. 
+
+App2: Listens for a POST request about network creation, with the parameters for the network. As soon as the network is created it is started and a pingAll prodecure is called so that we establish all connections. In case there are leftover flows from a previous session these will be deleted before creating a new network.
 
 
-# Application Documentation
-## App1: Network Overview
+
+## Network Overview
+
 This is a demo of the Network Overview app and the stastistics it provides:
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/network_overview.gif "Network Overview")
 
@@ -65,12 +78,26 @@ Rx: # received
 
 Tx: # transmitted
 
-Node.js application for extracting statistics from OpenDaylight about the network.
+App1: sends a GET request to App2/flows. App2 answers with statistics. 
 
-It runs on  ```localhost:3000```
+## Flow Creation
 
-Besides providing an endpoint to serve statistics it also acts as a front end. As this app is the 
+![alt text](https://github.com/YannisLamp/network-management/blob/master/create_flow.gif "Shortest Path Between nodes")
 
+Uses Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
+After finding the shortest path between two switches, then install some flows to create a path between them.
+It uses Flask micro web framework to provide a web interface for the functions of our app.
+
+POST /shortest_path
+POST /flows
+
+## Delete Network
+![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
+
+
+
+
+# AUTA EDW KATW THA SVISTOUN. EAN THELETE NA KRATISETE KATI VALTE TO KAPOU APO PANW---------------------
 
 OpenAPI API's:
 ```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
@@ -81,15 +108,6 @@ OpenAPI API's:
 ```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/' + nodeId```
 ```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/'```
  ```nodeId + '/flow-node-inventory:table/'+tableId + '/flow/'+flowId```
-
-
-## App2: Flow Creator
-![alt text](https://github.com/YannisLamp/network-management/blob/master/create_flow.gif "Shortest Path Between nodes")
-
-Uses Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
-After finding the shortest path between two switches, then install some flows to create a path between them.
-It uses Flask micro web framework to provide a web interface for the functions of our app.
-
 
 Namely:
 ### localhost:5000/network
@@ -113,5 +131,4 @@ Namely:
 ### localhost:5000/pingall
  #### POST
  
-# Delete Network
-![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
+
