@@ -90,6 +90,10 @@ def create_network():
 
 
 def clean_up_everything():
+    global gshortest_path
+    global gflows_list
+    global gstats_list
+
     for url in gflows_list:
         delete_flow(url)
 
