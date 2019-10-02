@@ -31,12 +31,12 @@ const switchInfo = (props) => {
                 </Col>
             </Row>
             <Row className="border">
-                <Col sm="4" className="font-weight-bold d-flex justify-content-center border-right">
+                <Col sm="5" className="font-weight-bold d-flex justify-content-center border-right">
                     <div>
                         IDs
                     </div>
                 </Col>
-                <Col sm="8" className="font-weight-bold d-flex justify-content-center">
+                <Col sm="7" className="font-weight-bold d-flex justify-content-center">
                     <div>
                         Destination
                     </div>
@@ -46,7 +46,7 @@ const switchInfo = (props) => {
             {
                 Object.keys(props.nodeInfo.connectors).map((portId, i) => (
                     <Row className="border" key={portId}>
-                        <Col sm="4" className="font-weight-bold d-flex justify-content-start border-right">
+                        <Col sm="5" className="font-weight-bold d-flex justify-content-start border-right">
                             <div>
                                 <Button 
                                     className="p-0" 
@@ -58,7 +58,7 @@ const switchInfo = (props) => {
                             </div>
                         </Col>
 
-                        <Col sm="8" className="font-weight-bold d-flex justify-content-start">
+                        <Col sm="7" className="font-weight-bold d-flex justify-content-start">
                             <div>
                                 <Button 
                                     className="p-0" 
