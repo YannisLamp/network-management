@@ -145,6 +145,8 @@ def clean_up_everything():
     with open('../flowsLog.txt', 'w') as json_file:
         try:
             json.dump(file_data, json_file)
+        except ValueError: 
+            file_data = []
     json_file.close()
 
     #json_file.close()
