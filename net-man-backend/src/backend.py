@@ -20,6 +20,8 @@ from mininet.util import dumpNodeConnections
 
 from flask_swagger_ui import get_swaggerui_blueprint
 
+import os
+
 
 
 app = Flask(__name__)
@@ -48,7 +50,8 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 global_net = None
 
-with open('../flowsLog.txt', 'r') as glob_file:
+gflows_list = []
+with open('../flowsLog.json', 'r') as glob_file:
     try:
         glob_data = json.load(glob_file)
         gflows_list = glob_data['gflows_list']
@@ -58,6 +61,10 @@ glob_file.close()
 
 gshortest_path = []
 gstats_list = []
+
+
+
+
 
 
 def create_net(controller_ip, controller_port, topo_type, switch_type, nodes_per_switch, switch_num, mac):
@@ -83,6 +90,7 @@ def create_net(controller_ip, controller_port, topo_type, switch_type, nodes_per
     global global_net
     global_net = Mininet(topo=topology, controller=controller, switch=switch, autoSetMacs=mac, waitConnected=True)
 
+    
 
 def start_net(net, ping_all=False, cli=False):
     """
@@ -116,9 +124,14 @@ def create_network():
     switchNum = int(request.json.get('switchNum'))
     nodesPerSwitch = int(request.json.get('nodesPerSwitch'))
 
+
+    delete_flows()
+    os.system("mn -c")
     # Create Network
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
     start_net(global_net)
+
+    
     return jsonify({'msg': 'Network Created'})
 
 
@@ -134,7 +147,7 @@ def clean_up_everything():
     del gflows_list[:]  # delete all urls from global list
     # Also empty json file with saved flows
 
-    with open('../flowsLog.txt', 'r') as json_file:
+    with open('../flowsLog.json', 'r') as json_file:
         try:
             file_data = json.load(json_file)
             file_data['gflows_list'] = []
@@ -142,7 +155,7 @@ def clean_up_everything():
             file_data = []
     json_file.close()
 
-    with open('../flowsLog.txt', 'w') as json_file:
+    with open('../flowsLog.json', 'w') as json_file:
         try:
             json.dump(file_data, json_file)
         except ValueError: 
@@ -291,7 +304,7 @@ def create_flows():
     # Update json file for saving flows
     data = {}
     data['gflows_list'] = gflows_list
-    with open('../flowsLog.txt') as json_file:
+    with open('../flowsLog.json','w') as json_file:
         json.dump(data, json_file)
     json_file.close()
 
