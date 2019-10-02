@@ -95,3 +95,6 @@ Namely:
  
 ### localhost:5000/pingall
  #### POST
+ 
+# Delete Network
+![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
