@@ -4,11 +4,13 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 
 # The team
 App1: Network Overview
+
 ![John Papadopoulos](https://github.com/jackalakos "John Papadopoulos")
 
 ![Giannis Lamprou](https://github.com/jackalakos "Giannis Lamprou")
 
 App2: Flow Creator
+
 ![Dimitris Gangas](https://github.com/dimitrisgan "Dimitris Gangas")
 
 [Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/)
