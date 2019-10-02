@@ -3,33 +3,69 @@
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight platform for creating a Software-Defined-Networking Controller.
 
 # The team
-## App1
+## App1: Network Overview
 Ioannis Papadopoulos
+
 Giannis Lamprou
 
-## App2
+## App2: Flow Creator
 Dimitris Gaggas
+
 Nemanja Nedic
 
 # How to run
+
 In this sequence:
+
 ```export TERM=exterm-color```
+
 ```./distribution-karaf-0.5.4-Boron-SR4/bin/karaf –of13```
-```python2 backend.py```
-```cd net-man-app && npm start```
 
-if you close mininet use this to reset it.
-```sudo mn -c```
+```sudo python2 backend.py```
 
-Karaf localhost:8080
+```cd net-man-app && sudo npm start```
+
+Login to OpenDaylight:
+
+```localhost:8181/index.html```
+
+```user: admin```
+
+```pass: admin```
+
+# How to use
+
+Navigate to: ```http://localhost:3000```
+
+You will be prompted with the network creation page. Select the netowrk properties or just press default values.
+
+Note: Djikstra is pointless for a Linear Network, so if you want to inspect that functionality don't choose Linear.
+Note: If tree topology is selected, it might take some time to create the network since the network size increases exponentially based on the input parameters. We suggest that for demo purposes you select a smaller network tree.
+NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
+
+This demo shows an example usage of the app
+![alt text](https://github.com/YannisLamp/network-management/blob/master/Peek%202019-10-02%2017-58.gif "Demo1")
+
+
 
 # Application Documentation
-## App1: Node.js application for extracting statistics from OpenDaylight about the network
-localhost:3000
+## App1: Network Overview
+Node.js application for extracting statistics from OpenDaylight about the network.
+It runs on  ```localhost:3000``` 
 
-## App2: Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches
 
-This app will find the shortest path between two switches, then install some flows to create a path between them.
+OpenAPI API's:
+```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
+```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId```
+```http://localhost:8181/restconf/operational/network-topology:network-topology```
+```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/' + nodeId```
+```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/'```
+ ```nodeId + '/flow-node-inventory:table/'+tableId + '/flow/'+flowId```
+
+
+## App2: Flow Creator
+Uses Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
+After finding the shortest path between two switches, then install some flows to create a path between them.
 It uses Flask micro web framework to provide a web interface for the functions of our app.
 
 

@@ -117,7 +117,7 @@ class CreateNetwork extends Component {
                 :
                 <>
                 <Row>
-                    <Col className="d-flex justify-content-center mb-5 font-weight-bold">
+                    <Col className="d-flex justify-content-center mb-4 font-weight-bold">
                         <div className={styles.title + " text-primary"}>
                             Network Management Applications
                         </div>
@@ -135,7 +135,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron className={styles.border + " h-100"} >
+                            <Jumbotron className={styles.border + " h-100 pt-3 pb-0"} >
                                 <h1 className="display-5">Network Overview</h1>
                                 <p 
                                     className="lead"
@@ -162,7 +162,7 @@ class CreateNetwork extends Component {
                                     } 
                                 }} 
                         >
-                            <Jumbotron className={styles.border + " h-100"}>
+                            <Jumbotron className={styles.border + " h-100 pt-3 pb-0"}>
                                 <h1 className="display-5">Flow Creator</h1>
                                 <p 
                                     className="lead"
