@@ -162,8 +162,6 @@ export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
     let retGraphLinks = [];
     for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
     {
-        // console.log(key, value);
-
         let color = "#d3d3d3"; //default
         if (selectedLinksIDs.includes(linkId))
         {
@@ -184,7 +182,6 @@ export const getGraphLinks = (linksInfo, selectedLinksIDs) => {
 
 export const getGraphNodes = (nodesInfo, selectedNodesIDs) => {
     let retGraphNodes = [];
-    // console.log("selected node id: ", selectedNodesIDs)
     for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
     {
 

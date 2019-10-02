@@ -10,19 +10,9 @@ export const openDaylightApi = {
 };
 
 function getNodes() {
-    // https://wiki.opendaylight.org/view/Topology_Processing_Framework:Developer_Guide:Use_Case_Tutorial#Show_all_Underlay_Topologies
-    //'/restconf/operational/opendaylight-inventory:nodes/'
-    //restconf/operational/network-topology:network-topology
-    //    /restconf/config/network-topology:network-topology/topology/openflow-topo
-    // restconf/operational/network-topology:network-topology/topology/unification-with-filtration:1
-    //http://127.0.0.1:8080/controller/nb/v2/statistics/default/flow
-    // /restconf/operational/network-topology:network-topology/topology/flow:1
-    //GET  http://<controller-ip>:8080/restconf/operational/opendaylight-inventory:nodes/node/{node-id}/table/{table-id}
     return axios.get('/restconf/operational/opendaylight-inventory:nodes')
         .then(
             response => {
-                // console.log('openDaylight NODES response:');
-                // console.log(response);
                 return response.data;
             },
             error => {

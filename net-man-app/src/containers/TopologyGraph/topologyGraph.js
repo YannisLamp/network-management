@@ -47,11 +47,7 @@ class TopologyGraph extends Component {
             links: this.props.links
         }
 
-        // console.log("graph Width: ", this.props.graphWidth);
-        // console.log("graph Height", this.props.graphHeight);
-
         const myConfig = {
-            // focusZoom: 1,
             nodeHighlightBehavior: true,
             highlightDegree: 0,
             node: {
@@ -64,17 +60,12 @@ class TopologyGraph extends Component {
                 highlightFontWeight: "bold",
             },
             link: {
-                // color: 'gray',  // blue when clicked
                 highlightColor: 'lightblue'
             },
-            //width: 1550, //props
             width: this.props.graphWidth,
             height: this.props.graphHeight,
             d3: {
                 gravity: -230,
-                // linkLength: 150,
-                // linkLength: (d) => 150,
-                // alphaTarget: 0.5,
             }
         };
         

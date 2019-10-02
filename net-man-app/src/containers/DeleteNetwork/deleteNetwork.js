@@ -7,8 +7,7 @@ import { networkApi } from '../../services/networkApi';
 class DeleteNetwork extends Component {
 
     state = {
-        isLoading: true,
-
+        isLoading: true
     }
 
     render () {
@@ -39,12 +38,6 @@ class DeleteNetwork extends Component {
         // api call to backend to actually delete network
         networkApi.deleteNetwork()
             .then(data => {
-                // this.setState(
-                //     produce(draft => {
-                //         draft.isLoading = !draft.isLoading;
-                //     })
-                // );
-                //this.props.networkStateHandler();
                 // Redirect to main page
                 this.props.history.replace('/');
             });

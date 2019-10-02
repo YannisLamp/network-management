@@ -7,8 +7,6 @@ import styles from './applicationMenu.module.css';
 import { openDaylightApi } from '../../services/openDaylightApi';
 import { networkApi } from '../../services/networkApi';
 import { getNodesInfo, getLinksInfo, extractSwitchesInfo } from '../../utilities/ODL_utilities';
-//import pcSVG from '../../assets/svg/pcIcon.svg';
-//import switchSVG from '../../assets/svg/hub.svg';
 import produce from 'immer';
 
 

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 
-//import styles from './statisticsApp.module.css';
-//import { openDaylightApi } from '../../services/openDaylightApi';
-
 import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';
 
