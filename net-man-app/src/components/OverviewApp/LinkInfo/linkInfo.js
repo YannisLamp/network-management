@@ -5,6 +5,8 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
     
 const linkInfo = (props) =>  {
 
+    console.log(props);
+
     return (
         <Container className="customBorder1" fluid style={{backgroundColor: "white"}}>
             <Row className="border">
@@ -18,11 +20,33 @@ const linkInfo = (props) =>  {
             <TopoInfoRow name="Type" value="bidirectional"/>
 
             <TopoInfoRow name="Source Node" value={props.linkInfo.sourceInfo.nodeId} 
-                nodeClickedHandler={()=>props.nodeClickedHandler(props.linkInfo.sourceInfo.nodeId)}
+                nodeClickedHandler={
+                    () => { 
+                        if (props.linkInfo.sourceInfo.nodeType === "switch") 
+                        { 
+                            return props.switchClickedHandler(props.linkInfo.sourceInfo.nodeId, props.linkInfo.sourceInfo.portId);
+                        }
+                        else // host
+                        {
+                            return props.nodeClickedHandler(props.linkInfo.sourceInfo.nodeId);
+                        }
+                    }
+                }
                 clickableValue
             />
             <TopoInfoRow name="Dest Node" value={props.linkInfo.destInfo.nodeId} 
-                nodeClickedHandler={()=>props.nodeClickedHandler(props.linkInfo.destInfo.nodeId)}
+                nodeClickedHandler={
+                    () => { 
+                        if (props.linkInfo.destInfo.nodeType === "switch") 
+                        { 
+                            return props.switchClickedHandler(props.linkInfo.destInfo.nodeId, props.linkInfo.destInfo.portId);
+                        }
+                        else // host
+                        {
+                            return props.nodeClickedHandler(props.linkInfo.destInfo.nodeId);
+                        }
+                    }
+                }                
                 clickableValue
             />
 
