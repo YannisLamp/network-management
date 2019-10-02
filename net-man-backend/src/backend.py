@@ -50,6 +50,7 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 global_net = None
 
+# open file and load the flows links from previous session if exist
 gflows_list = []
 with open('../flowsLog.json', 'r') as glob_file:
     try:
@@ -58,6 +59,7 @@ with open('../flowsLog.json', 'r') as glob_file:
     except ValueError: 
         gflows_list = []
 glob_file.close()
+
 
 gshortest_path = []
 gstats_list = []
@@ -127,6 +129,18 @@ def create_network():
 
     delete_flows()
     os.system("mn -c")
+
+    # empty the 'gflows_list' object list from previous session if exist
+    # no need to keep because we deleted the remaining flows from previous session 
+    with open('../flowsLog.json', 'w') as json_file:
+        try:
+            json.dump(file_data, json_file)
+        except ValueError: 
+            file_data = []
+    json_file.close()
+
+
+
     # Create Network
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
     start_net(global_net)
