@@ -43,7 +43,7 @@ NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it.
 ```sudo mn -c```
 
 This demo shows an example usage of the app
-TODO GIF DEMO HERE
+![alt text](https://github.com/YannisLamp/network-management/blob/master/Peek%202019-10-02%2017-58.gif "Demo1")
 
 
 
