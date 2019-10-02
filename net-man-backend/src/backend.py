@@ -61,6 +61,18 @@ with open('../flowsLog.json', 'r') as glob_file:
 glob_file.close()
 
 
+# empty the 'gflows_list' object list from previous session if exist
+# no need to keep because we deleted the remaining flows from previous session 
+with open('../flowsLog.json', 'w') as json_file:
+    try:
+        json.dump(file_data, json_file)
+    except ValueError: 
+        file_data = []
+json_file.close()
+
+
+
+
 gshortest_path = []
 gstats_list = []
 
@@ -130,17 +142,7 @@ def create_network():
     delete_flows()
     os.system("mn -c")
 
-    # empty the 'gflows_list' object list from previous session if exist
-    # no need to keep because we deleted the remaining flows from previous session 
-    with open('../flowsLog.json', 'w') as json_file:
-        try:
-            json.dump(file_data, json_file)
-        except ValueError: 
-            file_data = []
-    json_file.close()
-
-
-
+    
     # Create Network
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
     start_net(global_net)
@@ -393,6 +395,7 @@ def flow_exists():
             return False
 
     return True  # the flow exists
+
 
 
 
