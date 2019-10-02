@@ -3,15 +3,19 @@
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight platform for creating a Software-Defined-Networking Controller.
 
 # The team
-## App1: Network Overview
+
 ![John Papadopoulos](https://github.com/jackalakos "John Papadopoulos")
 
 ![Giannis Lamprou](https://github.com/jackalakos "Giannis Lamprou")
 
-## App2: Flow Creator
 ![Dimitris Gangas](https://github.com/dimitrisgan "Dimitris Gangas")
 
 [Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/)
+
+
+# The Stack
+
+![stack image](https://github.com/YannisLamp/network-management/blob/master/SDN.png "The Stack")
 
 # How to run
 
@@ -37,10 +41,12 @@ Login to OpenDaylight:
 
 Navigate to: ```http://localhost:3000```
 
-You will be prompted with the network creation page. Select the netowrk properties or just press default values.
+You will be prompted with the network creation page. Select the netwok properties or just press default values.
 
 Note: Djikstra is pointless for a Linear Network, so if you want to inspect that functionality don't choose Linear.
+
 Note: If tree topology is selected, it might take some time to create the network since the network size increases exponentially based on the input parameters. We suggest that for demo purposes you select a smaller network tree.
+
 NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
 
 This demo show how to create a network on the app:
@@ -53,14 +59,25 @@ This demo show how to create a network on the app:
 This is a demo of the Network Overview app and the stastistics it provides:
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/network_overview.gif "Network Overview")
 
+Clarification:
+
+Rx: # received
+
+Tx: # transmitted
 
 Node.js application for extracting statistics from OpenDaylight about the network.
-It runs on  ```localhost:3000``` 
+
+It runs on  ```localhost:3000```
+
+Besides providing an endpoint to serve statistics it also acts as a front end. As this app is the 
+
 
 OpenAPI API's:
 ```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
 ```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId```
+
 ```http://localhost:8181/restconf/operational/network-topology:network-topology```
+
 ```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/' + nodeId```
 ```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/'```
  ```nodeId + '/flow-node-inventory:table/'+tableId + '/flow/'+flowId```
