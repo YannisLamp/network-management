@@ -9,7 +9,7 @@ Ioannis Papadopoulos
 Giannis Lamprou
 
 ## App2: Flow Creator
-Dimitris Gaggas
+Dimitris Gangas
 
 Nemanja Nedic
 
