@@ -395,16 +395,6 @@ def flow_exists():
     return True  # the flow exists
 
 
-# https://realpython.com/python-requests/
-@app.route('/hello', methods=['GET'])
-def hello():
-    response = requests.get(
-        'http://localhost:8181/restconf/operational/network-topology:network-topology',
-        # params={'q': 'requests+language:python'},
-        headers={'Accept': 'application/json', 'Authorization': 'Basic YWRtaW46YWRtaW4='},
-    )
-    return response.json()
-
 
 @app.route('/pingall', methods=['POST'])
 def pingall():
