@@ -89,11 +89,25 @@ def create_network():
     return jsonify({'msg': 'Network Created'})
 
 
+def clean_up_everything():
+    for url in gflows_list:
+        delete_flow(url)
+
+    del gshortest_path[:]  # delete shortest path list
+    del gflows_list[:]  # delete all urls from global list
+    del gstats_list[:]  # delete stats list
+
+
+
+
 @app.route('/network', methods=['DELETE'])
 def delete_network():
     print 'deleted network'
     global global_net
     if global_net is not None:
+
+        clean_up_everything()   
+
         global_net.stop()
         # Cleanup.cleanup()
         global_net = None
@@ -159,12 +173,7 @@ def delete_flows():
     global gflows_list
     global gstats_list
 
-    for url in gflows_list:
-        delete_flow(url)
-
-    del gshortest_path[:]  # delete shortest path list
-    del gflows_list[:]  # delete all urls from global list
-    del gstats_list[:]  # delete stats list
+    clean_up_everything()
 
     if len(gshortest_path) == 0 and len(gflows_list) == 0 and len(gstats_list) == 0:
         return jsonify({'success': True})
