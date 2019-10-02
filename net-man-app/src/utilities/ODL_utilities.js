@@ -3,8 +3,7 @@ import switchSVG from '../assets/svg/hub.svg';
 
 export const getODLnodes = (nodesInfo) => {
     let retNodes = [];
-    // eslint-disable-next-line
-    for (const [nodeId, nodeInfo] of Object.entries(nodesInfo)) 
+    for (const [nodeId, ] of Object.entries(nodesInfo)) 
     {
         retNodes.push(nodeId);
     }
@@ -14,8 +13,7 @@ export const getODLnodes = (nodesInfo) => {
 
 export const getODLlinks = (linksInfo) => {
     let retLinks = [];
-    // eslint-disable-next-line
-    for (const [linkId, linkInfo] of Object.entries(linksInfo)) 
+    for (const [ ,linkInfo] of Object.entries(linksInfo)) 
     {
         retLinks.push( [linkInfo.sourceInfo.nodeId, linkInfo.destInfo.nodeId] );
     }
@@ -106,7 +104,7 @@ export const extractSwitchesInfo = (switchesAnalytics) => {
         retSwitchesInfo[switchInfo.id]["type"] = "switch"
         retSwitchesInfo[switchInfo.id]["switchType"] = switchInfo["flow-node-inventory:hardware"];
 
-        retSwitchesInfo[switchInfo.id]["info"] = switchInfo; //isws peritto !!!!!!!!
+        retSwitchesInfo[switchInfo.id]["info"] = switchInfo; //not necessary
 
         retSwitchesInfo[switchInfo.id]["connectors"] = {};
         for (let connector of switchInfo['node-connector']) 

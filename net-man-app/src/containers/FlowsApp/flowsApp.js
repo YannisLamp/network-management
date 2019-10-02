@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Spinner, Alert } from 'reactstrap';
 import { withRouter, Redirect } from 'react-router-dom';
-
-//import styles from './statisticsApp.module.css';
 import { networkApi } from '../../services/networkApi';
-//import { openDaylightApi } from '../../services/openDaylightApi';
 
 import TopologyGraph from '../TopologyGraph/topologyGraph';
 import produce from 'immer';

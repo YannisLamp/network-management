@@ -71,8 +71,7 @@ class OverviewApp extends Component {
         const { selectedNodeId } = this.state;
 
         let filteredLinks = {};
-        // eslint-disable-next-line
-        for (const [key, link] of Object.entries(this.props.location.data.linksInfo) ) {
+        for (const [ , link] of Object.entries(this.props.location.data.linksInfo) ) {
             if (link.sourceInfo.nodeId === selectedNodeId) {
                 filteredLinks[link.sourceInfo.portId] = link.destInfo;
             }
@@ -100,9 +99,6 @@ class OverviewApp extends Component {
     }
 
     renderSideInfo = () => {
-        // console.log('LINKS INFO TO PASS');
-        // console.log(this.props.location.data.linksInfo);
-
         const type = this.getSelectedType();
         if (!type)
         {
@@ -144,7 +140,7 @@ class OverviewApp extends Component {
             }
             else 
             {
-                // Ti fasi??!
+                // should not enter here
                 return "den paizeis me poiothta";
             }
         }
@@ -171,10 +167,6 @@ class OverviewApp extends Component {
     
 
     render () {
-
-        //console.log("inside statistics app rendering");
-        //console.log(this.props.location.data);
-        //console.log(this.state)
         const graphWidth = getWidth() * 0.6;
         const graphHeight = getHeight() * 0.7;
 
