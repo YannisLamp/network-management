@@ -43,16 +43,19 @@ Note: Djikstra is pointless for a Linear Network, so if you want to inspect that
 Note: If tree topology is selected, it might take some time to create the network since the network size increases exponentially based on the input parameters. We suggest that for demo purposes you select a smaller network tree.
 NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
 
-This demo shows an example usage of the app
-![alt text](https://github.com/YannisLamp/network-management/blob/master/Peek%202019-10-02%2017-58.gif "Demo1")
+This demo show how to create a network on the app:
+![alt text](https://github.com/YannisLamp/network-management/blob/master/network_create.gif "Create Network")
 
 
 
 # Application Documentation
 ## App1: Network Overview
+This is a demo of the Network Overview app and the stastistics it provides:
+![alt text](https://github.com/YannisLamp/network-management/blob/master/network_overview.gif "Network Overview")
+
+
 Node.js application for extracting statistics from OpenDaylight about the network.
 It runs on  ```localhost:3000``` 
-
 
 OpenAPI API's:
 ```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
@@ -64,6 +67,8 @@ OpenAPI API's:
 
 
 ## App2: Flow Creator
+![alt text](https://github.com/YannisLamp/network-management/blob/master/create_flow.gif "Shortest Path Between nodes")
+
 Uses Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
 After finding the shortest path between two switches, then install some flows to create a path between them.
 It uses Flask micro web framework to provide a web interface for the functions of our app.
