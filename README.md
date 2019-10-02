@@ -44,7 +44,7 @@ Note: If tree topology is selected, it might take some time to create the networ
 NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
 
 This demo show how to create a network on the app:
-![alt text](https://github.com/YannisLamp/network-management/blob/master/network_create.gif "Create Network")
+![alt text](https://github.com/YannisLamp/network-management/blob/master/create_network.gif "Create Network")
 
 
 
