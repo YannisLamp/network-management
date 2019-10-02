@@ -3,13 +3,10 @@
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight platform for creating a Software-Defined-Networking Controller.
 
 # The team
-App1: Network Overview
 
 ![John Papadopoulos](https://github.com/jackalakos "John Papadopoulos")
 
 ![Giannis Lamprou](https://github.com/jackalakos "Giannis Lamprou")
-
-App2: Flow Creator
 
 ![Dimitris Gangas](https://github.com/dimitrisgan "Dimitris Gangas")
 
