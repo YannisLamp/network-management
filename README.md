@@ -3,7 +3,7 @@
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight platform for creating a Software-Defined-Networking Controller.
 
 # The team
-## App1
+## App1: Network Overview
 Ioannis Papadopoulos
 Giannis Lamprou
 
@@ -24,11 +24,25 @@ if you close mininet use this to reset it.
 Karaf localhost:8080
 
 # Application Documentation
-## App1: Node.js application for extracting statistics from OpenDaylight about the network
+## App1: Network Overview
+Node.js application for extracting statistics from OpenDaylight about the network
 localhost:3000
 
-## App2: Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches
+call:
+pingall
+topology
 
+OpenAPI API's:
+```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
+```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId```
+```http://localhost:8181/restconf/operational/network-topology:network-topology```
+```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/' + nodeId```
+```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/'```
+ ```nodeId + '/flow-node-inventory:table/'+tableId + '/flow/'+flowId```
+
+
+## App2: Flow Creator
+Djikstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
 This app will find the shortest path between two switches, then install some flows to create a path between them.
 It uses Flask micro web framework to provide a web interface for the functions of our app.
 
