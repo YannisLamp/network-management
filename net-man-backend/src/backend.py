@@ -18,8 +18,33 @@ from mininet.topo import LinearTopo
 from mininet.topolib import TreeTopo
 from mininet.util import dumpNodeConnections
 
+from flask_swagger_ui import get_swaggerui_blueprint
+
+
+
 app = Flask(__name__)
 cors = CORS(app)
+
+
+### swagger specific ###
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Seans-Python-Flask-REST-Boilerplate"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+### end swagger specific ###
+
+
+# @app.route("/spec")
+# def spec():
+#     return jsonify(swagger(app))
+
+
 
 global_net = None
 gflows_list = []
@@ -358,6 +383,8 @@ def ping_between_hosts_and_get_avrg_time():
     # print 'avrgTime =[{}]'. format(avrgTime)
 
     return avrgTime
+
+
 
 
 if __name__ == '__main__':
