@@ -12,14 +12,13 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 
 [How it works](#works)
 
-..[Network Creation](#create)
+....[Network Creation](#create)
 
-..[Network Overview](#overview)
+....[Network Overview](#overview)
 
-..[Flow Creation](#flow)
+....[Flow Creation](#flow)
 
-..[Delete Network](#delete)
-...snip...    
+....[Delete Network](#delete)   
 
 ## App1:
 React Frontend, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
