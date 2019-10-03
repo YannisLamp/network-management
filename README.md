@@ -2,10 +2,8 @@
 
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
 
-App1 is a React frontend that serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly.
-
 ## App1:
-React Frontend, which handles calls to the backend and in addition serves info and statistics from OpenDaylight's API's ```/restconf/operational/opendaylight-inventory:nodes``` and ```/restconf/operational/network-topology:network-topology```. Server is deployed using Node.js.
+React Frontend, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
 
 ## App2:
 Backend for Network manipulation, with the extended capability of Flow Cration using Dijkstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
