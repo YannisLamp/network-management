@@ -34,11 +34,11 @@ It uses Flask micro web framework to provide a web interface for the functions o
 
 # The team
 
-![John Papadopoulos](https://github.com/jackalakos "John Papadopoulos")
+[John Papadopoulos](https://github.com/jackalakos)
 
-![Giannis Lamprou](https://github.com/jackalakos "Giannis Lamprou")
+[Giannis Lamprou](https://github.com/jackalakos)
 
-![Dimitris Gangas](https://github.com/dimitrisgan "Dimitris Gangas")
+[Dimitris Gangas](https://github.com/dimitrisgan)
 
 [Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/)
 
