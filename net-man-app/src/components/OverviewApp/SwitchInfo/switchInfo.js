@@ -45,7 +45,7 @@ const switchInfo = (props) => {
 
             {
                 Object.keys(props.nodeInfo.connectors).map((portId, i) => (
-                    <Row className="border" key={portId}>
+                    <Row className="border" key={portId} style={{backgroundColor: portId === props.selectedPortInfo.id  ? "WhiteSmoke" : "white" }}>
                         <Col sm="5" className="font-weight-bold d-flex justify-content-start border-right">
                             <div>
                                 <Button 

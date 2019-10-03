@@ -122,6 +122,7 @@ class OverviewApp extends Component {
                     <SwitchInfo 
                         nodeInfo={this.props.location.data.nodesInfo[this.state.selectedNodeId]}
                         filteredLinks={filteredLinks}
+                        selectedPortInfo={this.state.selectedPortInfo}
                         nodeClickedHandler={this.nodeClickedHandler}
                         switchClickedHandler={this.switchClickedHandler}
                         switchPortClickedHandler={this.switchPortClickedHandler}

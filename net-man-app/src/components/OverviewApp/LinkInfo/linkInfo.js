@@ -51,7 +51,7 @@ const linkInfo = (props) =>  {
             { 
                 props.linkInfo.sourceInfo.nodeType === "switch" ?
                     <TopoInfoRow 
-                        name="Source Port #" 
+                        name="Source Port Number #" 
                         value={props.nodesInfo[props.linkInfo.sourceInfo.nodeId].connectors[props.linkInfo.sourceInfo.portId]["flow-node-inventory:port-number"]}
                     />
                 : null
@@ -61,7 +61,7 @@ const linkInfo = (props) =>  {
             {        
                 props.linkInfo.destInfo.nodeType === "switch" ?
                     <TopoInfoRow 
-                        name="Dest Port #" 
+                        name="Dest Port Number #" 
                         value={props.nodesInfo[props.linkInfo.destInfo.nodeId].connectors[props.linkInfo.destInfo.portId]["flow-node-inventory:port-number"]}
                     />
                 : null
