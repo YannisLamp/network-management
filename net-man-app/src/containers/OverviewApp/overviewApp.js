@@ -33,7 +33,6 @@ class OverviewApp extends Component {
     }
 
     nodeClickedHandler = (nodeId) => {
-        console.log("node clicked handler")
         this.setState(
             produce(draft => {
                 draft.selectedNodeId = nodeId;
@@ -44,8 +43,6 @@ class OverviewApp extends Component {
     }
 
     switchClickedHandler = (nodeId, portId) => {
-        console.log("switch clicked handler")
-
         this.setState(
             produce(draft => {
                 draft.selectedNodeId = nodeId;

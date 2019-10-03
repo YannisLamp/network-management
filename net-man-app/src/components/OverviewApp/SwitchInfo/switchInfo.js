@@ -5,8 +5,6 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
 
 
 const switchInfo = (props) => {
-
-    // console.log(props);
     
     return (
         <>

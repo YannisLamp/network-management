@@ -227,6 +227,5 @@ export const getNodeFirstPortInfo = (nodesInfo, nodeId) => {
 
 
 export const getSwitchPortInfo = (nodesInfo, selectedNodeId, selectedSwitchPortId) => {
-    console.log(selectedNodeId, selectedSwitchPortId);
     return nodesInfo[selectedNodeId].connectors[selectedSwitchPortId];
 }
