@@ -5,6 +5,8 @@ import TopoInfoRow from '../../TopoInfoRow/topoInfoRow';
 
 
 const switchInfo = (props) => {
+
+    // console.log(props);
     
     return (
         <>
@@ -62,9 +64,26 @@ const switchInfo = (props) => {
                             <div>
                                 <Button 
                                     className="p-0" 
-                                    color="black"
+                                    color="link"
+                                    onClick={ () => {
+                                        if (props.filteredLinks[portId])
+                                        { //another switch or host
+                                            if (props.filteredLinks[portId].nodeType === "switch")
+                                            { //switch
+                                                return props.switchClickedHandler(props.filteredLinks[portId].nodeId, props.filteredLinks[portId].portId);
+                                            }
+                                            else
+                                            { //host
+                                                return props.nodeClickedHandler(props.filteredLinks[portId].nodeId);
+                                            }
+                                        }
+                                        else
+                                        { //local
+                                            return props.switchPortClickedHandler(portId);
+                                        }
+                                    }}
                                 >
-                                    { props.filteredLinks[portId] ? props.filteredLinks[portId].nodeId : 'Local'}
+                                    { props.filteredLinks[portId] ? props.filteredLinks[portId].nodeId : 'local'}
                                 </Button>
                             </div>
                         </Col>
