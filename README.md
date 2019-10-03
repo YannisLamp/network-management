@@ -118,5 +118,7 @@ In order to create the new flow.
 
 ## Delete Network
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
+
+Front sends DELETE request to ```/network```. Backend deletes all flows that we created (kept in global ```gflows_list```). Network is stopped ```global_net.stop()``` and ```{'msg': 'Network Stopped'}``` returned.
  
 
