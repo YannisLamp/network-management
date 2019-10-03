@@ -34,13 +34,13 @@ It uses Flask micro web framework to provide a web interface for the functions o
 
 # The team
 
-[John Papadopoulos](https://github.com/jackalakos)
+[John Papadopoulos](https://github.com/jackalakos) sdi1400144
 
-[Giannis Lamprou](https://github.com/YannisLamp)
+[Giannis Lamprou](https://github.com/YannisLamp) sdi1400088
 
-[Dimitris Gangas](https://github.com/dimitrisgan)
+[Dimitris Gangas](https://github.com/dimitrisgan) sdi1400024
 
-[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/)
+[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/) sdi1400124
 
 
 # The Stack
