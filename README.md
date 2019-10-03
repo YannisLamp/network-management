@@ -95,46 +95,28 @@ Using simple React states and click handlers displays information and statistics
 
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/create_flow.gif "Shortest Path Between nodes")
 
-Frontend send a POST request to ```/shortest_path```. Backend answers to that request with a list of nodes that represent the shortest path. The Frontend displays the shortest path with a blue line on the topo-graph and then sends a POST request to ```/flows``` in order to create the necessary flows.
+Frontend send a POST request to ```/shortest_path```. Backend answers to that request with a list of node-ids that represent the shortest path. The Frontend displays the shortest path with a blue line on the topo-graph and then sends a POST request to ```/flows``` in order to create the necessary flows.
+
+The backend then calls ```/restconf/config/opendaylight-inventory:nodes/node/{{openflow_id}}/table/{{table_id}}/flow/{{flow_id}}```
+
+with:
+
+```
+{'flow': [{
+        'id': flow_id,
+        'match': {'ethernet-match': {'ethernet-source': {'address': src_mac_address},
+                                     'ethernet-destination': {'address': dest_mac_address},
+                                     'ethernet-type': {'type': '0x800'}}},
+        'instructions': {'instruction': [
+            {'apply-actions': {'action': [{'output-action': {'output-node-connector': port_number}, 'order': '1'}]},
+             'order': '1'}]},
+        'installHw': 'false',
+        'table_id': table_id}]}
+```
+
+In order to create the new flow.
 
 ## Delete Network
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
-
-
-
-
-# AUTA EDW KATW THA SVISTOUN. EAN THELETE NA KRATISETE KATI VALTE TO KAPOU APO PANW---------------------
-
-OpenAPI API's:
-```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes```
-```http://localhost:8181/restconf/operational/opendaylight-inventory:nodes/node/' + nodeId + '/table/' + tableId```
-
-```http://localhost:8181/restconf/operational/network-topology:network-topology```
-
-```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/' + nodeId```
-```http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/'```
- ```nodeId + '/flow-node-inventory:table/'+tableId + '/flow/'+flowId```
-
-Namely:
-### localhost:5000/network
- #### GET
- #### POST
- #### DDELETE
-
-### localhost:5000/shortest_path
- #### GET
- #### POST
- #### DELETE
-
-### localhost:5000/flows
- #### GET
- #### POST
- #### DELETE
-
-### localhost:5000/hello
- #### GET
- 
-### localhost:5000/pingall
- #### POST
  
 
