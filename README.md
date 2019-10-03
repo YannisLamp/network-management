@@ -3,11 +3,15 @@
 Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
 
 ##### Table of Contents  
-[Headers](#headers)  
-[Emphasis](#emphasis)  
+[The team](#team)  
+[How to run](#run)
+[How to use](#use)
+[How it works](#works)
+[Network Creation](#create)
+[Network Overview](#overview)
+[Flow Creation](#flow)
+[Delete Network](#delete)
 ...snip...    
-<a name="headers"/>
-## Headers
 
 ## App1:
 React Frontend, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
@@ -19,6 +23,7 @@ After finding the shortest path between two switches, then install some flows to
 
 It uses Flask micro web framework to provide a web interface for the functions of our app and the ```mininet``` python lib to operate on the network.
 
+<a name="team"/>
 # The team
 
 ![John Papadopoulos](https://github.com/jackalakos "John Papadopoulos")
@@ -34,6 +39,7 @@ It uses Flask micro web framework to provide a web interface for the functions o
 
 ![stack image](https://github.com/YannisLamp/network-management/blob/master/SDN.png "The Stack")
 
+<a name="run"/>
 # How to run
 
 In this sequence:
@@ -54,6 +60,7 @@ Login to OpenDaylight:
 
 ```pass: admin```
 
+<a name="use"/>
 # How to use
 
 Navigate to: ```http://localhost:3000```
@@ -69,9 +76,10 @@ NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn
 
 
 
-
+<a name="works"/>
 # How it works
 
+<a name="create"/>
 ## Network Creation
 
 This demo show how to create a network on the app:
@@ -85,7 +93,7 @@ The network is created with this command ``` Mininet(topo=topology, controller=c
 
 As soon as the network is created it is started and a ```net.pingAll()``` is called along with ```mininet.util.dumpNodeConnections(net.hosts)``` so that we establish all new connections. In case there are leftover flows from a previous session these will be deleted before creating a new network.
 
-
+<a name="overview"/>
 ## Network Overview
 
 This is a demo of the Network Overview app and the stastistics it provides:
@@ -99,6 +107,7 @@ Tx: # transmitted
 
 Using simple React states and click handlers displays information and statistics about the current status of the network.
 
+<a name="flow"/>
 ## Flow Creation
 
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/create_flow.gif "Shortest Path Between nodes")
@@ -128,6 +137,7 @@ with:
 
 In order to create the new flow.
 
+<a name="delete"/>
 ## Delete Network
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/delete_network.gif "Network delete")
 
