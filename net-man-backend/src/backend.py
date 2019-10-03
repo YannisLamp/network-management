@@ -52,13 +52,16 @@ global_net = None
 
 # open file and load the flows links from previous session if exist
 gflows_list = []
+glob_data = {}
+
 with open('../flowsLog.json', 'r') as glob_file:
     try:
         glob_data = json.load(glob_file)
         gflows_list = glob_data['gflows_list']
     except ValueError: 
-        gflows_list = []
+        pass
 glob_file.close()
+
 
 
 gshortest_path = []
@@ -126,20 +129,7 @@ def create_network():
     switchNum = int(request.json.get('switchNum'))
     nodesPerSwitch = int(request.json.get('nodesPerSwitch'))
 
-
     delete_flows()
-    os.system("mn -c")
-
-    # empty the 'gflows_list' object list from previous session if exist
-    # no need to keep because we deleted the remaining flows from previous session 
-    with open('../flowsLog.json', 'w') as json_file:
-        try:
-            json.dump(file_data, json_file)
-        except ValueError: 
-            file_data = []
-    json_file.close()
-
-
 
     # Create Network
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
@@ -161,22 +151,14 @@ def clean_up_everything():
     del gflows_list[:]  # delete all urls from global list
     # Also empty json file with saved flows
 
-    with open('../flowsLog.json', 'r') as json_file:
-        try:
-            file_data = json.load(json_file)
-            file_data['gflows_list'] = []
-        except ValueError: 
-            file_data = []
-    json_file.close()
-
     with open('../flowsLog.json', 'w') as json_file:
         try:
+            file_data = {}
+            file_data['gflows_list'] = []
             json.dump(file_data, json_file)
         except ValueError: 
-            file_data = []
+            pass
     json_file.close()
-
-    #json_file.close()
 
     del gstats_list[:]  # delete stats list
 
@@ -395,15 +377,6 @@ def flow_exists():
     return True  # the flow exists
 
 
-# https://realpython.com/python-requests/
-@app.route('/hello', methods=['GET'])
-def hello():
-    response = requests.get(
-        'http://localhost:8181/restconf/operational/network-topology:network-topology',
-        # params={'q': 'requests+language:python'},
-        headers={'Accept': 'application/json', 'Authorization': 'Basic YWRtaW46YWRtaW4='},
-    )
-    return response.json()
 
 
 @app.route('/pingall', methods=['POST'])
@@ -452,4 +425,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
     http_server = WSGIServer(('', 5000), app)
     print "INFO: Server Started!"
+    os.system("mn -c")
     http_server.serve_forever()
