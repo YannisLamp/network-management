@@ -21,7 +21,7 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 ....[Delete Network](#delete)   
 
 ## App1:
-React Frontend, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
+React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
 
 ## App2:
 Backend for Network manipulation, with the extended capability of Flow Cration using Dijkstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
