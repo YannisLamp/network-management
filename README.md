@@ -36,7 +36,7 @@ It uses Flask micro web framework to provide a web interface for the functions o
 
 [John Papadopoulos](https://github.com/jackalakos)
 
-[Giannis Lamprou](https://github.com/jackalakos)
+[Giannis Lamprou](https://github.com/YannisLamp)
 
 [Dimitris Gangas](https://github.com/dimitrisgan)
 
