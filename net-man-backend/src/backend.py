@@ -47,6 +47,10 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 global_net = None
 
+gtopo_type = None
+gswitch_num = None
+gnodes_per_switch = None 
+
 # open file and load the flows links from previous session if exist
 gflows_list = []
 glob_data = {}
@@ -118,10 +122,23 @@ def create_network():
     elif mac == 'false':
         mac = False
 
+    global gtopo_type
+    global gswitch_num
+    global gnodes_per_switch
+
+
+
     topoType = request.json.get('topoType')
+    gtopo_type = topoType
+
     switchType = request.json.get('switchType')
     switchNum = int(request.json.get('switchNum'))
+
+    gswitch_num = switchNum
+
     nodesPerSwitch = int(request.json.get('nodesPerSwitch'))
+
+    gnodes_per_switch = nodesPerSwitch
 
     delete_flows()
 
@@ -158,7 +175,7 @@ def clean_up_everything():
 
 @app.route('/network', methods=['DELETE'])
 def delete_network():
-    print 'deleted network'
+
     global global_net
     if global_net is not None:
 
@@ -366,13 +383,55 @@ def ping_between_hosts_and_get_avrg_time():
 
     h_src_name = gshortest_path[0]
     h_dest_name = gshortest_path[-1]
+
+    print 'h_src_name [{}] & h_dest_name [{}] '.format(h_src_name, h_dest_name)
+
     h_src_id, h_dest_id = "0x" + h_src_name[-2:], "0x" + h_dest_name[-2:]
 
-    h_src_suffix, h_dest_suffix = int(h_src_id, 16), int(
-        h_dest_id, 16)  # convert hex string to hex number
+    h_src_int, h_dest_int = int(h_src_id, 16), int(h_dest_id, 16)  # convert hex string to hex number
 
-    h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
-        'h' + str(h_dest_suffix))  # from Mininet lib.. for more info refer to http://mininet.org/api/classmininet_1_1net_1_1Mininet.html
+    if gtopo_type == 'tree':
+        h_src_suffix  = h_src_int
+        h_dest_suffix = h_dest_int
+
+        h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
+            'h' + str(h_dest_suffix))  # from Mininet lib.. for more info refer to http://mininet.org/api/classmininet_1_1net_1_1Mininet.html
+        print 'Tree1 :: h_src_suffix [{}] & h_dest_suffix [{}] '.format(h_src_suffix, h_dest_suffix)
+
+
+        print 'Tree2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
+
+    else: #means that is a linear topology
+        #pay attention naming policy is not the same as in tree topology 'cause mininet was created by a bunch of morons.. no offence
+
+        switch_src_suffix = (h_src_int -1 // gswitch_num) 
+        host_src_suffix = (h_src_int -1 % gnodes_per_switch) 
+
+        if switch_src_suffix == 0:
+            switch_src_suffix =1
+        if host_src_suffix ==0:
+            host_src_suffix =1 
+
+        switch_dest_suffix = (h_dest_int -1 // gswitch_num) 
+        host_dest_suffix = (h_dest_int -1 % gnodes_per_switch) 
+
+        if switch_dest_suffix == 0:
+            switch_dest_suffix =1
+        if host_dest_suffix ==0:
+            host_dest_suffix =1 
+
+
+        print 'Linear1 :: host_src_suffix [{}] & switch_src_suffix [{}] '.format(host_src_suffix, switch_src_suffix)
+
+
+        h_src  = global_net.getNodeByName('h' + str(host_src_suffix) + 's' + str(switch_src_suffix))
+        
+        h_dest = global_net.getNodeByName('h' + str(h_dest_suffix) + 's' + str(switch_dest_suffix))  
+
+
+
+        print 'Linear2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
+
 
     # ping 10 times from src to dest host
     test_ping = h_src.cmd('ping -c10 %s' % h_dest.IP())
