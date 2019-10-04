@@ -4,7 +4,6 @@ import json
 from functools import partial
 
 import httplib2
-# from functools import partial
 import networkx as nx
 import requests
 from flask import Flask, jsonify, request
@@ -21,7 +20,6 @@ from mininet.util import dumpNodeConnections
 from flask_swagger_ui import get_swaggerui_blueprint
 
 import os
-
 
 
 app = Flask(__name__)
@@ -47,7 +45,6 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 #     return jsonify(swagger(app))
 
 
-
 global_net = None
 
 # open file and load the flows links from previous session if exist
@@ -58,18 +55,13 @@ with open('../flowsLog.json', 'r') as glob_file:
     try:
         glob_data = json.load(glob_file)
         gflows_list = glob_data['gflows_list']
-    except ValueError: 
+    except ValueError:
         pass
 glob_file.close()
 
 
-
 gshortest_path = []
 gstats_list = []
-
-
-
-
 
 
 def create_net(controller_ip, controller_port, topo_type, switch_type, nodes_per_switch, switch_num, mac):
@@ -93,9 +85,9 @@ def create_net(controller_ip, controller_port, topo_type, switch_type, nodes_per
 
     # Create a network based on the topology, using OVS and controlled by a remote controller.
     global global_net
-    global_net = Mininet(topo=topology, controller=controller, switch=switch, autoSetMacs=mac, waitConnected=True)
+    global_net = Mininet(topo=topology, controller=controller,
+                         switch=switch, autoSetMacs=mac, waitConnected=True)
 
-    
 
 def start_net(net, ping_all=False, cli=False):
     """
@@ -106,8 +98,10 @@ def start_net(net, ping_all=False, cli=False):
     """
     net.start()
     dumpNodeConnections(net.hosts)
-    if ping_all: net.pingAll()
-    if cli: CLI(net)
+    if ping_all:
+        net.pingAll()
+    if cli:
+        CLI(net)
 
 
 @app.route('/network', methods=['POST'])
@@ -135,7 +129,6 @@ def create_network():
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
     start_net(global_net)
 
-    
     return jsonify({'msg': 'Network Created'})
 
 
@@ -156,13 +149,11 @@ def clean_up_everything():
             file_data = {}
             file_data['gflows_list'] = []
             json.dump(file_data, json_file)
-        except ValueError: 
+        except ValueError:
             pass
     json_file.close()
 
     del gstats_list[:]  # delete stats list
-
-
 
 
 @app.route('/network', methods=['DELETE'])
@@ -171,11 +162,11 @@ def delete_network():
     global global_net
     if global_net is not None:
 
-        clean_up_everything()   
+        clean_up_everything()
 
         global_net.stop()
-        # Cleanup.cleanup()
         global_net = None
+
         return jsonify({'msg': 'Network Stopped'})
     else:
         return jsonify({'msg': 'Network Already Stopped'})
@@ -222,7 +213,6 @@ def find_shortest_path():
 
     global gshortest_path
     gshortest_path = shortest_path  # assign shortest_path list to our global list
-    # shortest_path.reverse()
 
     return jsonify({'shortest_path': gshortest_path})
 
@@ -247,7 +237,8 @@ def delete_flows():
 
 
 def delete_flow(url):
-    response = requests.delete(url, headers={'Accept': 'application/json', 'Authorization': 'Basic YWRtaW46YWRtaW4='})
+    response = requests.delete(url, headers={
+                               'Accept': 'application/json', 'Authorization': 'Basic YWRtaW46YWRtaW4='})
 
 
 @app.route('/flows', methods=['GET'])
@@ -262,10 +253,10 @@ def stats():
     time_before = gstats_list[0]
     time_after = gstats_list[1]
     time_diff = time_before - time_after
-    time_diff_prc = ((
-                             time_before - time_after) / time_after) * 100  # following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
+    # following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
+    time_diff_prc = ((time_before - time_after) / time_after) * 100
 
-    print 'time_before [{}] & time_after [{}] years old'.format(time_before, time_after)
+    # print 'time_before [{}] & time_after [{}] years old'.format(time_before, time_after)
 
     stats_dict = {
         'sourceDest': {'timeBefore': str(time_before), 'timeAfter': str(time_after), 'timeDiff': str(time_diff),
@@ -279,10 +270,11 @@ def create_flows():
     global gstats_list
     # call ping_between_hosts_and_get_avrg_time() without flows
     time_without_flows = ping_between_hosts_and_get_avrg_time()
-    gstats_list.append(float(time_without_flows))  # store in gstats_list[0] the avrg time before setting the flows
+    # store in gstats_list[0] the avrg time before setting the flows
+    gstats_list.append(float(time_without_flows))
 
     content_json = request.get_json()
-    print 'Did I receive json format? [{}] --> Content is [{}] '.format(request.is_json, content_json)
+    # print 'Did I receive json format? [{}] --> Content is [{}] '.format(request.is_json, content_json)
 
     src_mac_address = content_json['srcMacAddress']
     dest_mac_address = content_json['destMacAddress']
@@ -295,19 +287,20 @@ def create_flows():
         table_id = str(switch_info['tableId'])
         flow_id = '0'
 
-        response_from_odl = create_flow(switch_id, table_id, flow_id, src_mac_address, dest_mac_address, port_number)
+        response_from_odl = create_flow(
+            switch_id, table_id, flow_id, src_mac_address, dest_mac_address, port_number)
 
     # Update json file for saving flows
     data = {}
     data['gflows_list'] = gflows_list
-    with open('../flowsLog.json','w') as json_file:
+    with open('../flowsLog.json', 'w') as json_file:
         json.dump(data, json_file)
     json_file.close()
 
-    # todo here check if flows exist!!
     # call ping_between_hosts_and_get_avrg_time() with the flows
     time_with_flows = ping_between_hosts_and_get_avrg_time()
-    gstats_list.append(float(time_with_flows))  # store in gstats_list[1] the avrg time before setting the flows
+    # store in gstats_list[1] the avrg time before setting the flows
+    gstats_list.append(float(time_with_flows))
 
     return stats()
 
@@ -333,15 +326,6 @@ def create_flow(openflow_id, table_id, flow_id, src_mac_address, dest_mac_addres
     print url_to_send_to_odl
     gflows_list.append(url_to_send_to_odl)
 
-    # monitor urls that we send to odl
-    # with open('diagnostics/urls.txt',mode='a+') as urls_file:
-    #     urls_file.write(url_to_send_to_odl)
-    # urls_file.close()
-
-    # monitor json that we send to odl
-    # with open('diagnostics/requestsToODL.json',mode='a+') as json_file:
-    #     json_file.write(json.dumps(flow_dict, json_file))
-    # json_file.close()
 
     resp, content = h.request(
         uri=url_to_send_to_odl,
@@ -350,11 +334,7 @@ def create_flow(openflow_id, table_id, flow_id, src_mac_address, dest_mac_addres
         body=json.dumps(flow_dict)
     )
 
-    # monitor json that we receive from odl
-    # with open('diagnostics/responsesFromODL.json',mode='a+') as json_file2:
-    #     json_file2.write(json.dumps(resp, json_file2))
-    # json_file2.close()
-
+  
     # send get in odl flows urls in 8181 to test thata the flows exists!
     if flow_exists():
         return jsonify({'success': True})
@@ -369,14 +349,11 @@ def flow_exists():
                                               'Authorization': 'Basic YWRtaW46YWRtaW4='}).json()
         print response
         respons_str = str(response)
-        # flag = response['errors']
 
-        if 'errors' in respons_str:  # it menas that the flow doesnt exist
+        if 'errors' in respons_str:  # it means that the flow doesnt exist
             return False
 
     return True  # the flow exists
-
-
 
 
 @app.route('/pingall', methods=['POST'])
@@ -386,39 +363,32 @@ def pingall():
 
 
 def ping_between_hosts_and_get_avrg_time():
-    # global gshortest_path
 
     h_src_name = gshortest_path[0]
     h_dest_name = gshortest_path[-1]
     h_src_id, h_dest_id = "0x" + h_src_name[-2:], "0x" + h_dest_name[-2:]
-    # print 'h_src_id = [{}] & h_dest_id = [{}]  .'. format(h_src_id, h_dest_id)
 
-    h_src_suffix, h_dest_suffix = int(h_src_id, 16), int(h_dest_id, 16)  # convert hex string to hex number
-
-    # print 'h_src_suffix = [{}] & h_dest_suffix = [{}]  .'. format(h_src_suffix, h_dest_suffix)
+    h_src_suffix, h_dest_suffix = int(h_src_id, 16), int(
+        h_dest_id, 16)  # convert hex string to hex number
 
     h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
-        'h' + str(h_dest_suffix))  
-    # print 'h_src = [{}] & h_dest = [{}]  '. format(h_src, h_dest)
+        'h' + str(h_dest_suffix))  # from Mininet lib.. for more info refer to http://mininet.org/api/classmininet_1_1net_1_1Mininet.html
 
+    # ping 10 times from src to dest host
     test_ping = h_src.cmd('ping -c10 %s' % h_dest.IP())
     print test_ping
 
     # first split
-    avrgStats = test_ping.split("ping statistics", 1)[1]  # str from "ping statistics" and after
-    # print avrgStats
+    # str from "ping statistics" and after
+    avrgStats = test_ping.split("ping statistics", 1)[1]
 
     # second split
-    split2 = avrgStats.split("/")  # take list after spliting the str with '/' token
-    # print split2
+    # take list after spliting the str with '/' token
+    split2 = avrgStats.split("/")
 
     avrgTime = split2[4]  # take the avrg time value
-    # print avrgTime
-    # print 'avrgTime =[{}]'. format(avrgTime)
 
     return avrgTime
-
-
 
 
 if __name__ == '__main__':
