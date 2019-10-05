@@ -146,6 +146,13 @@ def create_network():
     create_net(ip, port, topoType, switchType, nodesPerSwitch, switchNum, mac)
     start_net(global_net)
 
+    create_net_dict = {
+            'msg': 'Network Created',
+            'topologyType': topoType
+        }
+    return json.dumps(create_net_dict)
+
+
     return jsonify({'msg': 'Network Created'})
 
 
@@ -340,7 +347,7 @@ def create_flow(openflow_id, table_id, flow_id, src_mac_address, dest_mac_addres
 
     url_to_send_to_odl = "http://localhost:8181/restconf/config/opendaylight-inventory:nodes/node/" + str(
         openflow_id) + "/table/" + str(table_id) + "/flow/" + str(flow_id)
-    print url_to_send_to_odl
+    # print url_to_send_to_odl
     gflows_list.append(url_to_send_to_odl)
 
 
@@ -364,7 +371,7 @@ def flow_exists():
     for url in gflows_list:
         response = requests.get(url, headers={'Accept': 'application/json',
                                               'Authorization': 'Basic YWRtaW46YWRtaW4='}).json()
-        print response
+        # print response
         respons_str = str(response)
 
         if 'errors' in respons_str:  # it means that the flow doesnt exist
@@ -384,7 +391,7 @@ def ping_between_hosts_and_get_avrg_time():
     h_src_name = gshortest_path[0]
     h_dest_name = gshortest_path[-1]
 
-    print 'h_src_name [{}] & h_dest_name [{}] '.format(h_src_name, h_dest_name)
+    # print 'h_src_name [{}] & h_dest_name [{}] '.format(h_src_name, h_dest_name)
 
     h_src_id, h_dest_id = "0x" + h_src_name[-2:], "0x" + h_dest_name[-2:]
 
@@ -396,13 +403,13 @@ def ping_between_hosts_and_get_avrg_time():
 
         h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
             'h' + str(h_dest_suffix))  # from Mininet lib.. for more info refer to http://mininet.org/api/classmininet_1_1net_1_1Mininet.html
-        print 'Tree1 :: h_src_suffix [{}] & h_dest_suffix [{}] '.format(h_src_suffix, h_dest_suffix)
+        # print 'Tree1 :: h_src_suffix [{}] & h_dest_suffix [{}] '.format(h_src_suffix, h_dest_suffix)
 
 
-        print 'Tree2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
+        # print 'Tree2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
 
     else: #means that is a linear topology
-        #pay attention naming policy is not the same as in tree topology 'cause mininet was created by a bunch of morons.. no offence
+        #pay attention naming policy is not the same as in tree topology 
 
         switch_src_suffix = (h_src_int -1 // gswitch_num) 
         host_src_suffix = (h_src_int -1 % gnodes_per_switch) 
@@ -421,7 +428,7 @@ def ping_between_hosts_and_get_avrg_time():
             host_dest_suffix =1 
 
 
-        print 'Linear1 :: host_src_suffix [{}] & switch_src_suffix [{}] '.format(host_src_suffix, switch_src_suffix)
+        # print 'Linear1 :: host_src_suffix [{}] & switch_src_suffix [{}] '.format(host_src_suffix, switch_src_suffix)
 
 
         h_src  = global_net.getNodeByName('h' + str(host_src_suffix) + 's' + str(switch_src_suffix))
@@ -430,7 +437,7 @@ def ping_between_hosts_and_get_avrg_time():
 
 
 
-        print 'Linear2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
+        # print 'Linear2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
 
 
     # ping 10 times from src to dest host

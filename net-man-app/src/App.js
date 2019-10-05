@@ -15,6 +15,7 @@ class App extends Component {
 
     state = {
         networkCreated: localStorage.getItem('networkCreated') ? localStorage.getItem('networkCreated') === "true" : false,
+        networkType: null
     }
 
     componentDidMount() {
@@ -24,6 +25,14 @@ class App extends Component {
     // componentDidUpdate() {
     //      this.checkNetworkStatus();
     // }
+
+    setNetworkType = (netType) => {
+        this.setState(
+            produce(draft => {
+                draft.networkType = netType;
+            })
+        );
+    }
 
     checkNetworkStatus = () => {
         networkApi.networkExists()
@@ -55,14 +64,20 @@ class App extends Component {
 				<Route 
 					path={["/create_network"]} 
 					exact
-					render={() => ( <CreateNetwork networkStateHandler={this.networkStateHandler}/> )}
+                    render={() => ( <CreateNetwork 
+                                        networkStateHandler={this.networkStateHandler}
+                                        setNetworkType={this.setNetworkType}
+                                    /> )}
 				/>
 
 
 				<Route
 					path={ ["/delete_network"] }
 					exact
-					render={() => ( <DeleteNetwork networkStateHandler={this.networkStateHandler}/> )}
+                    render={() => ( <DeleteNetwork 
+                                        networkStateHandler={this.networkStateHandler}
+                                        setNetworkType={this.setNetworkType}
+                                    /> )}
                 />
 
 				<Redirect to="/create_network" />
@@ -78,7 +93,7 @@ class App extends Component {
 				<Route
 					path={ ["/"] }
 					exact
-					render={() => ( <ApplicationMenu />)}
+					render={() => ( <ApplicationMenu networkType={this.state.networkType}/> )}
 				/>
 
                 <Route
@@ -109,6 +124,7 @@ class App extends Component {
     render() {
 
         //console.log("Network Created: ", this.state.networkCreated);
+        console.log(this.state);
 
         return (
             <div className="App">

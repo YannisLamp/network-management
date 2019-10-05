@@ -78,6 +78,9 @@ class ApplicationMenu extends Component {
 
     render() {
 
+        console.log("application menu network type: ", this.props.networkType);
+        const isTreeNetwork = this.props.networkType === "tree" ;
+
         // console.log("---> Printing ODL Info <---");
 
         // console.log("--> Graph Nodes: ", this.state.graphNodes);
@@ -125,7 +128,7 @@ class ApplicationMenu extends Component {
                         </div>
                     </Col>
                 </Row>
-                <Row>
+                <Row className="justify-content-center" >
                     <Col sm={6}>
                         <Link 
                             className={styles.MenuLink}
@@ -153,33 +156,37 @@ class ApplicationMenu extends Component {
                         </Link>
                     </Col>
 
-                    <Col sm={6}>
-                        <Link 
-                            className={styles.MenuLink}
-                            to={{   
-                                    pathname: '/flows', 
-                                    data: { 
-                                        nodesInfo: this.state.nodesInfo,
-                                        linksInfo: this.state.linksInfo
-                                    } 
-                                }} 
-                        >
-                            <Jumbotron className={styles.border + " h-100 pt-3 pb-0"}>
-                                <h1 className="display-5">Flow Creator</h1>
-                                <p 
-                                    className="lead"
+                    {
+                        isTreeNetwork ? 
+                            <Col sm={6}>
+                                <Link 
+                                    className={styles.MenuLink}
+                                    to={{   
+                                            pathname: '/flows', 
+                                            data: { 
+                                                nodesInfo: this.state.nodesInfo,
+                                                linksInfo: this.state.linksInfo
+                                            } 
+                                        }} 
                                 >
-                                    This is a web application that provides a selectable collection of mininet nodes, 
-                                    then given a pair, creates custom flows between them, improving network performance. 
-                                </p>
-                                <hr className="my-2" />
-                                <p>
-                                    You can choose source and destination nodes to create custom flows between them. Then, 
-                                    proper measurements are made so that we can determine any network performance improvement.
-                                </p>
-                            </Jumbotron>
-                        </Link>
-                    </Col>
+                                    <Jumbotron className={styles.border + " h-100 pt-3 pb-0"}>
+                                        <h1 className="display-5">Flow Creator</h1>
+                                        <p 
+                                            className="lead"
+                                        >
+                                            This is a web application that provides a selectable collection of mininet nodes, 
+                                            then given a pair, creates custom flows between them, improving network performance. 
+                                        </p>
+                                        <hr className="my-2" />
+                                        <p>
+                                            You can choose source and destination nodes to create custom flows between them. Then, 
+                                            proper measurements are made so that we can determine any network performance improvement.
+                                        </p>
+                                    </Jumbotron>
+                                </Link>
+                            </Col>
+                        : null
+                    }
                 </Row>
                 </>
                 }

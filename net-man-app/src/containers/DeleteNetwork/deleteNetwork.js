@@ -37,6 +37,7 @@ class DeleteNetwork extends Component {
         // api call to backend to actually delete network
         networkApi.deleteNetwork()
             .then(data => {
+                this.props.setNetworkType(null);
                 // Redirect to main page
                 this.props.history.replace('/');
             });

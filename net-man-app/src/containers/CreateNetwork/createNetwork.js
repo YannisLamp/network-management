@@ -128,6 +128,7 @@ class CreateNetwork extends Component {
         networkApi.createNetwork(formData)
             .then(data => {
                 this.props.networkStateHandler();
+                this.props.setNetworkType(data.topologyType);
                 this.props.history.replace('/');      
             });
 
