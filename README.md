@@ -20,16 +20,17 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 
 ....[Delete Network](#delete)   
 
-!!!!
-## Network Creation
 
+## Network Creation
+!!!!
 A graphical Mininet network creation interface, providing many different network options through a menu, making the creation and deletion of networks effortless, so that our Apps can be used on a wide range of parameters? .
 
 ## App1:
 React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
 
 !!!!
-An interactive, fully clickable visualisation of the created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics provided by the Opendaylight API. 
+An interactive, fully clickable visualisation of the created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics provided by the Opendaylight API.
+
 For this App, our line of thought was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought we would expand on it, making it more 
 
 ## App2:
@@ -40,7 +41,9 @@ After finding the shortest path between two switches, then install some flows to
 It uses Flask micro web framework to provide a web interface for the functions of our app and the ```mininet``` python lib to operate on the network.
 
 !!!
-A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of the created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then imposing a flow, based on that path. Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows. (and determine how much of an improvement the addition of flows is??) 
+A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of the created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then proceeds to impose a flow, based on that path. 
+
+Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows. (and determine how much of an improvement the addition of flows is??) 
 
 
 <a name="team"/>
