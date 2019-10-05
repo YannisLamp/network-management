@@ -1,6 +1,6 @@
 # Software Defined Networking
 
-Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
+Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
 
 ##### Table of Contents
 
@@ -18,22 +18,46 @@ Implementation of 2 apps using Mininet as a  Virtual Network Simulator and OpenD
 
 ....[Flow Creation](#flow)
 
-....[Delete Network](#delete)   
+....[Delete Network](#delete)  
+
+
+# Project Summary:
+The project consists of a react frontend and a flask (python) backend, communicating via custom RESTful API. The react frontend retrieves information from OpenDaylight via its own API to visually display it, while the backend interacts with OpenDaylight by both retrieving and sending data. Furthermore, the backend is responsible for the more sophisticated tasks, regarding network manipulation (e.g. Mininet Virtual Network Creation-Ping-Deletion, Custom Network Flows Creation-Evaluation-Deletion), triggered by frontend requests.
+
+## Tools used:
+<li>
+    React: Router, d3 (for graph visualization), reactstrap (for UI/UX), axios (for HTTP requests)
+</li>
+
+<li>
+    Python: Flask (micro web framework)
+</li>
+
+<li>
+    Gitkraken
+</li>
+
+<li>
+    VScode editor
+</li>
+
 
 
 ## Network Creation
-!!!!
-A graphical Mininet network creation interface, providing many different network options through a menu, making the creation and deletion of networks effortless, so that our Apps can be used on a wide range of parameters? .
+A graphical Mininet network creation interface, built by react framework, providing many different network options through a web form, making the creation and deletion of networks effortless, so that our Network Apps can be used on a wide range of possible network instances.
 
-## App1:
-React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about out Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js.
+## App1 - Network Overview:
+<!-- React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about a Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js. -->
 
-!!!!
-An interactive, fully clickable visualisation of the created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics provided by the Opendaylight API.
+An interactive, fully clickable custom graph, visualizing a created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics on side panels, provided by the Opendaylight API.
 
-For this App, our line of thought was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought we would expand on it, making it more 
+### How it works:
+dlddl
 
-## App2:
+### But why
+Our line of thought for building this App, was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought it would be a good idea to expand it, making it more intuitive and user friendly, especially for users without previous relative experience with network management.
+
+## App2 - Flow Creation:
 Backend for Network manipulation, with the extended capability of Flow Cration using Dijkstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
 
 After finding the shortest path between two switches, then install some flows to create a path between them.
@@ -50,7 +74,7 @@ Our reasoning for choosing to implement this application is that as making packe
 
 # The team
 
-[John Papadopoulos](https://github.com/jackalakos) sdi1400144
+[Ioannis Papadopoulos](https://github.com/jackalakos) sdi1400144
 
 [Yannis Lamprou](https://github.com/YannisLamp) sdi1400088
 
