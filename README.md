@@ -208,7 +208,9 @@ In order to create the new flow.
 Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows and ultimately determine how much of an improvement the addition of flows is for the given network.
 
 
--------------------> EDW FOTO PLIZ 
+![alt text](https://github.com/YannisLamp/network-management/blob/master/norm_flows.png "Normal Flows")
+
+![alt text](https://github.com/YannisLamp/network-management/blob/master/big_flows.png "Big Flows")
 
 
 <a name="delete"/>
