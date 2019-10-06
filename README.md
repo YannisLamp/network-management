@@ -52,7 +52,7 @@ A graphical Mininet network creation interface, built by react framework, provid
 An interactive, fully clickable custom graph, visualizing a created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics on side panels, provided by the Opendaylight API.
 
 ### How it works:
-dlddl
+As mentioned above, this application produces a graph to represent the currently created network and presents some general statistics from data fetched from the OpenDaylight API. If the user clicks on any host, switch or link, then information relevant to that selection takes their place. This way, the user can focus on the network as a whole as well as have access to more specialized node information.
 
 ### But why
 Our line of thought for building this App, was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought it would be a good idea to expand it, making it more intuitive and user friendly, especially for users without previous relative experience with network management.
@@ -65,8 +65,12 @@ After finding the shortest path between two switches, then install some flows to
 It uses Flask micro web framework to provide a web interface for the functions of our app and the ```mininet``` python lib to operate on the network.
 
 !!!
-A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of the created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then proceeds to impose a flow, based on that path. 
+A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of a created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then proceeds to impose a flow, based on that path. 
 
+### How it works:
+(explained above??)
+
+### But why
 Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows. (and determine how much of an improvement the addition of flows is??) 
 
 
