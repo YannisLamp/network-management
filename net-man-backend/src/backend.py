@@ -280,8 +280,6 @@ def stats():
     # following formula  (y2 - y1) / y1)*100,where time_before=y2 time_after=y1
     time_diff_prc = ((time_before - time_after) / time_after) * 100
 
-    # print 'time_before [{}] & time_after [{}] years old'.format(time_before, time_after)
-
     stats_dict = {
         'sourceDest': {'timeBefore': str(time_before), 'timeAfter': str(time_after), 'timeDiff': str(time_diff),
                        'timeDiffPrc': str(time_diff_prc)}, 'success': True}
@@ -371,7 +369,6 @@ def flow_exists():
     for url in gflows_list:
         response = requests.get(url, headers={'Accept': 'application/json',
                                               'Authorization': 'Basic YWRtaW46YWRtaW4='}).json()
-        # print response
         respons_str = str(response)
 
         if 'errors' in respons_str:  # it means that the flow doesnt exist
@@ -391,7 +388,6 @@ def ping_between_hosts_and_get_avrg_time():
     h_src_name = gshortest_path[0]
     h_dest_name = gshortest_path[-1]
 
-    # print 'h_src_name [{}] & h_dest_name [{}] '.format(h_src_name, h_dest_name)
 
     h_src_id, h_dest_id = "0x" + h_src_name[-2:], "0x" + h_dest_name[-2:]
 
@@ -404,9 +400,6 @@ def ping_between_hosts_and_get_avrg_time():
         h_src, h_dest = global_net.getNodeByName('h' + str(h_src_suffix)), global_net.getNodeByName(
             'h' + str(h_dest_suffix))  # from Mininet lib.. for more info refer to http://mininet.org/api/classmininet_1_1net_1_1Mininet.html
         # print 'Tree1 :: h_src_suffix [{}] & h_dest_suffix [{}] '.format(h_src_suffix, h_dest_suffix)
-
-
-        # print 'Tree2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
 
     else: #means that is a linear topology
         #pay attention naming policy is not the same as in tree topology 
@@ -427,17 +420,9 @@ def ping_between_hosts_and_get_avrg_time():
         if host_dest_suffix ==0:
             host_dest_suffix =1 
 
-
-        # print 'Linear1 :: host_src_suffix [{}] & switch_src_suffix [{}] '.format(host_src_suffix, switch_src_suffix)
-
-
         h_src  = global_net.getNodeByName('h' + str(host_src_suffix) + 's' + str(switch_src_suffix))
         
         h_dest = global_net.getNodeByName('h' + str(h_dest_suffix) + 's' + str(switch_dest_suffix))  
-
-
-
-        # print 'Linear2 :: h_src [{}] & h_dest [{}] '.format(h_src, h_dest)
 
 
     # ping 10 times from src to dest host
