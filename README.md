@@ -33,7 +33,7 @@ Our project consists of a react frontend and a flask (python) backend, communica
 
 <a name="team"/>
 
-# The team (eclass team 12)
+# The team: (eclass team 12)
 
 [Ioannis Papadopoulos](https://github.com/jackalakos) 1115201400144
 
@@ -65,7 +65,7 @@ The final paper, network experimentation was done by all team members
 
 <a name="install"/>
 
-# How to install
+# How to install:
 
 After mininet and OpenDaylight installation, 
 
@@ -75,7 +75,7 @@ After mininet and OpenDaylight installation,
 
 <a name="run"/>
 
-# How to run
+# How to run:
 
 In this sequence:
 
@@ -112,12 +112,12 @@ Login to OpenDaylight: (optional)
 
 <a name="apps"/>
 
-# Applications
+# Applications:
 
 
 <a name="create"/>
 
-## Network Creation
+## Network Creation:
 
 ### Description:
 
@@ -208,7 +208,7 @@ Our reasoning for choosing to implement this application is that as making packe
 
 <a name="delete"/>
 
-## Network Deletion
+## Network Deletion:
 
 ### How to use it:
 
