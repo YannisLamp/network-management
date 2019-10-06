@@ -123,8 +123,7 @@ class App extends Component {
 
     render() {
 
-        //console.log("Network Created: ", this.state.networkCreated);
-        console.log(this.state);
+        // console.log(this.state);
 
         return (
             <div className="App">
