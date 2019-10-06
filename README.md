@@ -9,9 +9,11 @@ For this project, we chose 1. OpenDaylight + Mininet.
 
 [The Team](#team)
 
+[Task Separation](#taskSep)
+
 [The Stack](#stack)
 
-[Task Separation](#taskSep)
+[Tools Used](#tools)
 
 [How to install](#install)
 
@@ -63,9 +65,20 @@ The final paper, network experimentation was done by all team members
 
 <a name="stack"/>
 
-# The Stack
+# The Stack:
 
 ![stack image](https://github.com/YannisLamp/network-management/blob/master/SDN.png "The Stack")
+
+<a name="tools"/>
+
+# Tools used:
+<li>
+    React: Router, d3 (for graph visualization), reactstrap (for UI/UX), axios (for HTTP requests)
+</li>
+
+<li>
+    Python 2.7: Flask (micro web framework), Mininet (library)
+</li>
 
 <a name="install"/>
 
@@ -103,21 +116,9 @@ Login to OpenDaylight: (optional)
 
 ```pass: admin```
 
-
-# Tools used:
-<li>
-    React: Router, d3 (for graph visualization), reactstrap (for UI/UX), axios (for HTTP requests)
-</li>
-
-<li>
-    Python 2.7: Flask (micro web framework), Mininet (library)
-</li>
-
-
 <a name="apps"/>
 
 # Applications:
-
 
 <a name="create"/>
 
