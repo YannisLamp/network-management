@@ -55,8 +55,6 @@ Our project consists of a react frontend and a flask (python) backend, communica
 ## Ioannis Papadopoulos - Ioannis Lamprou
 Worked on implementing the whole UI interface, the front-end part of Network applications (Network Creation and Deletion, Network Overview, Flow Creation) using the ReactJS framework. Learned how to use the Mininet and OpenDaylight APIs through extensive search in the respective documentation. 
 
-GIA TA APIS VALTE TO IDIO ME MAS!
-
 ## Dimitris Gangas - Nemanja Nedic
 Worked on implementing the back-end part of Network applications(Network Creation and Deletion, Network Overview, Flow Creation)
 using Python 2.7 & Flask micro web framework.
