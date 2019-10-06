@@ -78,7 +78,7 @@ class ApplicationMenu extends Component {
 
     render() {
 
-        console.log("application menu network type: ", this.props.networkType);
+        // console.log("application menu network type: ", this.props.networkType);
         const isTreeNetwork = this.props.networkType === "tree" ;
 
         // console.log("---> Printing ODL Info <---");
