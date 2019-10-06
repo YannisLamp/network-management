@@ -1,10 +1,15 @@
 # Software Defined Networking
 
-Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
+Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.   
+For this project, we chose 1. OpenDaylight + Mininet.
 
 ##### Table of Contents
 
-[The team](#team)  
+[Project Summary](#summary)
+
+[The team](#team)
+
+[Task Separation](#taskSep)
 
 [How to install](#install)
 
@@ -18,24 +23,41 @@ Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDa
 
 &nbsp;&nbsp;&nbsp;&nbsp;[Flow Creation](#flow)
 
-&nbsp;&nbsp;&nbsp;&nbsp;[Network Deletion](#delete)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Network Deletion](#delete)
 
+<a name="summary"/>
 
 # Project Summary:
-The project consists of a react frontend and a flask (python) backend, communicating via custom RESTful API. The react frontend retrieves information from OpenDaylight via its own API to visually display it, while the backend interacts with OpenDaylight by both retrieving and sending data. Furthermore, the backend is responsible for the more sophisticated tasks, regarding network manipulation (e.g. Mininet Virtual Network Creation-Ping-Deletion, Custom Network Flows Creation-Evaluation-Deletion), triggered by frontend requests. On frontend start, checks are performed to determine whether a network already exists by asking backend about the status. If not, you will be redirected to a network creation form.
+
+Our project consists of a react frontend and a flask (python) backend, communicating via custom RESTful API. The react frontend retrieves information from OpenDaylight via its own API to visually display it, while the backend interacts with OpenDaylight by both retrieving and sending data. Furthermore, the backend is responsible for the more sophisticated tasks, regarding network manipulation (e.g. Mininet Virtual Network Creation-Ping-Deletion, Custom Network Flows Creation-Evaluation-Deletion), triggered by frontend requests. On frontend start, checks are performed to determine whether a network already exists by asking backend about the status. If not, you will be redirected to a network creation form.
 
 <a name="team"/>
 
 # The team (eclass team 12)
 
-[Ioannis Papadopoulos](https://github.com/jackalakos) sdi1400144
+[Ioannis Papadopoulos](https://github.com/jackalakos) 1115201400144
 
-[Yannis Lamprou](https://github.com/YannisLamp) sdi1400088
+[Ioannis Lamprou](https://github.com/YannisLamp) 1115201400088
 
-[Dimitris Gangas](https://github.com/dimitrisgan) sdi1400024
+[Dimitris Gangas](https://github.com/dimitrisgan) 1115201400024
 
-[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/) sdi1400124
+[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/) 1115201400124
 
+
+<a name="taskSep"/>
+
+# Task Separation:
+
+## Ioannis Papadopoulos - Ioannis Lamprou
+Worked on implementing the whole UI interface, the front-end part of Network applications (Network Creation and Deletion, Network Overview, Flow Creation) using the ReactJS framework. Learned how to use the Mininet and OpenDaylight APIs through extensive search in the respective documentation. 
+
+GIA TA APIS VALTE TO IDIO ME MAS!
+
+## Dimitris Gangas
+
+## Nemanja Nedic
+
+The final paper, network experimentation was done by all team members
 
 # The Stack
 
@@ -197,5 +219,3 @@ Our reasoning for choosing to implement this application is that as making packe
 Front sends DELETE request to ```/network```.     
 Backend then deletes all flows that we created (kept in global ```gflows_list```).    
 Network is stopped ```global_net.stop()``` and ```{'msg': 'Network Stopped'}``` is returned.
- 
-
