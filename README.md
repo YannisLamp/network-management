@@ -1,9 +1,8 @@
 # Software Defined Networking
 
-Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.   
-For this project, we chose 1. OpenDaylight + Mininet.
+Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDaylight Software-Defined-Networking Controller.
 
-##### Table of Contents
+### Table of Contents
 
 [Project Summary](#summary)
 
@@ -129,7 +128,7 @@ A graphical Mininet network creation interface, built by react framework, provid
 
 ### How to use it:
 
-Select the netwok properties or just press default values.    
+Select the network properties or just press default values.    
 This demo shows how to create a network on the app:
 ![alt text](https://github.com/YannisLamp/network-management/blob/master/create_network.gif "Create Network")
 
