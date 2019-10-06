@@ -7,7 +7,9 @@ For this project, we chose 1. OpenDaylight + Mininet.
 
 [Project Summary](#summary)
 
-[The team](#team)
+[The Team](#team)
+
+[The Stack](#stack)
 
 [Task Separation](#taskSep)
 
@@ -33,7 +35,7 @@ Our project consists of a react frontend and a flask (python) backend, communica
 
 <a name="team"/>
 
-# The team: (eclass team 12)
+# The Team: (eclass team 12)
 
 [Ioannis Papadopoulos](https://github.com/jackalakos) 1115201400144
 
@@ -58,6 +60,8 @@ GIA TA APIS VALTE TO IDIO ME MAS!
 ## Nemanja Nedic
 
 The final paper, network experimentation was done by all team members
+
+<a name="stack"/>
 
 # The Stack
 
