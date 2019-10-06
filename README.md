@@ -6,77 +6,29 @@ Implementation of 2 apps using Mininet as a Virtual Network Simulator and OpenDa
 
 [The team](#team)  
 
+[How to install](#install)
+
 [How to run](#run)
 
 [How to use](#use)
 
 [How it works](#works)
 
-....[Network Creation](#create)
+&nbsp;&nbsp;&nbsp;&nbsp;[Network Creation](#create)
 
-....[Network Overview](#overview)
+&nbsp;&nbsp;&nbsp;&nbsp;[Network Overview](#overview)
 
-....[Flow Creation](#flow)
+&nbsp;&nbsp;&nbsp;&nbsp;[Flow Creation](#flow)
 
-....[Delete Network](#delete)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Delete Network](#delete)  
 
 
 # Project Summary:
 The project consists of a react frontend and a flask (python) backend, communicating via custom RESTful API. The react frontend retrieves information from OpenDaylight via its own API to visually display it, while the backend interacts with OpenDaylight by both retrieving and sending data. Furthermore, the backend is responsible for the more sophisticated tasks, regarding network manipulation (e.g. Mininet Virtual Network Creation-Ping-Deletion, Custom Network Flows Creation-Evaluation-Deletion), triggered by frontend requests.
 
-## Tools used:
-<li>
-    React: Router, d3 (for graph visualization), reactstrap (for UI/UX), axios (for HTTP requests)
-</li>
-
-<li>
-    Python: Flask (micro web framework)
-</li>
-
-<li>
-    Gitkraken
-</li>
-
-<li>
-    VScode editor
-</li>
-
-
-
-## Network Creation
-A graphical Mininet network creation interface, built by react framework, providing many different network options through a web form, making the creation and deletion of networks effortless, so that our Network Apps can be used on a wide range of possible network instances.
-
-## App1 - Network Overview:
-<!-- React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about a Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js. -->
-
-An interactive, fully clickable custom graph, visualizing a created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics on side panels, provided by the Opendaylight API.
-
-### How it works:
-As mentioned above, this application produces a graph to represent the currently created network and presents some general statistics from data fetched from the OpenDaylight API. If the user clicks on any host, switch or link, then information relevant to that selection takes their place. This way, the user can focus on the network as a whole as well as have access to more specialized node information.
-
-### But why
-Our line of thought for building this App, was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought it would be a good idea to expand it, making it more intuitive and user friendly, especially for users without previous relative experience with network management.
-
-## App2 - Flow Creation:
-Backend for Network manipulation, with the extended capability of Flow Cration using Dijkstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
-
-After finding the shortest path between two switches, then install some flows to create a path between them.
-
-It uses Flask micro web framework to provide a web interface for the functions of our app and the ```mininet``` python lib to operate on the network.
-
-!!!
-A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of a created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then proceeds to impose a flow, based on that path. 
-
-### How it works:
-(explained above??)
-
-### But why
-Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows. (and determine how much of an improvement the addition of flows is??) 
-
-
 <a name="team"/>
 
-# The team
+# The team (eclass team 12)
 
 [Ioannis Papadopoulos](https://github.com/jackalakos) sdi1400144
 
@@ -90,6 +42,16 @@ Our reasoning for choosing to implement this application is that as making packe
 # The Stack
 
 ![stack image](https://github.com/YannisLamp/network-management/blob/master/SDN.png "The Stack")
+
+<a name="install"/>
+
+# How to install
+
+After mininet and OpenDaylight installation, 
+
+```cd net-man-app && sudo npm install```
+
+```cd net-man-backend && sudo pip install -r requirements.txt```
 
 <a name="run"/>
 
@@ -126,6 +88,49 @@ Note: Djikstra is pointless for a Linear Network, so if you want to inspect that
 Note: If tree topology is selected, it might take some time to create the network since the network size increases exponentially based on the input parameters. We suggest that for demo purposes you select a smaller network tree.
 
 NOTE: if you close mininet abruptly (ie. Ctrl+C) use this to reset it:```sudo mn -c```
+
+
+
+# Tools used:
+<li>
+    React: Router, d3 (for graph visualization), reactstrap (for UI/UX), axios (for HTTP requests)
+</li>
+
+<li>
+    Python: Flask (micro web framework)
+</li>
+
+
+## Network Creation
+A graphical Mininet network creation interface, built by react framework, providing many different network options through a web form, making the creation and deletion of networks effortless, so that our Network Apps can be used on a wide range of possible network instances.
+
+## App1 - Network Overview:
+<!-- React Frontend, provides an ineractive/clickable visualization of the network, serves statistics about a Mininet Network, but also communicates with the second Python (App2) which is capable of manipulating the Mininet Network directly. Deployed using Node.js. -->
+
+An interactive, fully clickable custom graph, visualizing a created Mininet network, which serves extensive information for each host, switch or link, and overall network statistics on side panels, provided by the Opendaylight API.
+
+### How it works:
+As mentioned above, this application produces a graph to represent the currently created network and presents some general statistics from data fetched from the OpenDaylight API. If the user clicks on any host, switch or link, then information relevant to that selection takes their place. This way, the user can focus on the network as a whole as well as have access to more specialized node information.
+
+### But why
+Our line of thought for building this App, was that the existing network visualisation interface provided by Opendaylight was somewhat difficult to navigate, spanning multiple pages and ultimately not communicating the whole range of information available, so we thought it would be a good idea to expand it, making it more intuitive and user friendly, especially for users without previous relative experience with network management.
+
+## App2 - Flow Creation:
+Backend for Network manipulation, with the extended capability of Flow Cration using Dijkstra Shortest Path algorithm implementation on the network in order to find the shortest path between two switches.
+
+After finding the shortest path between two switches, then install some flows to create a path between them.
+
+It uses Flask micro web framework to provide a web interface for the functions of our app and the ```mininet``` python lib to operate on the network.
+
+!!!
+A Flow creation tool, which after promting the user to pick two hosts from a graphical representation of a created Mininet network, calculates the shortest path between the chosen nodes using the Dijkstra algorithm, then proceeds to impose a flow, based on that path. 
+
+### How it works:
+(explained above??)
+
+### But why
+Our reasoning for choosing to implement this application is that as making packet transfers as fast and effective as possible is a fundamental networking element, it would be interesting to measure and compare transfer times with and without the use of flows. (and determine how much of an improvement the addition of flows is??) 
+
 
 
 
