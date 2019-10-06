@@ -57,11 +57,12 @@ Worked on implementing the whole UI interface, the front-end part of Network app
 
 GIA TA APIS VALTE TO IDIO ME MAS!
 
-## Dimitris Gangas
+## Dimitris Gangas - Nemanja Nedic
+Worked on implementing the back-end part of Network applications(Network Creation and Deletion, Network Overview, Flow Creation)
+using Python 2.7 & Flask micro web framework.
 
-## Nemanja Nedic
 
-The final paper, network experimentation was done by all team members
+The final documentation, network experimentation and testing was done by all team members.
 
 <a name="stack"/>
 
