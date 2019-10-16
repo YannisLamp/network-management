@@ -36,15 +36,15 @@ Our project consists of a react frontend and a flask (python) backend, communica
 
 <a name="team"/>
 
-# The Team: (eclass team 12)
+# The Team:
 
-[Ioannis Papadopoulos](https://github.com/jackalakos) 1115201400144
+[Ioannis Papadopoulos](https://github.com/jackalakos)
 
-[Ioannis Lamprou](https://github.com/YannisLamp) 1115201400088
+[Ioannis Lamprou](https://github.com/YannisLamp)
 
-[Dimitris Gangas](https://github.com/dimitrisgan) 1115201400024
+[Dimitris Gangas](https://github.com/dimitrisgan)
 
-[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/) 1115201400124
+[Nemanja Nedic](https://www.linkedin.com/in/nemanja-nedic/)
 
 
 <a name="taskSep"/>
