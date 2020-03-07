@@ -38,7 +38,7 @@ Our project consists of a react frontend and a flask (python) backend, communica
 
 # The Team:
 
-[Ioannis Papadopoulos](https://github.com/jackalakos)
+[Ioannis Papadopoulos](https://github.com/JohnPapad)
 
 [Ioannis Lamprou](https://github.com/YannisLamp)
 
